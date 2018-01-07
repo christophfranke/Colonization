@@ -58,10 +58,6 @@ class Colonize {
         // Start the game.
         me.state.change(me.state.PLAY);        
     }
-
-    update(){
-        console.log('update');
-    }
 }
 
 

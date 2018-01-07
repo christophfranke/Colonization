@@ -19,6 +19,7 @@ class PlayerEntity extends window.me.Entity{
      */
     update (dt) {
 
+        
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 

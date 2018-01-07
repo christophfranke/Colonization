@@ -21,7 +21,7 @@ HUD.Container = window.me.Container.extend({
         this.name = "HUD";
 
         // add our child score object at the top left corner
-        this.addChild(new HUD.ScoreItem(5, 5));
+        // this.addChild(new HUD.ScoreItem(5, 5));
     },
 });
 
