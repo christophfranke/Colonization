@@ -1,28 +1,19 @@
-import React, { Component } from 'react';
-import Colonize from './colonization/colonize.js';
 
+window.onload = function() {
 
-class Game extends Component {
+    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
 
-	constructor(props){
-		super(props);
+    function preload () {
 
-    this.game = new Colonize();
+        game.load.image('logo', 'phaser.png');
 
-		window.addEventListener('load', () => {		
-			this.game.onload();
-		});
-	}
+    }
 
-  render() {
-    return (
-      <div>
-        <div id="screen"></div>
-      </div>
-    );
-  }
-}
+    function create () {
 
+        var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+        logo.anchor.setTo(0.5, 0.5);
 
+    }
 
-export default Game;
+};
