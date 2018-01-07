@@ -1,0 +1,27 @@
+{
+	"water":{
+		"id": 90,
+		"allowShips": true,
+		"allowLand": true
+	},
+	"desert":{
+		"id": 89,
+		"allowShips": false,
+		"allowLand": true
+	},
+	"tundra":{
+		"id": 88,
+		"allowShips": false,
+		"allowLand": true
+	},
+	"swamp":{
+		"id": 87,
+		"allowShips": false,
+		"allowLand": true
+	},
+	"savanna":{
+		"id": 86,
+		"allowShips": false,
+		"allowLand": true
+	}
+}
