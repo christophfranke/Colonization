@@ -1,8 +1,10 @@
 {
 	"caravel":{
-		"id": 10
+		"id": 10,
+		"domain": "sea"
 	},
 	"artillery":{
-		"id": 1
+		"id": 1,
+		"domain": "land"
 	}
 }

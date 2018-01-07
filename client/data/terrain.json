@@ -1,16 +1,31 @@
 {
-	"water":{
-		"id": 90,
-		"allowShips": true,
-		"allowLand": true
-	},
-	"desert":{
-		"id": 89,
+	"arctic":{
+		"id": 81,
 		"allowShips": false,
 		"allowLand": true
 	},
-	"tundra":{
-		"id": 88,
+	"marsh":{
+		"id":82,
+		"allowShips": false,
+		"allowLand": true		
+	},
+	"plains":{
+		"id": 83,
+		"allowShips": false,
+		"allowLand": true		
+	},
+	"grassland":{
+		"id": 84,
+		"allowShips": false,
+		"allowLand": true		
+	},
+	"prairie":{
+		"id": 85,
+		"allowShips": false,
+		"allowLand": true
+	},
+	"savannah":{
+		"id": 86,
 		"allowShips": false,
 		"allowLand": true
 	},
@@ -19,9 +34,19 @@
 		"allowShips": false,
 		"allowLand": true
 	},
-	"savanna":{
-		"id": 86,
+	"tundra":{
+		"id": 88,
 		"allowShips": false,
 		"allowLand": true
+	},
+	"desert":{
+		"id": 89,
+		"allowShips": false,
+		"allowLand": true
+	},
+	"sea lane":{
+		"id": 90,
+		"allowShips": true,
+		"allowLand": false
 	}
 }

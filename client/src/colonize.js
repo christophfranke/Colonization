@@ -4,6 +4,7 @@ import Phaser from 'phaser';
 
 import Unit from './unit.js';
 import Map from './map.js';
+import Position from './position.js';
 
 
 class Colonize{
@@ -20,6 +21,8 @@ class Colonize{
 	    this.map = new Map({
 	    	game: this.game
 	    });
+
+    	Position.game = this.game;
 	}
 
 	preload() {
@@ -28,26 +31,39 @@ class Colonize{
 
     create() {
     	this.map.create();
+		
+		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+    	
+    	// TODO: this shoud work
+    	// this.game.camera.scale.x = 2;
+    	// this.game.camera.scale.y = 2;
+
 
     	this.game.input.mouse.capture = true;
+
+
 
     	this.caravel = new Unit({
     		game: this.game,
     		name: 'caravel',
-    		position: {
-    			x: 46,
-    			y: 26
-    		}
+    		position: new Position({
+    			x: 124,
+    			y: 64,
+    			type: Position.TILE
+    		})
     	});
 
     	this.caravel2 = new Unit({
     		game: this.game,
     		name: 'caravel',
-    		position: {
-    			x: 46,
-    			y: 27
-    		}
+    		position: new Position({
+    			x: 125,
+    			y: 64,
+    			type: Position.TILE
+    		})
     	});
+
+    	this.map.centerMap(this.caravel.position);
     }
 
     update() {

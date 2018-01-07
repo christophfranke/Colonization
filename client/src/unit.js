@@ -1,6 +1,8 @@
 import UnitProps from '../data/units.json';
 import Settings from '../data/settings.json';
+
 import Easing from './easing.js';
+import Position from './position.js';
 
 
 class Unit{
@@ -8,28 +10,28 @@ class Unit{
 	constructor(props){
 		this.game = props.game;
 		this.name = props.name;
-		this._position = props.position;
+		this._position = new Position({
+			x: props.position.x,
+			y: props.position.y,
+			type: props.position.type
+		});
 
 		this.props = UnitProps[this.name];
 
-		this.sprite = this.game.add.sprite(this.offset.x, this.offset.y, 'mapTiles');
+		this.sprite = this.game.add.sprite(this.position.getWorld().x, this.position.getWorld().y, 'mapTiles');
 		this.sprite.crop(this.cropRect());
 
 		this.sprite.inputEnabled = true;
 		this.sprite.events.onInputDown.add(this.select, this);
 	}
 
-	orderMoveTo(tile){
-		if(Math.abs(tile.x - this.position.x) <= 1 &&
-		   Math.abs(tile.y - this.position.y) <= 1){
+	orderMoveTo(position){
+		let tile = position.getTile();
+		if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
+		   Math.abs(tile.y - this.position.getTile().y) <= 1){
 
-			console.log('moving to tile', this.position, tile);
 			this.position = tile;
 		}
-		else{
-			console.log('cannot move to tile', this.position, tile);
-		}
-
 	}
 
 	cropRect(){
@@ -41,21 +43,11 @@ class Unit{
 		return new Phaser.Rectangle(x, y, width, height);
 	}
 
-	get offset(){
-		return {
-			x: this.position.x * Settings.tileSize.x,
-			y: this.position.y * Settings.tileSize.y
-		};
-	}
+	set position(position){
+		this._position = position.getTile();
 
-	set position(point){
-		this._position = {
-			x: point.x,
-			y: point.y
-		};
-
-		this.sprite.x = Settings.tileSize.x * point.x;
-		this.sprite.y = Settings.tileSize.y * point.y;
+		this.sprite.x = position.getWorld().x;
+		this.sprite.y = position.getWorld().y;
 	}
 
 	get position(){

@@ -2,6 +2,7 @@ import TerrainProps from '../data/terrain.json';
 import Settings from '../data/settings.json';
 
 import Unit from './unit.js';
+import Position from './position.js';
 
 
 class Map{
@@ -11,14 +12,14 @@ class Map{
 	}
 
 	preload(){
-		this.game.load.tilemap('map', '/assets/maps/test-04.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.tilemap('map', '/assets/maps/test-05.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('mapTiles', '/assets/sprites/map.png');		
 	}
 
 	create(){
     	this.tilemap = this.game.add.tilemap('map');
 		this.tilemap.addTilesetImage('sprites', 'mapTiles');
-    	
+
     	this.baseLayer = this.tilemap.createLayer('terrain base');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
@@ -32,37 +33,36 @@ class Map{
     	this.topLayer.events.onInputUp.add(this.inputUp, this);
 	}
 
-	getTileAt(position){
-		return {
-			x: Math.floor((this.game.camera.position.x + position.x) / Settings.tileSize.x),
-			y: Math.floor((this.game.camera.position.y + position.y) / Settings.tileSize.y)
-		}
-	}
-
-	inputDown(e){
+	inputDown(){
 		this.downAt = this.game.time.now;
 	}
 
-	inputUp(e){
+	inputUp(){
+		const pointerPosition = new Position({
+			x: this.game.input.activePointer.clientX,
+			y: this.game.input.activePointer.clientY,
+			type: Position.SCREEN
+		});
+
 		if(this.downAt !== null){		
 			const downTime = this.game.time.now - this.downAt;
 			this.downAt = null;
 
 			if(downTime > this.holdTimeThreshold){
 				if(Unit.selectedUnit !== null){
-					Unit.selectedUnit.orderMoveTo(this.getTileAt(e.input.downPoint));
+					Unit.selectedUnit.orderMoveTo(pointerPosition);
 				}
 			}
 			else{
-				this.centerMap(e.input.downPoint);
+				this.centerMap(pointerPosition);
 			}
 		}
 	}
 
     centerMap(clickPosition){
     	this.game.camera.position = new Phaser.Point(
-    		Math.floor(this.game.camera.position.x + clickPosition.x - 0.5*this.game.width),
-    		Math.floor(this.game.camera.position.y + clickPosition.y - 0.5*this.game.height)
+    		Math.floor(clickPosition.getWorld().x - 0.5*this.game.width),
+    		Math.floor(clickPosition.getWorld().y - 0.5*this.game.height)
 		);
     }
 }
