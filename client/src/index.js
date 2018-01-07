@@ -1,3 +1,6 @@
+import 'pixi';
+import 'p2';
+import Phaser from 'phaser';
 
 window.onload = function() {
 
