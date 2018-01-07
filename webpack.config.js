@@ -12,9 +12,12 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'client/public')
   },
+  devServer: {
+  	contentBase: './client/public'
+  },
 	module: {
     rules: [
-      // { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
+      { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'client/src') },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
       { test: /p2\.js/, use: ['expose-loader?p2'] }
