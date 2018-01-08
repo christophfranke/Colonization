@@ -60,7 +60,7 @@ class Unit{
 
 		Unit.selectedUnit = this;
 		this.selected = true;
-	    this.tween = this.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Easing.None, true, 0, -1, true);
+	    this.tween = this.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);
 	}
 
 	unselect(){

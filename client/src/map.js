@@ -61,8 +61,8 @@ class Map{
 
     centerMap(clickPosition){
     	this.game.camera.position = new Phaser.Point(
-    		Math.floor(clickPosition.getWorld().x - 0.5*this.game.width),
-    		Math.floor(clickPosition.getWorld().y - 0.5*this.game.height)
+    		Math.floor(clickPosition.getWorld().x - 0.5*(this.game.width / this.game.camera.scale.x)),
+    		Math.floor(clickPosition.getWorld().y - 0.5*(this.game.height / this.game.camera.scale.y))
 		);
     }
 }

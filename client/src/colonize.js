@@ -30,17 +30,16 @@ class Colonize{
     }
 
     create() {
+    	// TODO: this should work
+    	// this.game.camera.scale.x = 0.8;
+    	// this.game.camera.scale.y = 0.8;    	
+
+
     	this.map.create();
 		
+
 		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
-    	
-    	// TODO: this shoud work
-    	// this.game.camera.scale.x = 2;
-    	// this.game.camera.scale.y = 2;
-
-
     	this.game.input.mouse.capture = true;
-
 
 
     	this.caravel = new Unit({
