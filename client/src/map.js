@@ -54,12 +54,12 @@ class Map{
 				}
 			}
 			else{
-				this.centerMap(pointerPosition);
+				this.centerAt(pointerPosition);
 			}
 		}
 	}
 
-    centerMap(clickPosition){
+    centerAt(clickPosition){
     	this.game.camera.position = new Phaser.Point(
     		Math.floor(clickPosition.getWorld().x - 0.5*(this.game.width / this.game.camera.scale.x)),
     		Math.floor(clickPosition.getWorld().y - 0.5*(this.game.height / this.game.camera.scale.y))

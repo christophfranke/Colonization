@@ -43,7 +43,8 @@ class Colonize{
     	this.game.input.mouse.capture = true;
 
         this.keyboardInput = new KeyboardInput({
-            game: this.game
+            game: this.game,
+            map: this.map
         });
 
 
@@ -67,7 +68,7 @@ class Colonize{
     		})
     	});
 
-    	this.map.centerMap(this.caravel.position);
+    	this.map.centerAt(this.caravel.position);
     }
 
     update() {

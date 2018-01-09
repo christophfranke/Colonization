@@ -5,6 +5,7 @@ import Unit from './unit.js';
 class KeyboardInput {
 	constructor(props){
 		this.game = props.game;
+		this.map = props.map;
 
 		this.wasDown = {
 			leftKey: false,
@@ -17,8 +18,16 @@ class KeyboardInput {
 		this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 		this.upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
 		this.downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+		this.game.input.keyboard.onUpCallback = (e) => this.keyUp(e);
 
 		this.updateKeys = false;
+	}
+
+	keyUp(e){
+		if(e.key === 'c'){
+			if(Unit.selectedUnit !== null)
+				this.map.centerAt(Unit.selectedUnit.position);
+		}
 	}
 
 	update(){
