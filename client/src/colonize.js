@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import Unit from './unit.js';
 import Map from './map.js';
 import Position from './position.js';
+import KeyboardInput from './keyboardInput.js';
 
 
 class Colonize{
@@ -15,7 +16,7 @@ class Colonize{
 	    this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
 	    	preload: () => this.preload(),
 	    	create: () => this.create(),
-	    	// update: () => this.update()
+	    	update: () => this.update()
 	    });
 
 	    this.map = new Map({
@@ -38,8 +39,12 @@ class Colonize{
     	this.map.create();
 		
 
-		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+		this.game.canvas.oncontextmenu = (e) => { e.preventDefault(); };
     	this.game.input.mouse.capture = true;
+
+        this.keyboardInput = new KeyboardInput({
+            game: this.game
+        });
 
 
     	this.caravel = new Unit({
@@ -67,6 +72,8 @@ class Colonize{
 
     update() {
     	const delta = this.game.time.physicsElapsed;
+
+        this.keyboardInput.update();
     }
 }
 
