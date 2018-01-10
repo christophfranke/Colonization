@@ -21,7 +21,11 @@ class Position{
 
 	getTile(){
 		if(this.type === Position.TILE){
-			return this;
+			return new Position({
+				x: this.x,
+				y: this.y,
+				type: Position.TILE
+			});
 		}
 
 		if(this.type === Position.WORLD){
@@ -49,7 +53,11 @@ class Position{
 			});
 		}
 		if(this.type === Position.WORLD){
-			return this;
+			return new Position({
+				x: this.x,
+				y: this.y,
+				type: Position.WORLD
+			});
 		}
 		if(this.type === Position.SCREEN){
 			return new Position({
@@ -77,7 +85,11 @@ class Position{
 			});
 		}
 		if(this.type === Position.SCREEN){
-			return this;
+			return new Position({
+				x: this.x,
+				y: this.y,
+				type: Position.SCREEN
+			});
 		}
 
 	}

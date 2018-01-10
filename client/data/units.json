@@ -6,5 +6,9 @@
 	"artillery":{
 		"id": 1,
 		"domain": "land"
+	},
+	"pioneer":{
+		"id": 18,
+		"domain": "land"
 	}
 }

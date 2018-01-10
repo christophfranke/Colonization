@@ -8,7 +8,11 @@ import Position from './position.js';
 class Unit{
 
 	constructor(props){
-		this.game = props.game;
+		this.colonize = props.colonize;
+
+		this.game = this.colonize.game;
+		this.map = this.colonize.map;
+
 		this.name = props.name;
 		this._position = new Position({
 			x: props.position.x,
@@ -26,19 +30,28 @@ class Unit{
 	}
 
 	orderMoveTo(position){
-		let tile = position.getTile();
-		if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
-		   Math.abs(tile.y - this.position.getTile().y) <= 1){
+		let tileInfo = this.map.mapData.getTileInfo(position);
 
-			this.position = tile;
+		if((this.props.domain === 'sea' && tileInfo.props.allowSea) ||
+		   (this.props.domain === 'land' && tileInfo.props.allowLand)) {
+
+			let tile = position.getTile();
+			if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
+			   Math.abs(tile.y - this.position.getTile().y) <= 1){
+
+				this.position = tile;
+			}
 		}
+
 	}
 
 	cropRect(){
 		let x = ((this.props.id - Settings.firstgid) % Settings.tiles.x) * Settings.tileSize.x;
-		let y = Math.floor(this.props.id / Settings.tiles.y);
+		let y = Math.floor(this.props.id / Settings.tiles.x) * Settings.tileSize.y;
 		let width = Settings.tileSize.x;
 		let height = Settings.tileSize.y;
+
+		console.log(this.props.id / Settings.tiles.x);
 
 		return new Phaser.Rectangle(x, y, width, height);
 	}

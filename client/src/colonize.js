@@ -49,7 +49,7 @@ class Colonize{
 
 
     	this.caravel = new Unit({
-    		game: this.game,
+    		colonize: this,
     		name: 'caravel',
     		position: new Position({
     			x: 124,
@@ -59,7 +59,7 @@ class Colonize{
     	});
 
     	this.caravel2 = new Unit({
-    		game: this.game,
+    		colonize: this,
     		name: 'caravel',
     		position: new Position({
     			x: 125,
@@ -67,6 +67,16 @@ class Colonize{
     			type: Position.TILE
     		})
     	});
+
+        this.settler = new Unit({
+            colonize: this,
+            name: 'pioneer',
+            position: new Position({
+                x: 117,
+                y: 63,
+                type: Position.TILE
+            })
+        })
 
     	this.map.centerAt(this.caravel.position);
     }
