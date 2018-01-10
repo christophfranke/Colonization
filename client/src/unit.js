@@ -51,8 +51,6 @@ class Unit{
 		let width = Settings.tileSize.x;
 		let height = Settings.tileSize.y;
 
-		console.log(this.props.id / Settings.tiles.x);
-
 		return new Phaser.Rectangle(x, y, width, height);
 	}
 
