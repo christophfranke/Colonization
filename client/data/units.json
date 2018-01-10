@@ -1,14 +1,17 @@
 {
 	"caravel":{
 		"id": 10,
-		"domain": "sea"
+		"domain": "sea",
+		"canFound": false
 	},
 	"artillery":{
 		"id": 1,
-		"domain": "land"
+		"domain": "land",
+		"canFound": false
 	},
 	"pioneer":{
 		"id": 18,
-		"domain": "land"
+		"domain": "land",
+		"canFound": true
 	}
 }

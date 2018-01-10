@@ -28,6 +28,10 @@ class KeyboardInput {
 			if(Unit.selectedUnit !== null)
 				this.map.centerAt(Unit.selectedUnit.position);
 		}
+		if(e.key === 'b'){
+			if(Unit.selectedUnit !== null)
+				Unit.selectedUnit.orderFoundColony();
+		}
 	}
 
 	update(){
