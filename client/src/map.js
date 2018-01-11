@@ -35,6 +35,10 @@ class Map{
 		this.tilemap.addTilesetImage(this.mapData.getTilesetName(), 'mapTiles');
 
     	this.baseLayer = this.tilemap.createLayer('terrain base');
+		this.blendleftLayer = this.tilemap.createLayer('terrain blend left');
+		this.blenddownLayer = this.tilemap.createLayer('terrain blend down');
+		this.blendrightLayer = this.tilemap.createLayer('terrain blend right');
+		this.blendtopLayer = this.tilemap.createLayer('terrain blend top');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
     	//make the world big enough
