@@ -1,5 +1,7 @@
 import Settings from '../data/settings.json';
 
+import Colonize from './colonize.js';
+
 
 class Position{
 	constructor(props){
@@ -37,8 +39,8 @@ class Position{
 		}
 		if(this.type === Position.SCREEN){
 			return new Position({
-				x: Math.floor((this.x / Position.game.camera.scale.x + Position.game.camera.position.x) / Settings.tileSize.x),
-				y: Math.floor((this.y / Position.game.camera.scale.y + Position.game.camera.position.y) / Settings.tileSize.y),
+				x: Math.floor((this.x / Colonize.game.camera.scale.x + Colonize.game.camera.position.x) / Settings.tileSize.x),
+				y: Math.floor((this.y / Colonize.game.camera.scale.y + Colonize.game.camera.position.y) / Settings.tileSize.y),
 				type: Position.TILE
 			});
 		}
@@ -61,8 +63,8 @@ class Position{
 		}
 		if(this.type === Position.SCREEN){
 			return new Position({
-				x: this.x / Position.game.camera.scale.x + Position.game.camera.position.x,
-				y: this.y / Position.game.camera.scale.y + Position.game.camera.position.y,
+				x: this.x / Colonize.game.camera.scale.x + Colonize.game.camera.position.x,
+				y: this.y / Colonize.game.camera.scale.y + Colonize.game.camera.position.y,
 				type: Position.WORLD
 			});
 		}
@@ -72,15 +74,15 @@ class Position{
 	getScreen(){
 		if(this.type === Position.TILE){
 			return new Position({
-				x: (this.x * Settings.tileSize.x - Position.game.camera.position.x) * Position.game.camera.scale.x,
-				y: (this.y * Settings.tileSize.y - Position.game.camera.position.y) * Position.game.camera.scale.y,
+				x: (this.x * Settings.tileSize.x - Colonize.game.camera.position.x) * Colonize.game.camera.scale.x,
+				y: (this.y * Settings.tileSize.y - Colonize.game.camera.position.y) * Colonize.game.camera.scale.y,
 				type: Position.SCREEN
 			});
 		}
 		if(this.type === Position.WORLD){
 			return new Position({
-				x: (this.x - Position.game.camera.position.x) * Position.game.camera.scale.x,
-				y: (this.y - Position.game.camera.position.y) * Position.game.camera.scale.y,
+				x: (this.x - Colonize.game.camera.position.x) * Colonize.game.camera.scale.x,
+				y: (this.y - Colonize.game.camera.position.y) * Colonize.game.camera.scale.y,
 				type: Position.SCREEN
 			});
 		}

@@ -31,42 +31,10 @@ class Map{
     	this.baseLayer = this.tilemap.createLayer('terrain base');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
-
     	//make the world big enough
     	this.baseLayer.resizeWorld();
-
-    	this.baseLayer.inputEnabled = true;
-    	this.topLayer.inputEnabled = true;
-
-    	this.topLayer.events.onInputDown.add(this.inputDown, this);
-    	this.topLayer.events.onInputUp.add(this.inputUp, this);
 	}
 
-	inputDown(){
-		this.downAt = this.game.time.now;
-	}
-
-	inputUp(){
-		const pointerPosition = new Position({
-			x: this.game.input.activePointer.clientX,
-			y: this.game.input.activePointer.clientY,
-			type: Position.SCREEN
-		});
-
-		if(this.downAt !== null){		
-			const downTime = this.game.time.now - this.downAt;
-			this.downAt = null;
-
-			if(downTime > this.holdTimeThreshold){
-				if(Unit.selectedUnit !== null){
-					Unit.selectedUnit.orderMoveTo(pointerPosition);
-				}
-			}
-			else{
-				this.centerAt(pointerPosition);
-			}
-		}
-	}
 
     centerAt(clickPosition){
     	this.game.camera.position = new Phaser.Point(
