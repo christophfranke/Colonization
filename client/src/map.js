@@ -4,74 +4,60 @@ import Settings from '../data/settings.json';
 import Unit from './unit.js';
 import Position from './position.js';
 import MapData from './mapData.js';
+import Colonize from './colonize.js';
 
 
 class Map{
 	constructor(props){
-		this.game = props.game;
 		this.holdTimeThreshold = 350; //millis
+		this.mapCenterTweenTime = 250; //also millis
+		
+		this.jsonURL = props.jsonURL;
+		this.pngURL = props.pngURL;
 	}
 
 	preload(){
-		this.game.load.json('mapData', '/assets/maps/test-05.json');
-        this.game.load.image('mapTiles', '/assets/sprites/map.png');		
+		Colonize.game.load.json('mapData', this.jsonURL);
+        Colonize.game.load.image('mapTiles', this.pngURL);		
 	}
 
 	create(){
 		this.mapData = new MapData({
-			data: this.game.cache.getJSON('mapData')
+			data: Colonize.game.cache.getJSON('mapData')
 		});
+
+
 		this.numTiles = this.mapData.numTiles;
 		
     	
-    	this.game.load.tilemap('map', '/assets/maps/test-05.json', this.mapData.data, Phaser.Tilemap.TILED_JSON)
-    	this.tilemap = this.game.add.tilemap('map');
-		this.tilemap.addTilesetImage('sprites', 'mapTiles');
+    	Colonize.game.load.tilemap('map', '/assets/maps/test-05.json', this.mapData.data, Phaser.Tilemap.TILED_JSON)
+    	this.tilemap = Colonize.game.add.tilemap('map');
+		this.tilemap.addTilesetImage(this.mapData.getTilesetName(), 'mapTiles');
 
     	this.baseLayer = this.tilemap.createLayer('terrain base');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
-
     	//make the world big enough
     	this.baseLayer.resizeWorld();
-
-    	this.baseLayer.inputEnabled = true;
-    	this.topLayer.inputEnabled = true;
-
-    	this.topLayer.events.onInputDown.add(this.inputDown, this);
-    	this.topLayer.events.onInputUp.add(this.inputUp, this);
 	}
 
-	inputDown(){
-		this.downAt = this.game.time.now;
-	}
-
-	inputUp(){
-		const pointerPosition = new Position({
-			x: this.game.input.activePointer.clientX,
-			y: this.game.input.activePointer.clientY,
-			type: Position.SCREEN
-		});
-
-		if(this.downAt !== null){		
-			const downTime = this.game.time.now - this.downAt;
-			this.downAt = null;
-
-			if(downTime > this.holdTimeThreshold){
-				if(Unit.selectedUnit !== null){
-					Unit.selectedUnit.orderMoveTo(pointerPosition);
-				}
-			}
-			else{
-				this.centerAt(pointerPosition);
-			}
-		}
-	}
 
     centerAt(clickPosition){
-    	this.game.camera.position = new Phaser.Point(
-    		Math.floor(clickPosition.getWorld().x - 0.5*(this.game.width / this.game.camera.scale.x)),
-    		Math.floor(clickPosition.getWorld().y - 0.5*(this.game.height / this.game.camera.scale.y))
+		const cameraTarget = {
+			x: Math.floor(clickPosition.getWorld().x - 0.5*(Colonize.game.width / Colonize.game.camera.scale.x)),
+			y: Math.floor(clickPosition.getWorld().y - 0.5*(Colonize.game.height / Colonize.game.camera.scale.y))
+		};
+
+		Colonize.game.add.tween(Colonize.game.camera).to( {
+				x: cameraTarget.x,
+				y: cameraTarget.y
+			},
+			this.mapCenterTweenTime,
+			Phaser.Easing.Cubic.InOut,
+			true,
+			0,
+			0,
+			false
 		);
     }
 }

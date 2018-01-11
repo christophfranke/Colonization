@@ -6,29 +6,35 @@ import Unit from './unit.js';
 import Map from './map.js';
 import Position from './position.js';
 import KeyboardInput from './keyboardInput.js';
+import PointerInput from './pointerInput.js';
 
 
 class Colonize{
 
 	constructor(props){
-		this.width = 1200;
-		this.height = 800;
-	    this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
-	    	preload: () => this.preload(),
-	    	create: () => this.create(),
-	    	update: () => this.update()
-	    });
+        if(typeof Colonize.instance !== 'undefined'){
+            throw new Error('Colonize defined multiple times. Nobody knows what happens next...');
+        }
 
-	    this.map = new Map({
-	    	game: this.game
-	    });
-
-    	Position.game = this.game;
         Colonize.instance = this;
+
+
+        this.width = 1200;
+        this.height = 800;
+        Colonize.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
+            preload: () => this.preload(),
+            create: () => this.create(),
+            update: () => this.update()
+        });
+
+        Colonize.map = new Map({
+            jsonURL: '/assets/maps/test-05.json',
+            pngURL: '/assets/sprites/map.png'
+        });
 	}
 
 	preload() {
-		this.map.preload();
+		Colonize.map.preload();
     }
 
     create() {
@@ -37,17 +43,11 @@ class Colonize{
     	// this.game.camera.scale.y = 0.8;    	
 
 
-    	this.map.create();
-		
+    	Colonize.map.create();
 
-		this.game.canvas.oncontextmenu = (e) => { e.preventDefault(); };
-    	this.game.input.mouse.capture = true;
-
-        this.keyboardInput = new KeyboardInput({
-            game: this.game,
-            map: this.map
-        });
-
+        //create and register
+        Colonize.keyboardInput = new KeyboardInput();
+        Colonize.pointerInput = new PointerInput();
 
     	this.caravel = new Unit({
     		name: 'caravel',
@@ -76,13 +76,13 @@ class Colonize{
             })
         });
 
-    	this.map.centerAt(this.caravel.position);
+    	Colonize.map.centerAt(this.caravel.position);
     }
 
     update() {
-    	const delta = this.game.time.physicsElapsed;
+    	const delta = Colonize.game.time.physicsElapsed;
 
-        this.keyboardInput.update();
+        Colonize.keyboardInput.update();
     }
 }
 

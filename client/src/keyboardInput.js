@@ -1,11 +1,12 @@
 
 import Unit from './unit.js';
+import Colonize from './colonize.js';
 
 
 class KeyboardInput {
 	constructor(props){
-		this.game = props.game;
-		this.map = props.map;
+		this.game = Colonize.game;
+		this.map = Colonize.map;
 
 		this.wasDown = {
 			leftKey: false,

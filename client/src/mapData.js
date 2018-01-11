@@ -18,15 +18,18 @@ class MapData{
 
 	getTileInfo(position){
 		const pos = position.getTile();
-		const index = pos.x + this.numTiles.x * position.y;
-		
+		const index = pos.x + this.numTiles.x * pos.y;
+
 		if (index >= this.numTiles.x*this.numTiles.y)
 			return null;
 
 		return new MapTile({
 			id: this.data.layers[0].data[index]
 		});
+	}
 
+	getTilesetName(){
+		return this.data.tilesets[0].name;
 	}
 }
 
