@@ -39,6 +39,8 @@ class Map{
 		this.blenddownLayer = this.tilemap.createLayer('terrain blend down');
 		this.blendrightLayer = this.tilemap.createLayer('terrain blend right');
 		this.blendtopLayer = this.tilemap.createLayer('terrain blend top');
+		this.blendcoastLayer = this.tilemap.createLayer('terrain blend coast');
+		this.blendcoast2Layer = this.tilemap.createLayer('terrain blend coast 2');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
     	//make the world big enough
