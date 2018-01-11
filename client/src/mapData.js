@@ -18,8 +18,8 @@ class MapData{
 
 	getTileInfo(position){
 		const pos = position.getTile();
-		const index = pos.x + this.numTiles.x * position.y;
-		
+		const index = pos.x + this.numTiles.x * pos.y;
+
 		if (index >= this.numTiles.x*this.numTiles.y)
 			return null;
 
