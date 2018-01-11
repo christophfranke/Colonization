@@ -10,6 +10,10 @@ import Colonize from './colonize.js';
 class Map{
 	constructor(props){
 		this.holdTimeThreshold = 350; //millis
+		this.mapCenterTweenTime = 250; //also millis
+		
+		this.jsonURL = props.jsonURL;
+		this.pngURL = props.pngURL;
 	}
 
 	preload(){
@@ -21,6 +25,8 @@ class Map{
 		this.mapData = new MapData({
 			data: Colonize.game.cache.getJSON('mapData')
 		});
+
+
 		this.numTiles = this.mapData.numTiles;
 		
     	
@@ -37,9 +43,21 @@ class Map{
 
 
     centerAt(clickPosition){
-    	Colonize.game.camera.position = new Phaser.Point(
-    		Math.floor(clickPosition.getWorld().x - 0.5*(Colonize.game.width / Colonize.game.camera.scale.x)),
-    		Math.floor(clickPosition.getWorld().y - 0.5*(Colonize.game.height / Colonize.game.camera.scale.y))
+		const cameraTarget = {
+			x: Math.floor(clickPosition.getWorld().x - 0.5*(Colonize.game.width / Colonize.game.camera.scale.x)),
+			y: Math.floor(clickPosition.getWorld().y - 0.5*(Colonize.game.height / Colonize.game.camera.scale.y))
+		};
+
+		Colonize.game.add.tween(Colonize.game.camera).to( {
+				x: cameraTarget.x,
+				y: cameraTarget.y
+			},
+			this.mapCenterTweenTime,
+			Phaser.Easing.Cubic.InOut,
+			true,
+			0,
+			0,
+			false
 		);
     }
 }
