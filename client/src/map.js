@@ -13,8 +13,8 @@ class Map{
 	}
 
 	preload(){
-		Colonize.game.load.json('mapData', '/assets/maps/test-05.json');
-        Colonize.game.load.image('mapTiles', '/assets/sprites/map.png');		
+		Colonize.game.load.json('mapData', this.jsonURL);
+        Colonize.game.load.image('mapTiles', this.pngURL);		
 	}
 
 	create(){
@@ -26,7 +26,7 @@ class Map{
     	
     	Colonize.game.load.tilemap('map', '/assets/maps/test-05.json', this.mapData.data, Phaser.Tilemap.TILED_JSON)
     	this.tilemap = Colonize.game.add.tilemap('map');
-		this.tilemap.addTilesetImage('sprites', 'mapTiles');
+		this.tilemap.addTilesetImage(this.mapData.getTilesetName(), 'mapTiles');
 
     	this.baseLayer = this.tilemap.createLayer('terrain base');
     	this.topLayer = this.tilemap.createLayer('terrain top');

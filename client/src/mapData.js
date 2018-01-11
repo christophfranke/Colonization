@@ -26,7 +26,10 @@ class MapData{
 		return new MapTile({
 			id: this.data.layers[0].data[index]
 		});
+	}
 
+	getTilesetName(){
+		return this.data.tilesets[0].name;
 	}
 }
 

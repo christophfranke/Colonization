@@ -17,7 +17,7 @@ class Colonize{
         }
 
         Colonize.instance = this;
-        
+
 
         this.width = 1200;
         this.height = 800;
@@ -27,7 +27,10 @@ class Colonize{
             update: () => this.update()
         });
 
-        Colonize.map = new Map();
+        Colonize.map = new Map({
+            jsonURL: '/assets/maps/test-05.json',
+            pngURL: '/assets/sprites/map.png'
+        });
 	}
 
 	preload() {
