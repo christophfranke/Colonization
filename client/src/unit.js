@@ -11,7 +11,7 @@ class Unit{
 
 	constructor(props){
 		this.name = props.name;
-		this._position = new Position({
+		this.position = new Position({
 			x: props.position.x,
 			y: props.position.y,
 			type: props.position.type
@@ -38,7 +38,7 @@ class Unit{
 			if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
 			   Math.abs(tile.y - this.position.getTile().y) <= 1){
 
-				this.position = tile;
+				this.makeMove(tile);
 			}
 		}
 	}
@@ -50,21 +50,17 @@ class Unit{
 		}
 	}
 
+	makeMove(to){
+		this.position = to.getTile();
+		this.tileSprite.moveTo(this.position);
+
+	}
+
 	disband(){
 		this.tileSprite.destroy();
 		if(Unit.selectedUnit === this){
 			Unit.selectedUnit = null;
 		}
-	}
-
-	set position(position){
-		this._position = position.getTile();
-
-		this.tileSprite.moveTo(this._position);
-	}
-
-	get position(){
-		return this._position;
 	}
 
 	select(){
