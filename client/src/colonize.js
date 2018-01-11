@@ -12,27 +12,26 @@ import PointerInput from './pointerInput.js';
 class Colonize{
 
 	constructor(props){
-		this.width = 1200;
-		this.height = 800;
-	    this.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
-	    	preload: () => this.preload(),
-	    	create: () => this.create(),
-	    	update: () => this.update()
-	    });
+        if(typeof Colonize.instance !== 'undefined'){
+            throw new Error('Colonize defined multiple times. Nobody knows what happens next...');
+        }
 
-	    this.map = new Map({
-	    	game: this.game
-	    });
-
-
-        //register some globals
         Colonize.instance = this;
-        Colonize.game = this.game;
-        Colonize.map = this.map;
+        
+
+        this.width = 1200;
+        this.height = 800;
+        Colonize.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
+            preload: () => this.preload(),
+            create: () => this.create(),
+            update: () => this.update()
+        });
+
+        Colonize.map = new Map();
 	}
 
 	preload() {
-		this.map.preload();
+		Colonize.map.preload();
     }
 
     create() {
@@ -41,11 +40,11 @@ class Colonize{
     	// this.game.camera.scale.y = 0.8;    	
 
 
-    	this.map.create();
-		
+    	Colonize.map.create();
 
-        this.keyboardInput = new KeyboardInput();
-        this.pointerInput = new PointerInput();
+        //create and register
+        Colonize.keyboardInput = new KeyboardInput();
+        Colonize.pointerInput = new PointerInput();
 
     	this.caravel = new Unit({
     		name: 'caravel',
@@ -74,13 +73,13 @@ class Colonize{
             })
         });
 
-    	this.map.centerAt(this.caravel.position);
+    	Colonize.map.centerAt(this.caravel.position);
     }
 
     update() {
-    	const delta = this.game.time.physicsElapsed;
+    	const delta = Colonize.game.time.physicsElapsed;
 
-        this.keyboardInput.update();
+        Colonize.keyboardInput.update();
     }
 }
 

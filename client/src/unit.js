@@ -10,11 +10,6 @@ import Colony from './colony.js';
 class Unit{
 
 	constructor(props){
-		this.colonize = Colonize.instance;
-
-		this.game = this.colonize.game;
-		this.map = this.colonize.map;
-
 		this.name = props.name;
 		this._position = new Position({
 			x: props.position.x,
@@ -34,7 +29,7 @@ class Unit{
 	}
 
 	orderMoveTo(position){
-		let tileInfo = this.map.mapData.getTileInfo(position);
+		let tileInfo = Colonize.map.mapData.getTileInfo(position);
 
 		if((this.props.domain === 'sea' && tileInfo.props.allowSea) ||
 		   (this.props.domain === 'land' && tileInfo.props.allowLand)) {

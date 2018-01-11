@@ -35,7 +35,7 @@ class PointerInput{
 				}
 			}
 			else{
-				Colonize.instance.map.centerAt(pointerPosition);
+				Colonize.map.centerAt(pointerPosition);
 			}
 		}
 	}

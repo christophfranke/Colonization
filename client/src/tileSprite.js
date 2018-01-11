@@ -9,7 +9,7 @@ class TileSprite{
 		this.id = props.id;
 		this.position = props.position.getWorld();
 
-		this.sprite = Colonize.instance.game.add.sprite(this.position.x, this.position.y, 'mapTiles');
+		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles');
 		this.sprite.crop(this.cropRect());		
 	}
 
@@ -35,7 +35,7 @@ class TileSprite{
 	}
 
 	startBlinking(){
-	    this.tween = Colonize.instance.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);		
+	    this.tween = Colonize.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);		
 	}
 
 	stopBlinking(){
