@@ -9,6 +9,7 @@ class TileSprite{
 		this.id = props.id;
 		this.position = props.position.getWorld();
 		this.movementTweenTime = 50;
+		this.tweens = {};
 
 		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles');
 		this.sprite.crop(this.cropRect());		
@@ -34,7 +35,7 @@ class TileSprite{
 		// 	this.position.y
 		// );
 
-		this.tween = Colonize.game.add.tween(this.sprite).to( {
+		this.tweens.walk = Colonize.game.add.tween(this.sprite).to( {
 				x: this.position.x,
 				y: this.position.y
 			},
@@ -48,11 +49,11 @@ class TileSprite{
 	}
 
 	startBlinking(){
-	    this.tween = Colonize.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);		
+	    this.tweens.blink = Colonize.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);		
 	}
 
 	stopBlinking(){
-		this.tween.stop();
+		this.tweens.blink.stop();
 		this.sprite.alpha = 1;
 	}
 }
