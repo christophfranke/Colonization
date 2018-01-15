@@ -7,7 +7,7 @@ import Map from './map.js';
 import Position from './position.js';
 import KeyboardInput from './keyboardInput.js';
 import PointerInput from './pointerInput.js';
-
+import FPSCounter from './fpsCounter.js';
 
 class Colonize{
 
@@ -24,13 +24,16 @@ class Colonize{
         Colonize.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
             preload: () => this.preload(),
             create: () => this.create(),
-            update: () => this.update()
+            update: () => this.update(),
+            render: () => this.render()
         });
 
         Colonize.map = new Map({
             jsonURL: '/assets/maps/test-05.json',
             pngURL: '/assets/sprites/map.png'
         });
+
+        Colonize.fpsCounter = new FPSCounter();
 	}
 
 	preload() {
@@ -44,6 +47,7 @@ class Colonize{
 
 
     	Colonize.map.create();
+        Colonize.fpsCounter.create();
 
         //create and register
         Colonize.keyboardInput = new KeyboardInput();
@@ -83,6 +87,10 @@ class Colonize{
     	const delta = Colonize.game.time.physicsElapsed;
 
         Colonize.keyboardInput.update();
+    }
+
+    render(){
+        Colonize.fpsCounter.render();
     }
 }
 
