@@ -18,7 +18,8 @@ class Colonize{
 
         Colonize.instance = this;
 
-
+        this.debug = true;
+        
         this.width = 1200;
         this.height = 800;
         Colonize.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {

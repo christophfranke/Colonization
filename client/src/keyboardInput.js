@@ -33,6 +33,10 @@ class KeyboardInput {
 			if(Unit.selectedUnit !== null)
 				Unit.selectedUnit.orderFoundColony();
 		}
+
+		if(e.keyCode === 27){
+			Colonize.fpsCounter.toggleDebugInfo();
+		}
 	}
 
 	update(){

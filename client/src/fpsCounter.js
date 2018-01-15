@@ -4,16 +4,32 @@ import Colonize from './colonize.js';
 
 class FPSCounter {
 	constructor(props){
-
+		this.skipFrames = 30;
+		this.currentFrame = this.skipFrames;
+		this.debug = false;
 	}
 
 	create(){
-		Colonize.game.time.advancedTiming = true;
+		Colonize.game.time.advancedTiming = Colonize.instance.debug;
 	}
 
-	render(){
+    toggleDebugInfo(){
+        this.debug = !this.debug && Colonize.instance.debug;
+		Colonize.game.debug.reset();
+		this.currentFrame = this.skipFrames;
+    }
 
-		Colonize.game.debug.text(Colonize.game.time.fps + ' fps' , 20, 30);
+
+	render(){
+		if(this.debug){		
+			if(this.currentFrame == this.skipFrames){
+				Colonize.game.debug.text('Hallo Welt', 20, 20);
+				Colonize.game.debug.text(Colonize.game.time.fps + ' fps' , 20, 40);
+				this.currentFrame = 0;
+			}
+
+			this.currentFrame++;
+		}
 	}
 }
 
