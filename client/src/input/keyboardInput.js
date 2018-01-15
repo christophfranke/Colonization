@@ -1,6 +1,6 @@
 
-import Unit from './unit.js';
-import Colonize from './colonize.js';
+import Unit from '../entity//unit.js';
+import Colonize from '../colonize.js';
 
 
 class KeyboardInput {

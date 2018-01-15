@@ -1,10 +1,10 @@
-import TerrainProps from '../data/terrain.json';
-import Settings from '../data/settings.json';
+import TerrainProps from '../../data/terrain.json';
+import Settings from '../../data/settings.json';
 
 import Unit from './unit.js';
-import Position from './position.js';
-import MapData from './mapData.js';
-import Colonize from './colonize.js';
+import Position from '../helper/position.js';
+import MapData from '../world/mapData.js';
+import Colonize from '../colonize.js';
 
 
 class Map{

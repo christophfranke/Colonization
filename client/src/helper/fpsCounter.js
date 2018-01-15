@@ -1,12 +1,13 @@
 
-import Colonize from './colonize.js';
+import Colonize from '../colonize.js';
 
 
 class FPSCounter {
 	constructor(props){
-		this.skipFrames = 30;
-		this.currentFrame = this.skipFrames;
+		this.skipFrames = 30; //only update everey 30 frames
 		this.debug = false;
+		
+		this.currentFrame = this.skipFrames;
 	}
 
 	create(){
@@ -19,12 +20,13 @@ class FPSCounter {
 		this.currentFrame = this.skipFrames;
     }
 
-
 	render(){
 		if(this.debug){		
 			if(this.currentFrame == this.skipFrames){
-				Colonize.game.debug.text('Hallo Welt', 20, 20);
-				Colonize.game.debug.text(Colonize.game.time.fps + ' fps' , 20, 40);
+				Colonize.game.debug.start(20, 20, 'white');
+				Colonize.game.debug.line(Colonize.game.time.fps + ' fps');
+				Colonize.game.debug.stop();
+				
 				this.currentFrame = 0;
 			}
 

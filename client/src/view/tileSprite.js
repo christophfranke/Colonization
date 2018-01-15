@@ -1,7 +1,7 @@
-import Settings from '../data/settings.json';
+import Settings from '../../data/settings.json';
 
 import Phaser from 'phaser';
-import Colonize from './colonize.js';
+import Colonize from '../colonize.js';
 
 
 class TileSprite{

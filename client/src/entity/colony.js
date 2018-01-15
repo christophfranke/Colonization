@@ -1,6 +1,6 @@
-import Places from '../data/places.json';
+import Places from '../../data/places.json';
 
-import TileSprite from './tileSprite.js';
+import TileSprite from '../view/tileSprite.js';
 
 
 class Colony{

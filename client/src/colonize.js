@@ -2,12 +2,12 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
 
-import Unit from './unit.js';
-import Map from './map.js';
-import Position from './position.js';
-import KeyboardInput from './keyboardInput.js';
-import PointerInput from './pointerInput.js';
-import FPSCounter from './fpsCounter.js';
+import Unit from './entity/unit.js';
+import Map from './entity/map.js';
+import Position from './helper/position.js';
+import KeyboardInput from './input/keyboardInput.js';
+import PointerInput from './input/pointerInput.js';
+import FPSCounter from './helper/fpsCounter.js';
 
 class Colonize{
 
@@ -19,7 +19,7 @@ class Colonize{
         Colonize.instance = this;
 
         this.debug = true;
-        
+
         this.width = 1200;
         this.height = 800;
         Colonize.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {

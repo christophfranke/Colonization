@@ -1,4 +1,4 @@
-import Terrain from '../data/terrain.json';
+import Terrain from '../../data/terrain.json';
 
 
 class MapTile {

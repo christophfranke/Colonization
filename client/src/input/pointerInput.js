@@ -1,5 +1,5 @@
-import Colonize from './colonize.js';
-import Position from './position.js';
+import Colonize from '../colonize.js';
+import Position from '../helper/position.js';
 
 
 class PointerInput{

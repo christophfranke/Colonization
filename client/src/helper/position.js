@@ -1,6 +1,6 @@
-import Settings from '../data/settings.json';
+import Settings from '../../data/settings.json';
 
-import Colonize from './colonize.js';
+import Colonize from '../colonize.js';
 
 
 class Position{
