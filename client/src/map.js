@@ -59,7 +59,7 @@ class Map{
 				y: cameraTarget.y
 			},
 			this.mapCenterTweenTime,
-			Phaser.Easing.Cubic.InOut,
+			Phaser.Easing.Cubic.Out,
 			true,
 			0,
 			0,
