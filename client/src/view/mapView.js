@@ -39,57 +39,31 @@ class MapView{
 		this.rawMap.layers[3] = this.createEmptyLayer("terrain blend right");
 		this.rawMap.layers[4] = this.createEmptyLayer("terrain blend down");
 		this.rawMap.layers[5] = this.createEmptyLayer("terrain coast line");
-		this.rawMap.layers[6] = this.createEmptyLayer("terrain top");
+		this.rawMap.layers[6] = this.createEmptyLayer("terrain blend undiscovered");
+		this.rawMap.layers[7] = this.createEmptyLayer("terrain top");
 
-		//blend land tiles
 		for(let y=0; y < this.rawMap.height; y++){
 			for(let x=0; x < this.rawMap.width; x++){
 
 				//the map is ordered column first
-				let result = this.renderBaseTerrain(new Position({
+				let position = new Position({
 					x: x,
 					y: y,
 					type: Position.TILE
-				}));
+				});
+
+				let result = this.renderTile(position);
 
 				this.rawMap.layers[0].data.push(result.baseTile);
 				this.rawMap.layers[1].data.push(result.leftBlend);
 				this.rawMap.layers[2].data.push(result.topBlend);
 				this.rawMap.layers[3].data.push(result.rightBlend);
 				this.rawMap.layers[4].data.push(result.downBlend);
+				this.rawMap.layers[5].data.push(result.coastTile);
+				this.rawMap.layers[6].data.push(result.undiscovered);
+				this.rawMap.layers[7].data.push(result.topTile);
 			}
 		}
-
-		//draw coast lines
-		for(let y=0; y < this.rawMap.height; y++){
-			for(let x=0; x < this.rawMap.width; x++){
-
-
-				let coastTile = this.renderCoastLine(new Position({
-					x: x,
-					y: y,
-					type: Position.TILE
-				}));
-
-				this.rawMap.layers[5].data.push(coastTile);
-			}
-		}
-
-
-		//add forest, hills and mountains
-		for(let y=0; y < this.rawMap.height; y++){
-			for(let x=0; x < this.rawMap.width; x++){
-
-				let topTile = this.renderTopTile(new Position({
-					x: x,
-					y: y,
-					type: Position.TILE
-				}));
-
-				this.rawMap.layers[6].data.push(topTile);
-			}
-		}
-
 
 
     	Colonize.game.load.tilemap('map', null, this.rawMap, Phaser.Tilemap.TILED_JSON)
@@ -103,6 +77,7 @@ class MapView{
 		this.blendrightLayer = this.tilemap.createLayer('terrain blend right');
 		this.blenddownLayer = this.tilemap.createLayer('terrain blend down');
 		this.blendcoastLayer = this.tilemap.createLayer('terrain coast line');
+		this.undiscoveredLayer = this.tilemap.createLayer('terrain blend undiscovered');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
     	Colonize.pointerInput.registerClickLayer(this.topLayer);
@@ -111,6 +86,7 @@ class MapView{
 	renderTile(tile){
 		let layers = this.renderBaseTerrain(tile);
 		layers.coastTile = this.renderCoastLine(tile);
+		layers.undiscovered = this.renderUndiscovered(tile);
 		layers.topTile = this.renderTopTile(tile);
 
 		return layers;
@@ -148,6 +124,11 @@ class MapView{
 		else
 			this.tilemap.removeTile(tile.x, tile.y, this.blendcoastLayer);
 
+		if(layers.undiscovered !== 0)
+			this.tilemap.putTile(layers.undiscovered, tile.x, tile.y, this.undiscoveredLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.undiscoveredLayer);
+
 		if(layers.topTile !== 0)
 			this.tilemap.putTile(layers.topTile, tile.x, tile.y, this.topLayer);
 		else
@@ -166,13 +147,12 @@ class MapView{
 		//blending for sea
 		if(center.props.domain === 'sea'){
 
-			//blending into discovered tile from undiscovered sea
-			if(center.discovered && !other.discovered && other.props.domain === 'sea'){
-				return Terrain.undiscovered.centerTile + offset;
-			}
-
 			if(!center.discovered && other.discovered){
 				return center.props.centerTile + offset;
+			}
+
+			if(center.discovered && other.discovered && other.props.domain === 'land'){
+				return other.props.centerTile + offset;
 			}
 
 			return 0;
@@ -192,19 +172,21 @@ class MapView{
 			}
 		}
 
-		//discovered but next to undiscovered terrain
-		if(center.discovered && !other.discovered){
-			//blend into undiscovered
-			return Terrain.undiscovered.centerTile + offset;
-		}
-
 		//both discovered
 		if(center.discovered && other.discovered){
-			//only blend between land
+			//blend between land
 			if(other.props.domain === 'land')
 				return other.props.centerTile + offset;
+
+			//blend between coast
+			if(other.props.domain === 'sea' && other.coastTerrain !== null)
+				return other.coastTerrain.centerTile + offset;
 		}
 
+		return 0;
+	}
+
+	renderUndiscovered(tile){
 		return 0;
 	}
 
@@ -235,8 +217,18 @@ class MapView{
 			type: Position.TILE
 		}));
 
+		let baseTile = Terrain.transparent.id;
+		if(center.discovered){
+			if(center.coastTerrain !== null){
+				baseTile = center.coastTerrain.id;
+			}
+			else{
+				baseTile = center.id;
+			}
+		}
+
 		return {
-			baseTile : center.discovered ? center.id : Terrain.transparent.id,
+			baseTile : baseTile,
 			leftBlend : this.decideBlending(center, left, 1),
 			rightBlend : this.decideBlending(center, right, -1),
 			topBlend : this.decideBlending(center, top, Settings.tiles.x),
