@@ -28,15 +28,24 @@ class Unit{
 		this.tileSprite.sprite.events.onInputDown.add(this.select, this);
 
 		this.movesLeft = this.props.moves;
+		this.isUnit = true;
+		this.isCargo = false;
+		this.carryingUnit = null;
 		this.waiting = false;
+		if(typeof this.props.cargo !== 'undefined' && this.props.cargo > 0)
+			this.cargo = new Array(this.props.cargo).fill(null);
+		else
+			this.cargo = [];
 
+		this.tileInfo = Colonize.map.getTileInfo(this.position);
+		this.tileInfo.enter(this);
 		this.uncoverMap();
 
 		Unit.all.push(this);
 	}
 
 	orderMoveTo(position){
-		let target = Colonize.map.mapData.getTileInfo(position);
+		let target = Colonize.map.getTileInfo(position);
 
 		if(this.movesLeft > 0 && this.props.domain === target.props.domain) {
 
@@ -44,15 +53,71 @@ class Unit{
 			if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
 			   Math.abs(tile.y - this.position.getTile().y) <= 1){
 
-				this.makeMove(tile);	
+				this.makeMove(tile);
 				if(this.movesLeft === 0)
 					this.selectNext();
 				else
 					this.followUnit();
+			}
+		}
 
+		if(this.props.domain === 'sea' && target.props.domain === 'land'){
+			let cargoUnit = this.getCargoUnit();
+			if(cargoUnit !== null && cargoUnit.movesLeft > 0){
+				cargoUnit.select();
+			}
+		}
+
+		if(this.movesLeft > 0 && this.props.domain === 'land' && target.props.domain === 'sea'){
+			for(let u of target.units){
+				if(u.canLoad()){
+					this.becomeCargo(u);
+					this.movesLeft--;
+				}
 			}
 		}
 	}
+
+	getCargoUnit(){
+		for(let c of this.cargo){
+			if(c !== null)
+				return c;
+		}
+
+		return null;
+	}
+
+	becomeCargo(unit){
+		this.isCargo = true;
+		this.carryingUnit = unit;
+		this.tileSprite.hide();
+
+		unit.addCargo(this);
+
+		this.selectNext();
+	}
+
+	stopBeingCargo(){
+		if(this.isCargo){		
+			this.isCargo = false;
+			this.carryingUnit.removeCargo(this);
+			this.carryingUnit = null;
+			this.tileSprite.show();
+		}
+	}
+
+	addCargo(cargo){
+		for(let i=0; i < this.cargo.length; i++){
+			if(this.cargo[i] === null)
+				this.cargo[i] = cargo;
+		}
+	}
+
+	removeCargo(cargo){
+		let index = this.cargo.indexOf(cargo);
+		this.cargo[index] = null;
+	}
+
 
 	orderFoundColony(){
 		if(this.props.canFound){
@@ -62,12 +127,25 @@ class Unit{
 	}
 
 	makeMove(to){
+		this.tileInfo.leave(this);
 		this.position = to.getTile();
 		this.tileSprite.moveTo(this.position);
 
+		this.tileInfo = Colonize.map.getTileInfo(this.position);
+		this.tileInfo.enter(this);
+
 		this.movesLeft--;
+		this.stopBeingCargo();
 
 		this.uncoverMap();
+	}
+
+	teleport(to){
+		if(!this.isCargo)
+			console.error('teleport is only allowed when being cargo');
+
+		this.position = to.getTile();
+		this.tileSprite.teleport(this.position);
 	}
 
 	nextTurn(){
@@ -83,6 +161,15 @@ class Unit{
 
 		this.index = Unit.all.indexOf(this);
 		Unit.all.splice(this.index, 1);
+	}
+
+	canLoad(){
+		for(let c of this.cargo){
+			if(c === null)
+				return true;
+		}
+
+		return false;
 	}
 
 	uncoverMap(){
@@ -113,7 +200,7 @@ class Unit{
 
 	selectNext(){
 		for(let u of Unit.all){
-			if(u.movesLeft > 0 && !u.waiting){
+			if(u.movesLeft > 0 && !u.waiting && !u.isCargo){
 				u.select();
 				return;
 			}
@@ -126,6 +213,11 @@ class Unit{
 		if(Unit.selectedUnit !== null)
 			Unit.selectedUnit.unselect();
 
+		if(this.isCargo){
+			this.teleport(this.carryingUnit.position);
+			this.tileSprite.show();
+		}
+
 		Unit.selectedUnit = this;
 		this.selected = true;
 		this.tileSprite.startBlinking();
@@ -134,11 +226,14 @@ class Unit{
 
 		if(this.movesLeft === 0)
 			this.unselect();
+
 	}
 
 	unselect(){
 		this.selected = false;
 		this.tileSprite.stopBlinking();
+		if(this.isCargo)
+			this.tileSprite.hide();
 
 		if(Unit.selectedUnit === this)
 			Unit.selectedUnit = null;

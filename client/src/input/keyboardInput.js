@@ -36,6 +36,12 @@ class KeyboardInput {
 
 		if(e.key === 'w'){
 			if(Unit.selectedUnit !== null){
+				Unit.selectedUnit.selectNext();
+			}
+		}
+
+		if(e.keyCode === 32){
+			if(Unit.selectedUnit !== null){
 				Unit.selectedUnit.waiting = true;
 				Unit.selectedUnit.selectNext();
 			}
@@ -48,7 +54,7 @@ class KeyboardInput {
 		if(e.keyCode === 13){
 			let allUnitsMoved = true;
 			for(let u of Unit.all){
-				allUnitsMoved &= (u.movesLeft === 0 || u.waiting);
+				allUnitsMoved &= (u.movesLeft === 0 || u.waiting || u.isCargo);
 			}
 
 			if(allUnitsMoved)

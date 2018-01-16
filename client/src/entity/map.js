@@ -38,6 +38,10 @@ class Map{
 		}
 	}
 
+	getTileInfo(tile){
+		return this.mapData.getTileInfo(tile);
+	}
+
 
     centerAt(clickPosition){
 		const cameraTarget = {

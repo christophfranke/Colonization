@@ -66,25 +66,15 @@ class Colonize{
     	});
         this.caravel.select();
 
-    	this.caravel2 = new Unit({
-    		name: 'caravel',
-    		position: new Position({
-    			x: 125,
-    			y: 64,
-    			type: Position.TILE
-    		})
-    	});
-
         this.settler = new Unit({
             name: 'pioneer',
             position: new Position({
-                x: 117,
-                y: 63,
+                x: 124,
+                y: 64,
                 type: Position.TILE
             })
         });
-
-    	Colonize.map.centerAt(this.caravel.position);
+        this.settler.becomeCargo(this.caravel);
 
         this.colonyView = new ColonyView();
     }

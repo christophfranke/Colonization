@@ -24,16 +24,29 @@ class TileSprite{
 		return new Phaser.Rectangle(x, y, width, height);
 	}
 
+	teleport(position){
+		this.position = position.getWorld();
+		
+		this.sprite.position = new Phaser.Point(
+			this.position.x,
+			this.position.y
+		);
+	}
+
 	destroy(){
 		this.sprite.destroy();
 	}
 
+	hide(){
+		this.sprite.visible = false;
+	}
+
+	show(){
+		this.sprite.visible = true;
+	}
+
 	moveTo(position){
 		this.position = position.getWorld();
-		// this.sprite.position = new Phaser.Point(
-		// 	this.position.x,
-		// 	this.position.y
-		// );
 
 		this.tweens.walk = Colonize.game.add.tween(this.sprite).to( {
 				x: this.position.x,

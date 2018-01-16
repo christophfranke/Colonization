@@ -25,6 +25,17 @@ class MapTile {
 		};
 
 		this.coastTerrain = null;
+
+		this.units = [];
+	}
+
+	enter(unit){
+		this.units.push(unit);
+	}
+
+	leave(unit){
+		let index = this.units.indexOf(unit);
+		this.units.splice(index, 1);
 	}
 
 	createCoastTerrain(){
