@@ -4,7 +4,7 @@ import Terrain from '../../data/terrain.json';
 class MapTile {
 	constructor(props){
 		this.id = props.id;
-		this.position = props.position;
+		this.position = props.position.getTile();
 
 		if(Terrain.forest.id === props.top)
 			this.forest = true;

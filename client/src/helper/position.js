@@ -10,8 +10,11 @@ class Position{
 		this.type = props.type;
 
 		let ok = false;
-		if(this.type === Position.TILE)
+		if(this.type === Position.TILE){
+			this.x = Math.floor(this.x);
+			this.y = Math.floor(this.y);
 			ok = true;
+		}
 		if(this.type === Position.WORLD)
 			ok = true;
 		if(this.type === Position.SCREEN)
