@@ -25,6 +25,10 @@ class Ressources{
 			colonyScreen: {
 				url: '/assets/screens/colony.png',
 				type: Ressources.Image
+			},
+			undiscovered: {
+				url: '/assets/screens/undiscovered.png',
+				type: Ressources.Image
 			}
 		}
 	}

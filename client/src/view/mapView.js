@@ -13,6 +13,23 @@ class MapView{
 	constructor(props){
 		this.mapData = props.mapData;
 
+		let worldDimensions = {
+			x: this.mapData.numTiles.x*Settings.tileSize.x,
+			y: this.mapData.numTiles.y*Settings.tileSize.y
+		}
+		Colonize.game.world.resize(worldDimensions.x, worldDimensions.y);
+
+		let imageDimensions = {
+			x: 1024,
+			y: 1024
+		};
+
+		for(let x = 0; x*imageDimensions.x < worldDimensions.x; x++){
+			for(let y = 0; y*imageDimensions.y < worldDimensions.y; y++){
+				Colonize.game.add.image(x*imageDimensions.x, y*imageDimensions.y, 'undiscovered');
+			}
+		}
+
 		//create layers
 		this.rawMap = MapSettings;
 		this.rawMap.layers = [];
@@ -88,9 +105,6 @@ class MapView{
 		this.blendcoastLayer = this.tilemap.createLayer('terrain coast line');
     	this.topLayer = this.tilemap.createLayer('terrain top');
 
-    	//make the world big enough
-    	this.baseLayer.resizeWorld();
-
     	Colonize.pointerInput.registerClickLayer(this.topLayer);
 	}
 
@@ -148,7 +162,7 @@ class MapView{
 			type: Position.TILE
 		}));
 
-		let baseTile = center.discovered ? center.id : Terrain.undiscovered.centerTile;
+		let baseTile = center.discovered ? center.id : Terrain.transparent.id;
 		let leftBlend = 0;
 		let rightBlend = 0;
 		let topBlend = 0;
