@@ -26,18 +26,28 @@ class Unit{
 
 		this.tileSprite.sprite.inputEnabled = true;
 		this.tileSprite.sprite.events.onInputDown.add(this.select, this);
+
+		this.movesLeft = this.props.moves;
+		this.waiting = false;
+
+		Unit.all.push(this);
 	}
 
 	orderMoveTo(position){
 		let target = Colonize.map.mapData.getTileInfo(position);
 
-		if(this.props.domain === target.props.domain) {
+		if(this.movesLeft > 0 && this.props.domain === target.props.domain) {
 
 			let tile = position.getTile();
 			if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
 			   Math.abs(tile.y - this.position.getTile().y) <= 1){
 
-				this.makeMove(tile);
+				this.makeMove(tile);	
+				if(this.movesLeft === 0)
+					this.selectNext();
+				else
+					this.followUnit();
+
 			}
 		}
 	}
@@ -53,6 +63,12 @@ class Unit{
 		this.position = to.getTile();
 		this.tileSprite.moveTo(this.position);
 
+		this.movesLeft--;
+	}
+
+	nextTurn(){
+		this.movesLeft = this.props.moves;
+		this.waiting = false;
 	}
 
 	disband(){
@@ -60,6 +76,33 @@ class Unit{
 		if(Unit.selectedUnit === this){
 			Unit.selectedUnit = null;
 		}
+
+		this.index = Unit.all.indexOf(this);
+		Unit.all.splice(this.index, 1);
+	}
+
+	followUnit(){
+		let screenPos = this.position.getScreen();
+		let margin = 0.15;
+		if (!(
+			screenPos.x > margin*Colonize.instance.width && 
+			screenPos.x < (1-margin)*Colonize.instance.width &&
+			screenPos.y > margin*Colonize.instance.height &&
+			screenPos.y < (1-margin)*Colonize.instance.height
+		)){
+			Colonize.map.centerAt(this.position);
+		}
+	}
+
+	selectNext(){
+		for(let u of Unit.all){
+			if(u.movesLeft > 0 && !u.waiting){
+				u.select();
+				return;
+			}
+		}
+
+		this.unselect();
 	}
 
 	select(){
@@ -69,6 +112,8 @@ class Unit{
 		Unit.selectedUnit = this;
 		this.selected = true;
 		this.tileSprite.startBlinking();
+
+		this.followUnit();
 	}
 
 	unselect(){
@@ -81,5 +126,6 @@ class Unit{
 }
 
 Unit.selectedUnit = null;
+Unit.all = [];
 
 export default Unit;

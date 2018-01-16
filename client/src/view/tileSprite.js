@@ -12,7 +12,7 @@ class TileSprite{
 		this.tweens = {};
 
 		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles');
-		this.sprite.crop(this.cropRect());		
+		this.sprite.crop(this.cropRect());
 	}
 
 	cropRect(){

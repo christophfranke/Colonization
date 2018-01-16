@@ -2,16 +2,19 @@
 	"caravel":{
 		"id": 10,
 		"domain": "sea",
-		"canFound": false
+		"canFound": false,
+		"moves": 4
 	},
 	"artillery":{
 		"id": 1,
 		"domain": "land",
-		"canFound": false
+		"canFound": false,
+		"moves": 1
 	},
 	"pioneer":{
 		"id": 18,
 		"domain": "land",
-		"canFound": true
+		"canFound": true,
+		"moves": 1
 	}
 }

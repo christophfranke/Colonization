@@ -9,6 +9,7 @@ import KeyboardInput from './input/keyboardInput.js';
 import PointerInput from './input/pointerInput.js';
 import FPSCounter from './helper/fpsCounter.js';
 import Ressources from './helper/ressources.js';
+import Turn from './world/turn.js';
 
 class Colonize{
 
@@ -34,23 +35,24 @@ class Colonize{
 
         Colonize.fpsCounter = new FPSCounter();
         Colonize.ressources = new Ressources();
-	}
+        Colonize.turn = new Turn();
+    }
 
-	preload() {
-		Colonize.ressources.preload();
+    preload() {
+        Colonize.ressources.preload();
     }
 
     create() {
-    	// TODO: this should work
-    	// this.game.camera.scale.x = 0.8;
-    	// this.game.camera.scale.y = 0.8;    	
+        // TODO: this should work
+        // this.game.camera.scale.x = 0.8;
+        // this.game.camera.scale.y = 0.8;      
 
 
         //create and register
         Colonize.keyboardInput = new KeyboardInput();
         Colonize.pointerInput = new PointerInput();
 
-    	Colonize.map.create();
+        Colonize.map.create();
         Colonize.fpsCounter.create();
 
     	this.caravel = new Unit({
@@ -61,6 +63,7 @@ class Colonize{
     			type: Position.TILE
     		})
     	});
+        this.caravel.select();
 
     	this.caravel2 = new Unit({
     		name: 'caravel',

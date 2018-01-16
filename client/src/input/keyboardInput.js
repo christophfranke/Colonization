@@ -34,8 +34,25 @@ class KeyboardInput {
 				Unit.selectedUnit.orderFoundColony();
 		}
 
+		if(e.key === 'w'){
+			if(Unit.selectedUnit !== null){
+				Unit.selectedUnit.waiting = true;
+				Unit.selectedUnit.selectNext();
+			}
+		}
+
 		if(e.keyCode === 27){
 			Colonize.fpsCounter.toggleDebugInfo();
+		}
+
+		if(e.keyCode === 13){
+			let allUnitsMoved = true;
+			for(let u of Unit.all){
+				allUnitsMoved &= (u.movesLeft === 0 || u.waiting);
+			}
+
+			if(allUnitsMoved)
+				Colonize.turn.endTurn();
 		}
 	}
 
