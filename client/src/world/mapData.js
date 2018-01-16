@@ -1,7 +1,7 @@
 import Settings from '../../data/settings.json';
 
 import MapTile from '../entity/mapTile.js';
-
+import Position from '../helper/position.js';
 
 
 class MapData{
@@ -30,7 +30,12 @@ class MapData{
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
 			this.tiles[index] = new MapTile({
 				id: data.layers[0].data[index],
-				top: data.layers[7].data[index]
+				top: data.layers[7].data[index],
+				position: new Position({
+					x: index % this.numTiles.x,
+					y: index / this.numTiles.x,
+					type: Position.TILE
+				})
 			});
 		}
 	}

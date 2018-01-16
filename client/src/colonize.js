@@ -10,6 +10,7 @@ import PointerInput from './input/pointerInput.js';
 import FPSCounter from './helper/fpsCounter.js';
 import Ressources from './helper/ressources.js';
 import Turn from './world/turn.js';
+import ColonyView from './view/colonyView.js';
 
 class Colonize{
 
@@ -84,6 +85,8 @@ class Colonize{
         });
 
     	Colonize.map.centerAt(this.caravel.position);
+
+        this.colonyView = new ColonyView();
     }
 
     update() {

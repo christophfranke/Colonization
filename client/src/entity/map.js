@@ -25,6 +25,18 @@ class Map{
 		this.numTiles = this.mapData.numTiles;    	
 	}
 
+	discover(tile){
+		let info = this.mapData.getTileInfo(tile);
+		if(!info.discovered){
+			info.discovered = true;
+			this.mapView.updateTile(tile);
+			this.mapView.updateTile(tile.up());
+			this.mapView.updateTile(tile.left());
+			this.mapView.updateTile(tile.down());
+			this.mapView.updateTile(tile.right());
+		}
+	}
+
 
     centerAt(clickPosition){
 		const cameraTarget = {

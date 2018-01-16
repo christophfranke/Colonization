@@ -73,5 +73,11 @@
 		"eastWestPassage": 147,
 		"northSouthPassage": 131,
 		"lake": 120
+	},
+	"undiscovered":{
+		"centerTile": 286
+	},
+	"transparent":{
+		"id": 97
 	}
 }

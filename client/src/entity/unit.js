@@ -30,6 +30,8 @@ class Unit{
 		this.movesLeft = this.props.moves;
 		this.waiting = false;
 
+		this.uncoverMap();
+
 		Unit.all.push(this);
 	}
 
@@ -64,6 +66,8 @@ class Unit{
 		this.tileSprite.moveTo(this.position);
 
 		this.movesLeft--;
+
+		this.uncoverMap();
 	}
 
 	nextTurn(){
@@ -79,6 +83,19 @@ class Unit{
 
 		this.index = Unit.all.indexOf(this);
 		Unit.all.splice(this.index, 1);
+	}
+
+	uncoverMap(){
+		let tile = this.position.getTile();
+
+		//discover all tiles in radius 1
+		for(let x = -1; x <= 1; x++){
+			for(let y = -1; y <= 1; y++){
+				tile.x = this.position.x + x;
+				tile.y = this.position.y + y;
+				Colonize.map.discover(tile);
+			}
+		}
 	}
 
 	followUnit(){
