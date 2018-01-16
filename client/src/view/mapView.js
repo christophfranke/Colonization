@@ -190,7 +190,7 @@ class MapView{
 
 		let center = this.mapData.getTileInfo(tile);
 
-		if(!center.discovered)
+		if(center === null || !center.discovered)
 			return 0;
 
 		let x = tile.x;
@@ -256,7 +256,7 @@ class MapView{
 		}));
 
 		let baseTile = Terrain.transparent.id;
-		if(center.discovered){
+		if(center !== null && center.discovered){
 			if(center.coastTerrain !== null){
 				baseTile = center.coastTerrain.id;
 			}
@@ -303,6 +303,7 @@ class MapView{
 
 		let coastTile = 0;
 		if(
+			center !== null &&
 			center.discovered &&
 			x !== 0 &&
 			y !== 0 &&
@@ -386,7 +387,7 @@ class MapView{
 		let center = this.mapData.getTileInfo(position);
 
 		let topTile = 0;
-		if(center.discovered){		
+		if(center !== null && center.discovered){		
 			if(center.forest){
 				topTile = Terrain.forest.id;
 			}

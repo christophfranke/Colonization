@@ -17,7 +17,7 @@ class Map{
 		this.mapData = new MapData({
 			data: Colonize.game.cache.getJSON('mapData')
 		});
-		this.mapData.createCoastLine();
+		this.mapData.init();
 
 		this.mapView = new MapView({
 			mapData: this.mapData

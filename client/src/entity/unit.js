@@ -46,6 +46,9 @@ class Unit{
 
 	orderMoveTo(position){
 		let target = Colonize.map.getTileInfo(position);
+		
+		if(target.mapBorder)
+			return;
 
 		if(this.movesLeft > 0 && this.props.domain === target.props.domain) {
 

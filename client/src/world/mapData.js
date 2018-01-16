@@ -12,7 +12,12 @@ class MapData{
 			y: props.data.layers[0].height
 		};
 
-		this.createAllTiles(props.data);
+		this.data = props.data;
+	}
+
+	init(){
+		this.createAllTiles();
+		this.createCoastLine();
 	}
 
 	getTileInfo(position){
@@ -25,7 +30,8 @@ class MapData{
 		return this.tiles[index];
 	}
 
-	createAllTiles(data){
+	createAllTiles(){
+		let data = this.data;
 		this.tiles = {}
 
 		//create tiles

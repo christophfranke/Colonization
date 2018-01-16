@@ -25,6 +25,11 @@ class MapTile {
 		};
 
 		this.coastTerrain = null;
+		this.mapBorder = (
+			this.position.x === 0 ||
+			this.position.y === 0 ||
+			this.position.x === Colonize.map.mapData.numTiles.x-1 ||
+			this.position.y === Colonize.map.mapData.numTiles.y-1);
 
 		this.units = [];
 	}
