@@ -114,11 +114,17 @@ class Unit{
 		this.tileSprite.startBlinking();
 
 		this.followUnit();
+
+		if(this.movesLeft === 0)
+			this.unselect();
 	}
 
 	unselect(){
 		this.selected = false;
 		this.tileSprite.stopBlinking();
+
+		if(Unit.selectedUnit === this)
+			Unit.selectedUnit = null;
 	}
 
 
