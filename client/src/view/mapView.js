@@ -120,20 +120,82 @@ class MapView{
 		let layers = this.renderTile(tile);
 		if(layers.baseTile !== 0)
 			this.tilemap.putTile(layers.baseTile, tile.x, tile.y, this.baseLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.baseLayer);
+
 		if(layers.leftBlend !== 0)
 			this.tilemap.putTile(layers.leftBlend, tile.x, tile.y, this.blendleftLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.blendleftLayer);
+
 		if(layers.topBlend !== 0)
 			this.tilemap.putTile(layers.topBlend, tile.x, tile.y, this.blendtopLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.blendtopLayer);
+
 		if(layers.rightBlend !== 0)
 			this.tilemap.putTile(layers.rightBlend, tile.x, tile.y, this.blendrightLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.blendrightLayer);
+
 		if(layers.downBlend !== 0)
 			this.tilemap.putTile(layers.downBlend, tile.x, tile.y, this.blenddownLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.blenddownLayer);
+
 		if(layers.coastTile !== 0)
 			this.tilemap.putTile(layers.coastTile, tile.x, tile.y, this.blendcoastLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.blendcoastLayer);
+
 		if(layers.topTile !== 0)
 			this.tilemap.putTile(layers.topTile, tile.x, tile.y, this.topLayer);
+		else
+			this.tilemap.removeTile(tile.x, tile.y, this.topLayer);
+
 	}
 
+	decideBlending(center, other, offset){
+
+		//do not crash if map has errors or we are at the border
+		if(center === null || other === null || typeof center === 'undefined' || typeof other === 'undefined')
+			return 0;
+		if(typeof center.props === 'undefined' || typeof other.props === 'undefined')
+			return 0;
+
+		//no blending for sea tiles (yet...)
+		if(center.props.domain === 'sea')
+			return 0;
+
+		//undiscovered but next to discovered terrain
+		if(!center.discovered && other.discovered){
+
+			//next to sea tiles blend own terrain type into center
+			if(other.props.domain === 'sea'){
+				return center.props.centerTile + offset;
+			}
+
+			//next to land blend other terrain into center
+			if(other.props.domain === 'land'){
+				return other.props.centerTile + offset;
+			}
+		}
+
+		//discovered but next to undiscovered terrain
+		if(center.discovered && !other.discovered){
+			//blend into undiscovered
+			return Terrain.undiscovered.centerTile + offset;
+		}
+
+		//both discovered
+		if(center.discovered && other.discovered){
+			//only blend between land
+			if(other.props.domain === 'land')
+				return other.props.centerTile + offset;
+		}
+
+		return 0;
+	}
 
 
 	renderBaseTerrain(tile){
@@ -162,62 +224,12 @@ class MapView{
 			type: Position.TILE
 		}));
 
-		let baseTile = center.discovered ? center.id : Terrain.transparent.id;
-		let leftBlend = 0;
-		let rightBlend = 0;
-		let topBlend = 0;
-		let downBlend = 0;
-
-		if(
-			x !== 0 &&
-			(center.discovered || left.discovered) &&
-			typeof center.props !== 'undefined' &&
-			typeof left.props !== 'undefined' && 
-			center.props.domain === 'land' &&
-			left.props.domain === 'land' ){
-
-			leftBlend = left.discovered ? left.props.centerTile + 1 : Terrain.undiscovered.centerTile + 1;
-		}
-
-		if(
-			x + 1 < this.rawMap.height &&
-			(center.discovered || right.discovered) &&
-			typeof center.props !== 'undefined' &&
-			typeof right.props !== 'undefined' &&
-			center.props.domain === 'land' &&
-			right.props.domain === 'land'){
-
-			rightBlend = right.discovered ? right.props.centerTile - 1 : Terrain.undiscovered.centerTile - 1;
-		}				
-
-		if(
-			y !== 0 &&
-			(center.discovered || top.discovered) &&
-			typeof center.props !== 'undefined' &&
-			typeof top.props !== 'undefined' && 
-			center.props.domain === 'land' &&
-			top.props.domain === 'land' ){
-
-			topBlend = top.discovered ? top.props.centerTile + Settings.tiles.x : Terrain.undiscovered.centerTile + Settings.tiles.x;
-		}
-
-		if(
-			y + 1 < this.rawMap.height &&
-			(center.discovered || down.discovered) &&
-			typeof center.props !== 'undefined' &&
-			typeof down.props !== 'undefined' &&
-			center.props.domain === 'land' &&
-			down.props.domain === 'land'){
-
-			downBlend = down.discovered ? down.props.centerTile - Settings.tiles.x : Terrain.undiscovered.centerTile - Settings.tiles.x;
-		}
-
 		return {
-			baseTile,
-			leftBlend,
-			rightBlend,
-			topBlend,
-			downBlend
+			baseTile : center.discovered ? center.id : Terrain.transparent.id,
+			leftBlend : this.decideBlending(center, left, 1),
+			rightBlend : this.decideBlending(center, right, -1),
+			topBlend : this.decideBlending(center, top, Settings.tiles.x),
+			downBlend : this.decideBlending(center, down, -Settings.tiles.x)
 		};
 	}
 
