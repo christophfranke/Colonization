@@ -46,7 +46,8 @@
 	},
 	"sea lane":{
 		"id": 90,
-		"domain": "sea"
+		"domain": "sea",
+		"centerTile": 322
 	},
 	"forest":{
 		"id": 92

@@ -163,9 +163,20 @@ class MapView{
 		if(typeof center.props === 'undefined' || typeof other.props === 'undefined')
 			return 0;
 
-		//no blending for sea tiles (yet...)
-		if(center.props.domain === 'sea')
+		//blending for sea
+		if(center.props.domain === 'sea'){
+
+			//blending into discovered tile from undiscovered sea
+			if(center.discovered && !other.discovered && other.props.domain === 'sea'){
+				return Terrain.undiscovered.centerTile + offset;
+			}
+
+			if(!center.discovered && other.discovered){
+				return center.props.centerTile + offset;
+			}
+
 			return 0;
+		}
 
 		//undiscovered but next to discovered terrain
 		if(!center.discovered && other.discovered){
