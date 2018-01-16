@@ -29,7 +29,8 @@ class MapData{
 		this.tiles = {}
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
 			this.tiles[index] = new MapTile({
-				id: data.layers[0].data[index]
+				id: data.layers[0].data[index],
+				top: data.layers[7].data[index]
 			});
 		}
 	}

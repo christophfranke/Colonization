@@ -21,6 +21,7 @@ class MapView{
 		rawMap.layers[3] = this.createEmptyLayer("terrain blend right");
 		rawMap.layers[4] = this.createEmptyLayer("terrain blend down");
 		rawMap.layers[5] = this.createEmptyLayer("terrain coast line");
+		rawMap.layers[6] = this.createEmptyLayer("terrain top");
 
 		//blend land tiles
 		for(let y=0; y < rawMap.height; y++){
@@ -204,6 +205,30 @@ class MapView{
 		}
 
 
+		//add forest, hills and mountains
+		for(let y=0; y < rawMap.height; y++){
+			for(let x=0; x < rawMap.width; x++){
+				let center = this.mapData.getTileInfo(new Position({
+					x: x,
+					y: y,
+					type: Position.TILE
+				}));
+
+				let topTile = 0;
+				if(center.forest){
+					topTile = Terrain.forest.id;
+				}
+				if(center.hills){
+					topTile = Terrain.hills.id;
+				}
+				if(center.mountains){
+					topTile = Terrain.mountains.id;
+				}
+
+				rawMap.layers[6].data.push(topTile);
+			}
+		}
+
 
 
     	Colonize.game.load.tilemap('map', null, rawMap, Phaser.Tilemap.TILED_JSON)
@@ -218,8 +243,7 @@ class MapView{
 		this.blendrightLayer = this.tilemap.createLayer('terrain blend right');
 		this.blenddownLayer = this.tilemap.createLayer('terrain blend down');
 		this.blendcoastLayer = this.tilemap.createLayer('terrain coast line');
-		// this.blendcoast2Layer = this.tilemap.createLayer('terrain blend coast 2');
-    	// this.topLayer = this.tilemap.createLayer('terrain top');
+    	this.topLayer = this.tilemap.createLayer('terrain top');
 
     	//make the world big enough
     	this.baseLayer.resizeWorld();

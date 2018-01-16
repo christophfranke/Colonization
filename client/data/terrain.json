@@ -48,6 +48,15 @@
 		"id": 90,
 		"domain": "sea"
 	},
+	"forest":{
+		"id": 92
+	},
+	"hills":{
+		"id": 94
+	},
+	"mountains":{
+		"id": 95
+	},
 	"coast":{
 		"east": 150,
 		"west": 145,
