@@ -76,7 +76,21 @@
 		"lake": 120
 	},
 	"undiscovered":{
-		"centerTile": 286
+		"eastWestPassage": 125,
+		"northSouthPassage": 141,
+		"northBay": 157,
+		"westBay": 172,
+		"eastBay": 174,
+		"southBay": 189,
+		"southEast": 175,
+		"southWest": 176,
+		"northEast": 191,
+		"northWest": 192,
+		"west": 142,
+		"north": 127,
+		"south": 159,
+		"east": 144,
+		"lake": 143
 	},
 	"transparent":{
 		"id": 97

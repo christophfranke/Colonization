@@ -187,6 +187,44 @@ class MapView{
 	}
 
 	renderUndiscovered(tile){
+
+		let center = this.mapData.getTileInfo(tile);
+
+		if(!center.discovered)
+			return 0;
+
+		let x = tile.x;
+		let y = tile.y;
+
+		let left = this.mapData.getTileInfo(new Position({
+			x: x-1,
+			y: y,
+			type: Position.TILE
+		}));
+		let right = this.mapData.getTileInfo(new Position({
+			x: x+1,
+			y: y,
+			type: Position.TILE
+		}));
+		let up = this.mapData.getTileInfo(new Position({
+			x: x,
+			y: y-1,
+			type: Position.TILE
+		}));
+		let down = this.mapData.getTileInfo(new Position({
+			x: x,
+			y: y+1,
+			type: Position.TILE
+		}));
+
+		let undiscovered = 0;
+
+		if(up !== null && right !== null && down !== null && left !== null){		
+			let name = this.neighborToName(!up.discovered, !right.discovered, !down.discovered, !left.discovered);
+			if(name !== null)
+				return Terrain.undiscovered[name];
+		}
+
 		return 0;
 	}
 
@@ -277,58 +315,71 @@ class MapView{
 			typeof right.props !== 'undefined' &&
 			center.props.domain === 'sea'
 		){
+			let name = this.neighborToName(
+				top.props.domain === 'land',
+				right.props.domain === 'land',
+				down.props.domain === 'land',
+				left.props.domain === 'land'
+			);
 
-			if(top.props.domain === 'land' && down.props.domain === 'sea' && left.props.domain === 'sea' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.south;
-			}
-			if(top.props.domain === 'sea' && down.props.domain === 'land' && left.props.domain === 'sea' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.north;
-			}
-			if(top.props.domain === 'sea' && down.props.domain === 'sea' && left.props.domain === 'land' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.east;
-			}
-			if(top.props.domain === 'sea' && down.props.domain === 'sea' && left.props.domain === 'sea' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.west;
-			}
-
-			if(top.props.domain === 'land' && down.props.domain === 'sea' && left.props.domain === 'land' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.southEast;
-			}
-			if(top.props.domain === 'land' && down.props.domain === 'sea' && left.props.domain === 'sea' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.southWest;
-			}
-			if(top.props.domain === 'sea' && down.props.domain === 'land' && left.props.domain === 'land' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.northEast;
-			}
-			if(top.props.domain === 'sea' && down.props.domain === 'land' && left.props.domain === 'sea' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.northWest;
-			}
-
-			if(top.props.domain === 'sea' && down.props.domain === 'land' && left.props.domain === 'land' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.southBay;
-			}
-			if(top.props.domain === 'land' && down.props.domain === 'sea' && left.props.domain === 'land' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.northBay;
-			}
-			if(top.props.domain === 'land' && down.props.domain === 'land' && left.props.domain === 'sea' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.eastBay;
-			}
-			if(top.props.domain === 'land' && down.props.domain === 'land' && left.props.domain === 'land' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.westBay;
-			}
-
-			if(top.props.domain === 'land' && down.props.domain === 'land' && left.props.domain === 'land' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.lake;
-			}
-			if(top.props.domain === 'land' && down.props.domain === 'land' && left.props.domain === 'sea' && right.props.domain === 'sea'){
-				coastTile = Terrain.coast.eastWestPassage;
-			}
-			if(top.props.domain === 'sea' && down.props.domain === 'sea' && left.props.domain === 'land' && right.props.domain === 'land'){
-				coastTile = Terrain.coast.northSouthPassage;
-			}
+			if(name !== null)
+				coastTile = Terrain.coast[name];
 		}
 
 		return coastTile;
+	}
+
+	neighborToName(top, right, down, left){
+			if(top && !down && !left && !right){
+				return 'south';
+			}
+			if(!top && down && !left && !right){
+				return 'north';
+			}
+			if(!top && !down && left && !right){
+				return 'east';
+			}
+			if(!top && !down && !left && right){
+				return 'west';
+			}
+
+			if(top && !down && left && !right){
+				return 'southEast';
+			}
+			if(top && !down && !left && right){
+				return 'southWest';
+			}
+			if(!top && down && left && !right){
+				return 'northEast';
+			}
+			if(!top && down && !left && right){
+				return 'northWest';
+			}
+
+			if(!top && down && left && right){
+				return 'southBay';
+			}
+			if(top && !down && left && right){
+				return 'northBay';
+			}
+			if(top && down && !left && right){
+				return 'eastBay';
+			}
+			if(top && down && left && !right){
+				return 'westBay';
+			}
+
+			if(top && down && left && right){
+				return 'lake';
+			}
+			if(top && down && !left && !right){
+				return 'eastWestPassage';
+			}
+			if(!top && !down && left && right){
+				return 'northSouthPassage';
+			}
+
+			return null;
 	}
 
 	renderTopTile(position){
