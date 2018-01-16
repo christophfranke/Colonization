@@ -98,7 +98,7 @@ class Unit{
 	}
 
 	stopBeingCargo(){
-		if(this.isCargo){		
+		if(this.isCargo){
 			this.isCargo = false;
 			this.carryingUnit.removeCargo(this);
 			this.carryingUnit = null;
@@ -108,8 +108,10 @@ class Unit{
 
 	addCargo(cargo){
 		for(let i=0; i < this.cargo.length; i++){
-			if(this.cargo[i] === null)
+			if(this.cargo[i] === null){
 				this.cargo[i] = cargo;
+				return;
+			}
 		}
 	}
 
