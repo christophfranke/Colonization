@@ -1,5 +1,5 @@
 import Terrain from '../../data/terrain.json';
-
+import Colonize from '../colonize.js';
 
 class MapTile {
 	constructor(props){
@@ -23,6 +23,30 @@ class MapTile {
 				this.props = Terrain[type];
 			}
 		};
+
+		this.coastTerrain = null;
+	}
+
+	createCoastTerrain(){
+		if(typeof this.props !== 'undefined' && this.props.domain === 'sea'){
+			let left = Colonize.map.mapData.getTileInfo(this.position.left());
+			let right = Colonize.map.mapData.getTileInfo(this.position.right());
+			let up = Colonize.map.mapData.getTileInfo(this.position.up());
+			let down = Colonize.map.mapData.getTileInfo(this.position.down());
+
+			let landNeighbor = null;
+			if(left !== null && typeof left.props !== 'undefined' && left.props.domain === 'land')
+				landNeighbor = left;
+			if(right !== null && typeof right.props !== 'undefined' && right.props.domain === 'land')
+				landNeighbor = right;
+			if(up !== null && typeof up.props !== 'undefined' && up.props.domain === 'land')
+				landNeighbor = up;
+			if(down !== null && typeof down.props !== 'undefined' && down.props.domain === 'land')
+				landNeighbor = down;
+
+			if(landNeighbor !== null)
+				this.coastTerrain = landNeighbor.props;
+		}
 	}
 
 }
