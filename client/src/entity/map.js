@@ -5,20 +5,12 @@ import Unit from './unit.js';
 import Position from '../helper/position.js';
 import MapData from '../world/mapData.js';
 import Colonize from '../colonize.js';
-
+import MapView from '../view/mapView.js';
 
 class Map{
 	constructor(props){
 		this.holdTimeThreshold = 350; //millis
 		this.mapCenterTweenTime = 250; //also millis
-		
-		this.jsonURL = props.jsonURL;
-		this.pngURL = props.pngURL;
-	}
-
-	preload(){
-		Colonize.game.load.json('mapData', this.jsonURL);
-        Colonize.game.load.image('mapTiles', this.pngURL);		
 	}
 
 	create(){
@@ -26,25 +18,11 @@ class Map{
 			data: Colonize.game.cache.getJSON('mapData')
 		});
 
+		this.mapView = new MapView({
+			mapData: this.mapData
+		});
 
-		this.numTiles = this.mapData.numTiles;
-		
-    	
-    	Colonize.game.load.tilemap('map', '/assets/maps/test-05.json', this.mapData.data, Phaser.Tilemap.TILED_JSON)
-    	this.tilemap = Colonize.game.add.tilemap('map');
-		this.tilemap.addTilesetImage(this.mapData.getTilesetName(), 'mapTiles');
-
-    	this.baseLayer = this.tilemap.createLayer('terrain base');
-		this.blendleftLayer = this.tilemap.createLayer('terrain blend left');
-		this.blenddownLayer = this.tilemap.createLayer('terrain blend down');
-		this.blendrightLayer = this.tilemap.createLayer('terrain blend right');
-		this.blendtopLayer = this.tilemap.createLayer('terrain blend top');
-		this.blendcoastLayer = this.tilemap.createLayer('terrain blend coast');
-		this.blendcoast2Layer = this.tilemap.createLayer('terrain blend coast 2');
-    	this.topLayer = this.tilemap.createLayer('terrain top');
-
-    	//make the world big enough
-    	this.baseLayer.resizeWorld();
+		this.numTiles = this.mapData.numTiles;    	
 	}
 
 

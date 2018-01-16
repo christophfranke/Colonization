@@ -8,10 +8,12 @@ class PointerInput{
 
 		Colonize.game.canvas.oncontextmenu = (e) => { e.preventDefault(); };
     	Colonize.game.input.mouse.capture = true;
+	}
 
-    	Colonize.map.topLayer.inputEnabled = true;
-    	Colonize.map.topLayer.events.onInputDown.add(this.inputDown, this);
-    	Colonize.map.topLayer.events.onInputUp.add(this.inputUp, this);
+	registerClickLayer(layer){
+    	layer.inputEnabled = true;
+    	layer.events.onInputDown.add(this.inputDown, this);
+    	layer.events.onInputUp.add(this.inputUp, this);
 	}
 
 	inputDown(){

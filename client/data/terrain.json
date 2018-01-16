@@ -2,47 +2,56 @@
 	"arctic":{
 		"id": 81,
 		"allowSea": false,
-		"allowLand": true
+		"allowLand": true,
+		"centerTile": 226
 	},
 	"marsh":{
 		"id":82,
 		"allowSea": false,
-		"allowLand": true		
+		"allowLand": true,
+		"centerTile": 229
 	},
 	"plains":{
 		"id": 83,
 		"allowSea": false,
-		"allowLand": true		
+		"allowLand": true,		
+		"centerTile": 232
 	},
 	"grassland":{
 		"id": 84,
 		"allowSea": false,
-		"allowLand": true		
+		"allowLand": true,		
+		"centerTile": 235
 	},
 	"prairie":{
 		"id": 85,
 		"allowSea": false,
-		"allowLand": true
+		"allowLand": true,
+		"centerTile": 238
 	},
 	"savannah":{
 		"id": 86,
 		"allowSea": false,
-		"allowLand": true
+		"allowLand": true,
+		"centerTile": 274
 	},
 	"swamp":{
 		"id": 87,
 		"allowSea": false,
-		"allowLand": true
+		"allowLand": true,
+		"centerTile": 277
 	},
 	"tundra":{
 		"id": 88,
 		"allowSea": false,
-		"allowLand": true
+		"allowLand": true,
+		"centerTile": 280
 	},
 	"desert":{
 		"id": 89,
 		"allowSea": false,
-		"allowLand": true
+		"allowLand": true,
+		"centerTile": 283
 	},
 	"sea lane":{
 		"id": 90,

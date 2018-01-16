@@ -8,6 +8,7 @@ import Position from './helper/position.js';
 import KeyboardInput from './input/keyboardInput.js';
 import PointerInput from './input/pointerInput.js';
 import FPSCounter from './helper/fpsCounter.js';
+import Ressources from './helper/ressources.js';
 
 class Colonize{
 
@@ -29,16 +30,14 @@ class Colonize{
             render: () => this.render()
         });
 
-        Colonize.map = new Map({
-            jsonURL: '/assets/maps/test-05.json',
-            pngURL: '/assets/sprites/map.png'
-        });
+        Colonize.map = new Map();
 
         Colonize.fpsCounter = new FPSCounter();
+        Colonize.ressources = new Ressources();
 	}
 
 	preload() {
-		Colonize.map.preload();
+		Colonize.ressources.preload();
     }
 
     create() {
@@ -47,12 +46,12 @@ class Colonize{
     	// this.game.camera.scale.y = 0.8;    	
 
 
-    	Colonize.map.create();
-        Colonize.fpsCounter.create();
-
         //create and register
         Colonize.keyboardInput = new KeyboardInput();
         Colonize.pointerInput = new PointerInput();
+
+    	Colonize.map.create();
+        Colonize.fpsCounter.create();
 
     	this.caravel = new Unit({
     		name: 'caravel',
