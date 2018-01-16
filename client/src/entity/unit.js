@@ -29,10 +29,9 @@ class Unit{
 	}
 
 	orderMoveTo(position){
-		let tileInfo = Colonize.map.mapData.getTileInfo(position);
+		let target = Colonize.map.mapData.getTileInfo(position);
 
-		if((this.props.domain === 'sea' && tileInfo.props.allowSea) ||
-		   (this.props.domain === 'land' && tileInfo.props.allowLand)) {
+		if(this.props.domain === target.props.domain) {
 
 			let tile = position.getTile();
 			if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&

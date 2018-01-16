@@ -1,61 +1,68 @@
 {
 	"arctic":{
 		"id": 81,
-		"allowSea": false,
-		"allowLand": true,
+		"domain": "land",
 		"centerTile": 226
 	},
 	"marsh":{
 		"id":82,
-		"allowSea": false,
-		"allowLand": true,
+		"domain": "land",
 		"centerTile": 229
 	},
 	"plains":{
 		"id": 83,
-		"allowSea": false,
-		"allowLand": true,		
+		"domain":"land",
 		"centerTile": 232
 	},
 	"grassland":{
 		"id": 84,
-		"allowSea": false,
-		"allowLand": true,		
+		"domain":"land",
 		"centerTile": 235
 	},
 	"prairie":{
 		"id": 85,
-		"allowSea": false,
-		"allowLand": true,
+		"domain":"land",
 		"centerTile": 238
 	},
 	"savannah":{
 		"id": 86,
-		"allowSea": false,
-		"allowLand": true,
+		"domain":"land",
 		"centerTile": 274
 	},
 	"swamp":{
 		"id": 87,
-		"allowSea": false,
-		"allowLand": true,
+		"domain":"land",
 		"centerTile": 277
 	},
 	"tundra":{
 		"id": 88,
-		"allowSea": false,
-		"allowLand": true,
+		"domain":"land",
 		"centerTile": 280
 	},
 	"desert":{
 		"id": 89,
-		"allowSea": false,
-		"allowLand": true,
+		"domain":"land",
 		"centerTile": 283
 	},
 	"sea lane":{
 		"id": 90,
-		"allowSea": true,
-		"allowLand": false
+		"domain": "sea"
+	},
+	"coast":{
+		"east": 150,
+		"west": 145,
+		"north": 100,
+		"south": 180,
+		"northWest": 114,
+		"northEast": 117,
+		"southEast": 165,
+		"southWest": 162,
+		"northBay": 104,
+		"southBay": 136,
+		"eastBay": 121,
+		"westBay": 119,
+		"eastWestPassage": 147,
+		"northSouthPassage": 131,
+		"lake": 120
 	}
 }
