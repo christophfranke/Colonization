@@ -51,6 +51,9 @@ class MapView{
 		tileView.addTiles(this.renderTerrainBlending(tile));
 		tileView.newLayer();
 		tileView.addTiles(this.renderCoastLine(tile));
+		tileView.newLayer();
+		tileView.addTiles(this.renderCoastCorners(tile));
+		tileView.newLayer();
 		tileView.addTiles(this.renderTopTiles(tile));
 		tileView.newLayer();
 		tileView.addTiles(this.renderUndiscovered(tile));
@@ -218,6 +221,60 @@ class MapView{
 		}
 
 		return coastTiles;
+	}
+
+	renderCoastCorners(tile){
+		let corners = [];
+
+		let center = this.mapData.getTileInfo(tile);
+		if(center !== null){
+			//no corners on land tiles
+			if(typeof center.props === 'undefined' || center.props.domain === 'land' || !center.discovered)
+				return corners;
+
+			let left = center.getLeft();
+			let right = center.getRight();
+			let up = center.getUp();
+			let down = center.getDown();
+			if(left !== null && right !== null && up !== null && down !== null){
+
+				let leftUp = left.getUp();
+				let leftDown = left.getDown();
+				let rightUp = right.getUp();
+				let rightDown = right.getDown();
+
+				if(
+					leftUp !== null && typeof leftUp.props !== 'undefined' && leftUp.props.domain === 'land' &&
+					typeof left.props !== 'undefined' && left.props.domain === 'sea' &&
+					typeof up.props !== 'undefined' && up.props.domain === 'sea'
+				){
+					corners.push(Terrain.coast.southEastCorner);
+				}
+				if(
+					leftDown !== null && typeof leftDown.props !== 'undefined' && leftDown.props.domain === 'land' &&
+					typeof left.props !== 'undefined' && left.props.domain === 'sea' &&
+					typeof down.props !== 'undefined' && down.props.domain === 'sea'
+				){
+					corners.push(Terrain.coast.northEastCorner);
+				}
+				if(
+					rightUp !== null && typeof rightUp.props !== 'undefined' && rightUp.props.domain === 'land' &&
+					typeof right.props !== 'undefined' && right.props.domain === 'sea' &&
+					typeof up.props !== 'undefined' && up.props.domain === 'sea'
+				){
+					corners.push(Terrain.coast.southWestCorner);
+				}
+				if(
+					rightDown !== null && typeof rightDown.props !== 'undefined' && rightDown.props.domain === 'land' &&
+					typeof right.props !== 'undefined' && right.props.domain === 'sea' &&
+					typeof down.props !== 'undefined' && down.props.domain === 'sea'
+				){
+					corners.push(Terrain.coast.northWestCorner);
+				}
+			}
+		}
+
+		return corners;
 	}
 
 	neighborToName(top, right, down, left){

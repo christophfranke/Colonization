@@ -73,7 +73,11 @@
 		"westBay": 119,
 		"eastWestPassage": 147,
 		"northSouthPassage": 131,
-		"lake": 120
+		"lake": 120,
+		"southWestCorner": 178,
+		"southEastCorner": 181,
+		"northWestCorner": 98,
+		"northEastCorner": 101
 	},
 	"undiscovered":{
 		"eastWestPassage": 125,
