@@ -169,7 +169,7 @@ class MapView{
 			type: Position.TILE
 		}));
 
-		let baseTile = Terrain.transparent.id;
+		let baseTile = 0;
 		if(center !== null && center.discovered){
 			if(center.coastTerrain !== null){
 				baseTile = center.coastTerrain.id;
