@@ -34,6 +34,22 @@ class MapTile {
 		this.units = [];
 	}
 
+	getLeft(){
+		return Colonize.map.mapData.getTileInfo(this.position.left());
+	}
+
+	getUp(){
+		return Colonize.map.mapData.getTileInfo(this.position.up());
+	}
+
+	getRight(){
+		return Colonize.map.mapData.getTileInfo(this.position.right());
+	}
+
+	getDown(){
+		return Colonize.map.mapData.getTileInfo(this.position.down());
+	}
+
 	enter(unit){
 		this.units.push(unit);
 	}

@@ -7,6 +7,7 @@ import Terrain from '../../data/terrain.json';
 import TilemapRenderer from '../render/tilemapRenderer.js';
 import BackgroundView from './BackgroundView.js';
 import SpriteRenderer from '../render/spriteRenderer.js';
+import MapTileView from './mapTileView.js';
 
 import Position from '../helper/position.js';
 
@@ -43,17 +44,21 @@ class MapView{
 	}
 
 	renderTile(tile){
-		let layers = this.renderBaseTerrain(tile);
-		layers.coastTile = this.renderCoastLine(tile);
-		layers.undiscovered = this.renderUndiscovered(tile);
-		layers.topTile = this.renderTopTile(tile);
+		let tileView = new MapTileView();
 
-		return layers;
+		tileView.addTiles(this.renderBaseTiles(tile));
+		tileView.newLayer();
+		tileView.addTiles(this.renderTerrainBlending(tile));
+		tileView.newLayer();
+		tileView.addTiles(this.renderCoastLine(tile));
+		tileView.addTiles(this.renderTopTiles(tile));
+
+		return tileView;
 	}
 
 	updateTile(tile){
-		let layers = this.renderTile(tile);
-		this.renderer.updateTile(tile, layers);
+		let tileView = this.renderTile(tile);
+		this.renderer.updateTile(tile, tileView);
 	}
 
 	decideBlending(center, other, offset){
@@ -113,141 +118,102 @@ class MapView{
 		if(center === null || !center.discovered)
 			return 0;
 
-		let x = tile.x;
-		let y = tile.y;
+		let left = center.getLeft();
+		let right = center.getRight();
+		let up = center.getUp();
+		let down = center.getDown();
 
-		let left = this.mapData.getTileInfo(new Position({
-			x: x-1,
-			y: y,
-			type: Position.TILE
-		}));
-		let right = this.mapData.getTileInfo(new Position({
-			x: x+1,
-			y: y,
-			type: Position.TILE
-		}));
-		let up = this.mapData.getTileInfo(new Position({
-			x: x,
-			y: y-1,
-			type: Position.TILE
-		}));
-		let down = this.mapData.getTileInfo(new Position({
-			x: x,
-			y: y+1,
-			type: Position.TILE
-		}));
 
-		let undiscovered = 0;
+		let undiscovered = [];
 
 		if(up !== null && right !== null && down !== null && left !== null){		
 			let name = this.neighborToName(!up.discovered, !right.discovered, !down.discovered, !left.discovered);
 			if(name !== null)
-				return Terrain.undiscovered[name];
+				undiscovered.push(Terrain.undiscovered[name]);
 		}
 
-		return 0;
+		return undiscovered;
 	}
 
 
-	renderBaseTerrain(tile){
+	renderBaseTiles(tile){
+		let baseTiles = [];
 		let center = this.mapData.getTileInfo(tile);
-		let x = tile.x;
-		let y = tile.y;
 
-		let left = this.mapData.getTileInfo(new Position({
-			x: x-1,
-			y: y,
-			type: Position.TILE
-		}));
-		let right = this.mapData.getTileInfo(new Position({
-			x: x+1,
-			y: y,
-			type: Position.TILE
-		}));
-		let top = this.mapData.getTileInfo(new Position({
-			x: x,
-			y: y-1,
-			type: Position.TILE
-		}));
-		let down = this.mapData.getTileInfo(new Position({
-			x: x,
-			y: y+1,
-			type: Position.TILE
-		}));
-
-		let baseTile = 0;
 		if(center !== null && center.discovered){
 			if(center.coastTerrain !== null){
-				baseTile = center.coastTerrain.id;
+				baseTiles.push(center.coastTerrain.id);
 			}
 			else{
-				baseTile = center.id;
+				baseTiles.push(center.id);
 			}
 		}
 
-		return {
-			baseTile : baseTile,
-			leftBlend : this.decideBlending(center, left, 1),
-			rightBlend : this.decideBlending(center, right, -1),
-			topBlend : this.decideBlending(center, top, Settings.tiles.x),
-			downBlend : this.decideBlending(center, down, -Settings.tiles.x)
-		};
+		return baseTiles;
 	}
 
-	renderCoastLine(position){
-		let tile = position.getTile();
-		let x = tile.x;
-		let y = tile.y;
+
+	renderTerrainBlending(tile){
+		let center = this.mapData.getTileInfo(tile);
+		let left = center.getLeft();
+		let right = center.getRight();
+		let up = center.getUp();
+		let down = center.getDown();
+
+		let blendTiles = [];
+
+		let leftBlend = this.decideBlending(center, left, 1);
+		let rightBlend = this.decideBlending(center, right, -1);
+		let upBlend = this.decideBlending(center, up, Settings.tiles.x);
+		let downBlend = this.decideBlending(center, down, -Settings.tiles.x);
+
+		if(leftBlend !== 0)
+			blendTiles.push(leftBlend);
+		if(rightBlend !== 0)
+			blendTiles.push(rightBlend);
+		if(upBlend !== 0)
+			blendTiles.push(upBlend);
+		if(downBlend !== 0)
+			blendTiles.push(downBlend);
+
+		return blendTiles;
+	}
+
+	renderCoastLine(tile){
 
 		let center = this.mapData.getTileInfo(tile);
-		let left = this.mapData.getTileInfo(new Position({
-			x: x-1,
-			y: y,
-			type: Position.TILE
-		}));
-		let right = this.mapData.getTileInfo(new Position({
-			x: x+1,
-			y: y,
-			type: Position.TILE
-		}));
-		let top = this.mapData.getTileInfo(new Position({
-			x: x,
-			y: y-1,
-			type: Position.TILE
-		}));
-		let down = this.mapData.getTileInfo(new Position({
-			x: x,
-			y: y+1,
-			type: Position.TILE
-		}));
+		let left = center.getLeft();
+		let right = center.getRight();
+		let up = center.getUp();
+		let down = center.getDown();
 
-		let coastTile = 0;
+		let coastTiles = [];
 		if(
 			center !== null &&
 			center.discovered &&
-			x !== 0 &&
-			y !== 0 &&
-			y + 1 < MapSettings.height &&
-			x + 1 < MapSettings.width &&
+			left !== null &&
+			right !== null &&
+			up !== null &&
+			down !== null &&
 			typeof center.props !== 'undefined' &&
 			typeof left.props !== 'undefined' &&
-			typeof top.props !== 'undefined' &&
+			typeof up.props !== 'undefined' &&
 			typeof down.props !== 'undefined' &&
 			typeof right.props !== 'undefined' &&
 			center.props.domain === 'sea'
 		){
 			let name = this.neighborToName(
-				top.props.domain === 'land',
+				up.props.domain === 'land',
 				right.props.domain === 'land',
 				down.props.domain === 'land',
 				left.props.domain === 'land'
 			);
 
 			if(name !== null)
-				coastTile = Terrain.coast[name];
+				coastTiles.push(Terrain.coast[name]);
 		}
 
-		return coastTile;
+		return coastTiles;
 	}
 
 	neighborToName(top, right, down, left){
@@ -303,23 +269,23 @@ class MapView{
 			return null;
 	}
 
-	renderTopTile(position){
+	renderTopTiles(position){
 		let center = this.mapData.getTileInfo(position);
 
-		let topTile = 0;
+		let topTiles = [];
 		if(center !== null && center.discovered){		
 			if(center.forest){
-				topTile = Terrain.forest.id;
+				topTiles.push(Terrain.forest.id);
 			}
 			if(center.hills){
-				topTile = Terrain.hills.id;
+				topTiles.push(Terrain.hills.id);
 			}
 			if(center.mountains){
-				topTile = Terrain.mountains.id;
+				topTiles.push(Terrain.mountains.id);
 			}
 		}
 
-		return topTile;
+		return topTiles;
 	}
 
 }

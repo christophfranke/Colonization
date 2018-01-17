@@ -9,8 +9,9 @@ class MapData{
 	constructor(props){
 		this.numTiles = {
 			x: props.data.layers[0].width,
-			y: props.data.layers[0].height
+			y: props.data.layers[0].height,
 		};
+		this.numTiles.total = this.numTiles.x*this.numTiles.y;
 
 		this.data = props.data;
 	}

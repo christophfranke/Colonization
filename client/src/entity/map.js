@@ -23,7 +23,7 @@ class Map{
 			mapData: this.mapData
 		});
 
-		this.numTiles = this.mapData.numTiles;    	
+		this.numTiles = this.mapData.numTiles;
 	}
 
 	render(){
@@ -59,8 +59,6 @@ class Map{
 			y: Colonize.game.camera.y,
 			type: Position.WORLD
 		});
-
-		this.mapView.renderer.updateCulling(cameraPosition, cameraTarget);
 
 		Colonize.game.add.tween(Colonize.game.camera).to( {
 				x: cameraTarget.x,
