@@ -16,11 +16,11 @@ const TOP_LAYER = 7;
 class SpriteRenderer {
 	constructor(){
 
-		this.baseLayer = Colonize.game.add.group();
-		this.blendLayer = Colonize.game.add.group();
-		this.coastLayer = Colonize.game.add.group();
-		this.undiscoveredLayer = Colonize.game.add.group();
-		this.topLayer = Colonize.game.add.group();
+		this.baseLayer = Colonize.game.add.spriteBatch();
+		this.blendLayer = Colonize.game.add.spriteBatch();
+		this.coastLayer = Colonize.game.add.spriteBatch();
+		this.undiscoveredLayer = Colonize.game.add.spriteBatch();
+		this.topLayer = Colonize.game.add.spriteBatch();
 
 		this.tiles = [];
 		this.sprites = [];
@@ -90,7 +90,11 @@ class SpriteRenderer {
 	}
 
 	updateTile(tile, layers){
+		if(tile.x >= Colonize.map.mapData.numTiles.x || tile.y >= Colonize.map.mapData.numTiles.y)
+			return;
+
 		let i = this.tileIndex(tile);
+
 		this.tiles[i].layer = layers;
 
 		this.updateSprite(tile, BASE_LAYER, layers.baseTile);
@@ -104,7 +108,7 @@ class SpriteRenderer {
 	}
 
 	tileIndex(tile){
-		return tile.y + tile.x*200;
+		return tile.y + tile.x*Colonize.map.mapData.numTiles.y;
 	}
 }
 
