@@ -1,4 +1,5 @@
 
+import Colonize from '../colonize.js';
 
 
 class MapTileView {
@@ -7,6 +8,14 @@ class MapTileView {
 	}
 
 	newLayer(){
+		//no more layers left
+		if(this.layers.length === Colonize.renderer.layers.length)
+			return;
+
+		//last layer is empty, no new layer needed
+		if(this.layers[this.layers.length-1].length === 0)
+			return;
+
 		this.layers.push([]);
 		if(this.layers.length > MapTileView.numLayers)
 			MapTileView.numLayers = this.layers.length;
@@ -25,7 +34,7 @@ class MapTileView {
 	}
 }
 
-MapTileView.numLayers = 0;
+MapTileView.numLayers = 1;
 MapTileView.numTiles = 0;
 
 export default MapTileView;

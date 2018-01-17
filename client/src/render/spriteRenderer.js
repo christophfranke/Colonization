@@ -12,16 +12,13 @@ class SpriteRenderer {
 	constructor(){
 		Colonize.renderer = this;
 
+		//number of total layers
+		this.numLayers = 6;
 
-		//use 6 layers for now
-		this.layers = [
-			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch()
-		];
+		this.layers = [];
+		for(let i=0; i < this.numLayers; i++){
+			this.layers.push(Colonize.game.add.spriteBatch());
+		};
 
 		this.singleLayer = Colonize.game.add.spriteBatch();
 
