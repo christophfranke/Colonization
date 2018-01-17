@@ -44,10 +44,19 @@ class Map{
 
 
     centerAt(clickPosition){
-		const cameraTarget = {
+		const cameraTarget = new Position({
 			x: Math.floor(clickPosition.getWorld().x - 0.5*(Colonize.game.width / Colonize.game.camera.scale.x)),
-			y: Math.floor(clickPosition.getWorld().y - 0.5*(Colonize.game.height / Colonize.game.camera.scale.y))
-		};
+			y: Math.floor(clickPosition.getWorld().y - 0.5*(Colonize.game.height / Colonize.game.camera.scale.y)),
+			type: Position.WORLD
+		});
+
+		const cameraPosition = new Position({
+			x: Colonize.game.camera.x,
+			y: Colonize.game.camera.y,
+			type: Position.WORLD
+		});
+
+		this.mapView.renderer.updateCulling(cameraPosition, cameraTarget);
 
 		Colonize.game.add.tween(Colonize.game.camera).to( {
 				x: cameraTarget.x,

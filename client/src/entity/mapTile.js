@@ -16,7 +16,7 @@ class MapTile {
 			this.mountains = true;
 		}
 
-		this.discovered = false;
+		this.discovered = true;
 
 		for(let type in Terrain){
 			if(Terrain[type].id === this.id){
