@@ -12,17 +12,7 @@ class BackgroundView {
 		}
 		Colonize.game.world.resize(worldDimensions.x, worldDimensions.y);
 
-		let imageDimensions = {
-			x: 1024,
-			y: 1024
-		};
-
-		for(let x = 0; x*imageDimensions.x < worldDimensions.x; x++){
-			for(let y = 0; y*imageDimensions.y < worldDimensions.y; y++){
-				Colonize.game.add.image(x*imageDimensions.x, y*imageDimensions.y, 'undiscovered');
-			}
-		}
-
+		this.background = Colonize.game.add.tileSprite(0, 0, worldDimensions.x, worldDimensions.y, 'undiscovered');
 	}
 }
 
