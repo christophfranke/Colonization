@@ -52,6 +52,8 @@ class MapView{
 		tileView.newLayer();
 		tileView.addTiles(this.renderCoastLine(tile));
 		tileView.addTiles(this.renderTopTiles(tile));
+		tileView.newLayer();
+		tileView.addTiles(this.renderUndiscovered(tile));
 
 		return tileView;
 	}
@@ -100,8 +102,10 @@ class MapView{
 		//both discovered
 		if(center.discovered && other.discovered){
 			//blend between land
-			if(other.props.domain === 'land')
-				return other.props.centerTile + offset;
+			if(other.props.domain === 'land'){
+				if(other.props.id != center.props.id)
+					return other.props.centerTile + offset;
+			}
 
 			//blend between coast
 			if(other.props.domain === 'sea' && other.coastTerrain !== null)

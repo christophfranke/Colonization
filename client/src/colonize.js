@@ -33,8 +33,8 @@ class Colonize{
         });
 
         Colonize.map = new Map();
-
         Colonize.fpsCounter = new FPSCounter();
+
         Colonize.ressources = new Ressources();
         Colonize.turn = new Turn();
     }

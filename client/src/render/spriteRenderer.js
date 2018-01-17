@@ -4,20 +4,23 @@ import Colonize from '../colonize.js';
 import Settings from '../../data/settings.json';
 import Phaser from 'phaser';
 import Position from '../helper/position.js';
+import MapTileView from '../view/mapTileView.js';
 
 
 
 class SpriteRenderer {
 	constructor(){
-		//use 7 layers for now
+		Colonize.renderer = this;
+
+
+		//use 6 layers for now
 		this.layers = [
 			Colonize.game.add.spriteBatch(),
 			Colonize.game.add.spriteBatch(),
 			Colonize.game.add.spriteBatch(),
 			Colonize.game.add.spriteBatch(),
 			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch(),
-			Colonize.game.add.spriteBatch(),
+			Colonize.game.add.spriteBatch()
 		];
 
 		this.singleLayer = Colonize.game.add.spriteBatch();
@@ -50,8 +53,8 @@ class SpriteRenderer {
 
 		//and for expensive culling
 		this.smallMargin = {
-			x: 5,
-			y: 5
+			x: 2,
+			y: 2
 		};
 
 		//somehow the center is off by 1... (looks like a bug!)
@@ -92,6 +95,7 @@ class SpriteRenderer {
 				);
 
 				this.sprites[index].push(newSprite);
+				this.spriteCount++;
 			}
 		}
 
@@ -99,6 +103,7 @@ class SpriteRenderer {
 		if(indices.length < this.sprites[index].length){
 			for(let i = common; i < this.sprites[index].length; i++){
 				this.sprites[index][i].destroy();
+				this.spriteCount--;
 			}
 			this.sprites[index].length = common;
 		}
@@ -121,10 +126,10 @@ class SpriteRenderer {
 		){
 			return;
 		}
-
 		for(let layer = 0; layer < view.layers.length; layer++){
 			this.updateSprites(tile, layer, view.layers[layer]);
 		}
+
 	}
 
 	render(){
@@ -134,7 +139,9 @@ class SpriteRenderer {
 
 		this.layers.forEach((layer) => {
 			layer.removeChildren();
-		})
+		});
+		this.spriteCount = 0;
+		this.tileCount = 0;
 
 		this.lastCameraPosition = new Position({
 			x: Colonize.game.camera.x,
@@ -159,11 +166,16 @@ class SpriteRenderer {
 					position.y < Colonize.map.mapData.numTiles.y
 				){
 					let from = this.spriteIndex(position, 0);
+					let added = false;
 					for(let layer = 0; layer < this.layers.length; layer++){
 						for(let sprite of this.sprites[from + layer]){
 							this.layers[layer].addChild(sprite);
+							this.spriteCount++;
+							added = true;
 						}
 					}
+					if(added)
+						this.tileCount++;
 				}
 			}
 		}		
