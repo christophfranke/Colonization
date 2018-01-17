@@ -17,8 +17,7 @@ const TOP_LAYER = "7";
 
 class SpriteRenderer {
 	constructor(){
-
-		this.backgroundLayer = Colonize.game.add.group();
+		this.cheapCulling = true;
 
 		this.baseLayer = Colonize.game.add.spriteBatch();
 		this.blendLayer = Colonize.game.add.spriteBatch();
@@ -35,11 +34,19 @@ class SpriteRenderer {
 			type: Position.WORLD
 		}).getTile();
 
+		//cullin margin for cheap culling (needs more!)
 		this.margin = {
 			x: Math.ceil(0.6*this.cameraWidth.x),
 			y: Math.ceil(0.6*this.cameraWidth.y)
 		};
 
+		//and for expensive culling
+		this.smallMargin = {
+			x: 2,
+			y: 2
+		};
+
+		//somehow the center is off by 1... (looks like a bug!)
 		this.offset = {
 			x: 1,
 			y: 1
@@ -59,7 +66,6 @@ class SpriteRenderer {
 	initialize(){
 		for(let t of this.tiles){
 			this.updateTile(t.tile, t.layer);
-
 			this.setVisibility(t, false);
 		}
 
@@ -144,6 +150,7 @@ class SpriteRenderer {
 		let i = this.tileIndex(tile);
 
 		this.tiles[i].layer = layers;
+		this.tiles[i].visible = true;
 
 		this.updateSprite(tile, BASE_LAYER, layers.baseTile);
 		this.updateSprite(tile, UP_BLEND, layers.topBlend);
@@ -159,8 +166,53 @@ class SpriteRenderer {
 		return tile.x + tile.y*Colonize.map.mapData.numTiles.x;
 	}
 
+	render(){
+		if(this.cheapCulling)
+			return;
+
+		this.baseLayer.removeChildren();
+		this.blendLayer.removeChildren();
+		this.coastLayer.removeChildren();
+		this.undiscoveredLayer.removeChildren();
+		this.topLayer.removeChildren();
+
+		let cameraPosition = new Position({
+			x: Colonize.game.camera.x,
+			y: Colonize.game.camera.y,
+			type: Position.WORLD
+		}).getTile();
+
+		for(let x = cameraPosition.x - this.smallMargin.x; x < cameraPosition.x + this.cameraWidth.x + this.smallMargin.x; x++){
+			for(let y = cameraPosition.y - this.smallMargin.y; y < cameraPosition.y + this.cameraWidth.y + this.smallMargin.y; y++){
+
+				let position = new Position({
+					x : x + this.offset.x,
+					y : y + this.offset.y,
+					type: Position.TILE
+				});
+
+				if(
+					position.x >= 0 &&
+					position.x < Colonize.map.mapData.numTiles.x &&
+					position.y >= 0 &&
+					position.y < Colonize.map.mapData.numTiles.y
+				){
+					let i = this.tileIndex(position);
+					for(let layer in this.sprites[i]){
+
+						let group = this.getGroup(layer);
+						group.addChild(this.sprites[i][layer]);
+					}
+				}
+			}
+		}		
+	}
+
 
 	updateCulling(from, to){
+		if(!this.cheapCulling)
+			return;
+
 		let cameraFrom = from.getTile();
 		let cameraTo = to.getTile();
 

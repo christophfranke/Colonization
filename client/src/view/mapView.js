@@ -38,6 +38,10 @@ class MapView{
 		this.renderer.initialize();
 	}
 
+	render(){
+		this.renderer.render();
+	}
+
 	renderTile(tile){
 		let layers = this.renderBaseTerrain(tile);
 		layers.coastTile = this.renderCoastLine(tile);

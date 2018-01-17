@@ -106,6 +106,10 @@ class TilemapRenderer{
 		};		
 	}
 
+	render(){
+		//not needed, but here so the call does not fail
+	}
+
 	updateCulling(){
 		//not needed, but here so the call does not fail
 	}

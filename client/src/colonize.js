@@ -87,6 +87,7 @@ class Colonize{
 
     render(){
         Colonize.fpsCounter.render();
+        Colonize.map.render();
     }
 }
 

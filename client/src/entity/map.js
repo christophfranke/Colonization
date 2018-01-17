@@ -26,6 +26,10 @@ class Map{
 		this.numTiles = this.mapData.numTiles;    	
 	}
 
+	render(){
+		this.mapView.render();
+	}
+
 	discover(tile){
 		let info = this.mapData.getTileInfo(tile);
 		if(!info.discovered){
