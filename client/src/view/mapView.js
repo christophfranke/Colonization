@@ -4,8 +4,9 @@ import Colonize from '../colonize.js';
 import MapSettings from '../../data/map.json';
 import Settings from '../../data/settings.json';
 import Terrain from '../../data/terrain.json';
-import TilemapRenderer from '../render/TilemapRenderer.js';
+import TilemapRenderer from '../render/tilemapRenderer.js';
 import BackgroundView from './BackgroundView.js';
+import SpriteRenderer from '../render/spriteRenderer.js';
 
 import Position from '../helper/position.js';
 
@@ -16,7 +17,8 @@ class MapView{
 		this.mapData = props.mapData;
 
 		this.background = new BackgroundView();
-		this.renderer = new TilemapRenderer();
+		// this.renderer = new TilemapRenderer();
+		this.renderer = new SpriteRenderer();
 
 		for(let y=0; y < MapSettings.height; y++){
 			for(let x=0; x < MapSettings.width; x++){

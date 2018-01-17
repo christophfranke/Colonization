@@ -13,6 +13,8 @@ class BackgroundView {
 		Colonize.game.world.resize(worldDimensions.x, worldDimensions.y);
 
 		this.background = Colonize.game.add.tileSprite(0, 0, worldDimensions.x, worldDimensions.y, 'undiscovered');
+		
+		Colonize.pointerInput.registerClickLayer(this.background);
 	}
 }
 

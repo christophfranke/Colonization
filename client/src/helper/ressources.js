@@ -1,5 +1,6 @@
 
 import Colonize from '../colonize.js';
+import Settings from '../../data/settings.json';
 
 
 class Ressources{
@@ -29,6 +30,10 @@ class Ressources{
 			undiscovered: {
 				url: '/assets/screens/undiscovered.png',
 				type: Ressources.Image
+			},
+			mapSheet: {
+				url: '/assets/tilesets/map.png',
+				type: Ressources.SpriteSheet
 			}
 		}
 	}
@@ -44,11 +49,15 @@ class Ressources{
 			if(r.type === Ressources.Image){
 				Colonize.game.load.image(name, r.url);
 			}
+			if(r.type === Ressources.SpriteSheet){
+				Colonize.game.load.spritesheet(name, r.url, Settings.tileSize.x, Settings.tileSize.y);
+			}
 		}
 	}
 }
 
 Ressources.JSON = 0;
 Ressources.Image = 1;
+Ressources.SpriteSheet = 2;
 
 export default Ressources;

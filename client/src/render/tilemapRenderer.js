@@ -27,7 +27,7 @@ class TilemapRenderer{
 		this.rawMap.layers[4].data.push(layers.downBlend);
 		this.rawMap.layers[5].data.push(layers.coastTile);
 		this.rawMap.layers[6].data.push(layers.undiscovered);
-		this.rawMap.layers[7].data.push(layers.topTile);		
+		this.rawMap.layers[7].data.push(layers.topTile);
 	}
 
 	initialize(){
@@ -44,8 +44,6 @@ class TilemapRenderer{
 		this.blendcoastLayer = this.tilemap.createLayer('terrain coast line');
 		this.undiscoveredLayer = this.tilemap.createLayer('terrain blend undiscovered');
     	this.topLayer = this.tilemap.createLayer('terrain top');
-
-    	Colonize.pointerInput.registerClickLayer(this.topLayer);		
 	}
 
 	updateTile(tile, layers){
