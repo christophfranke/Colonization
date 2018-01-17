@@ -23,8 +23,9 @@ class Colonize{
 
         this.debug = true;
 
-        this.width = 1200;
-        this.height = 800;
+        this.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        this.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
         Colonize.game = new Phaser.Game(this.width, this.height, Phaser.AUTO, '', {
             preload: () => this.preload(),
             create: () => this.create(),
