@@ -45,8 +45,8 @@ class Colonize{
 
     create() {
         // TODO: this should work
-        // this.game.camera.scale.x = 0.8;
-        // this.game.camera.scale.y = 0.8;      
+        // Colonize.game.camera.scale.x = 0.8;
+        // Colonize.game.camera.scale.y = 0.8;      
 
 
         //create and register

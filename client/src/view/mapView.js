@@ -4,6 +4,8 @@ import Colonize from '../colonize.js';
 import MapSettings from '../../data/map.json';
 import Settings from '../../data/settings.json';
 import Terrain from '../../data/terrain.json';
+import TilemapRenderer from '../render/TilemapRenderer.js';
+import BackgroundView from './BackgroundView.js';
 
 import Position from '../helper/position.js';
 
@@ -13,74 +15,25 @@ class MapView{
 	constructor(props){
 		this.mapData = props.mapData;
 
-		let worldDimensions = {
-			x: this.mapData.numTiles.x*Settings.tileSize.x,
-			y: this.mapData.numTiles.y*Settings.tileSize.y
-		}
-		Colonize.game.world.resize(worldDimensions.x, worldDimensions.y);
+		this.background = new BackgroundView();
+		this.renderer = new TilemapRenderer();
 
-		let imageDimensions = {
-			x: 1024,
-			y: 1024
-		};
-
-		for(let x = 0; x*imageDimensions.x < worldDimensions.x; x++){
-			for(let y = 0; y*imageDimensions.y < worldDimensions.y; y++){
-				Colonize.game.add.image(x*imageDimensions.x, y*imageDimensions.y, 'undiscovered');
-			}
-		}
-
-		//create layers
-		this.rawMap = MapSettings;
-		this.rawMap.layers = [];
-		this.rawMap.layers[0] = this.createEmptyLayer("terrain base");
-		this.rawMap.layers[1] = this.createEmptyLayer("terrain blend left");
-		this.rawMap.layers[2] = this.createEmptyLayer("terrain blend top");
-		this.rawMap.layers[3] = this.createEmptyLayer("terrain blend right");
-		this.rawMap.layers[4] = this.createEmptyLayer("terrain blend down");
-		this.rawMap.layers[5] = this.createEmptyLayer("terrain coast line");
-		this.rawMap.layers[6] = this.createEmptyLayer("terrain blend undiscovered");
-		this.rawMap.layers[7] = this.createEmptyLayer("terrain top");
-
-		for(let y=0; y < this.rawMap.height; y++){
-			for(let x=0; x < this.rawMap.width; x++){
+		for(let y=0; y < MapSettings.height; y++){
+			for(let x=0; x < MapSettings.width; x++){
 
 				//the map is ordered column first
-				let position = new Position({
+				let tile = new Position({
 					x: x,
 					y: y,
 					type: Position.TILE
 				});
 
-				let result = this.renderTile(position);
-
-				this.rawMap.layers[0].data.push(result.baseTile);
-				this.rawMap.layers[1].data.push(result.leftBlend);
-				this.rawMap.layers[2].data.push(result.topBlend);
-				this.rawMap.layers[3].data.push(result.rightBlend);
-				this.rawMap.layers[4].data.push(result.downBlend);
-				this.rawMap.layers[5].data.push(result.coastTile);
-				this.rawMap.layers[6].data.push(result.undiscovered);
-				this.rawMap.layers[7].data.push(result.topTile);
+				let layers = this.renderTile(tile);
+				this.renderer.pushTile(tile, layers);
 			}
 		}
 
-
-    	Colonize.game.load.tilemap('map', null, this.rawMap, Phaser.Tilemap.TILED_JSON)
-    	this.tilemap = Colonize.game.add.tilemap('map');
-
-		this.tilemap.addTilesetImage(this.getTilesetName(), 'mapTiles');
-
-    	this.baseLayer = this.tilemap.createLayer('terrain base');
-		this.blendleftLayer = this.tilemap.createLayer('terrain blend left');
-		this.blendtopLayer = this.tilemap.createLayer('terrain blend top');
-		this.blendrightLayer = this.tilemap.createLayer('terrain blend right');
-		this.blenddownLayer = this.tilemap.createLayer('terrain blend down');
-		this.blendcoastLayer = this.tilemap.createLayer('terrain coast line');
-		this.undiscoveredLayer = this.tilemap.createLayer('terrain blend undiscovered');
-    	this.topLayer = this.tilemap.createLayer('terrain top');
-
-    	Colonize.pointerInput.registerClickLayer(this.topLayer);
+		this.renderer.initialize();
 	}
 
 	renderTile(tile){
@@ -94,46 +47,7 @@ class MapView{
 
 	updateTile(tile){
 		let layers = this.renderTile(tile);
-		if(layers.baseTile !== 0)
-			this.tilemap.putTile(layers.baseTile, tile.x, tile.y, this.baseLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.baseLayer);
-
-		if(layers.leftBlend !== 0)
-			this.tilemap.putTile(layers.leftBlend, tile.x, tile.y, this.blendleftLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.blendleftLayer);
-
-		if(layers.topBlend !== 0)
-			this.tilemap.putTile(layers.topBlend, tile.x, tile.y, this.blendtopLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.blendtopLayer);
-
-		if(layers.rightBlend !== 0)
-			this.tilemap.putTile(layers.rightBlend, tile.x, tile.y, this.blendrightLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.blendrightLayer);
-
-		if(layers.downBlend !== 0)
-			this.tilemap.putTile(layers.downBlend, tile.x, tile.y, this.blenddownLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.blenddownLayer);
-
-		if(layers.coastTile !== 0)
-			this.tilemap.putTile(layers.coastTile, tile.x, tile.y, this.blendcoastLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.blendcoastLayer);
-
-		if(layers.undiscovered !== 0)
-			this.tilemap.putTile(layers.undiscovered, tile.x, tile.y, this.undiscoveredLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.undiscoveredLayer);
-
-		if(layers.topTile !== 0)
-			this.tilemap.putTile(layers.topTile, tile.x, tile.y, this.topLayer);
-		else
-			this.tilemap.removeTile(tile.x, tile.y, this.topLayer);
-
+		this.renderer.updateTile(tile, layers);
 	}
 
 	decideBlending(center, other, offset){
@@ -307,8 +221,8 @@ class MapView{
 			center.discovered &&
 			x !== 0 &&
 			y !== 0 &&
-			y + 1 < this.rawMap.height &&
-			x + 1 < this.rawMap.width &&
+			y + 1 < MapSettings.height &&
+			x + 1 < MapSettings.width &&
 			typeof center.props !== 'undefined' &&
 			typeof left.props !== 'undefined' &&
 			typeof top.props !== 'undefined' &&
@@ -400,24 +314,6 @@ class MapView{
 		}
 
 		return topTile;
-	}
-
-	getTilesetName(){
-		return MapSettings.tilesets[0].name;
-	}
-
-	createEmptyLayer(name){
-		return {
-			height : MapSettings.height,
-			width : MapSettings.width,
-			name : name,
-			opacity : 1,
-			type : "tilelayer",
-			visible : true,
-			x : 0,
-			y : 0,
-			data: []
-		};		
 	}
 
 }
