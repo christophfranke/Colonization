@@ -36,8 +36,8 @@ class SpriteRenderer {
 		}).getTile();
 
 		this.margin = {
-			x: 10,
-			y: 10
+			x: Math.ceil(0.6*this.cameraWidth.x),
+			y: Math.ceil(0.6*this.cameraWidth.y)
 		};
 
 		this.offset = {
@@ -49,7 +49,8 @@ class SpriteRenderer {
 	pushTile(tile, layers){
 		this.tiles.push({
 			layer: layers,
-			tile: tile
+			tile: tile,
+			visible: true
 		});
 
 		this.sprites.push({});
@@ -72,9 +73,10 @@ class SpriteRenderer {
 
 	setVisibility(tile, visible){
 		let i = this.tileIndex(tile.tile);
-		for(let layer in this.sprites[i]){
-			if(this.spriteExists(i, layer) && this.sprites[i][layer].visible !== visible){
-				this.sprites[i][layer].visible = visible;
+		if(tile.visible !== visible){
+			tile.visible = visible;
+
+			for(let layer in this.sprites[i]){
 
 				let group = this.getGroup(layer);
 				if(visible)
@@ -154,37 +156,55 @@ class SpriteRenderer {
 	}
 
 	tileIndex(tile){
-		return tile.y + tile.x*Colonize.map.mapData.numTiles.y;
+		return tile.x + tile.y*Colonize.map.mapData.numTiles.x;
 	}
 
 
 	updateCulling(from, to){
-
 		let cameraFrom = from.getTile();
+		let cameraTo = to.getTile();
+
 		for(let x = cameraFrom.x - this.margin.x; x < cameraFrom.x + this.cameraWidth.x + this.margin.x; x++){
 			for(let y = cameraFrom.y - this.margin.y; y < cameraFrom.y + this.cameraWidth.y + this.margin.y; y++){
-				let index = this.tileIndex({
-					x:x + this.offset.x,
-					y:y + this.offset.y
+				
+				let position = new Position({
+					x : x + this.offset.x,
+					y : y + this.offset.y,
+					type: Position.TILE
 				});
-				if(index >= 0 && index < 200*200){
+
+				if(
+					position.x >= 0 &&
+					position.x < Colonize.map.mapData.numTiles.x &&
+					position.y >= 0 &&
+					position.y < Colonize.map.mapData.numTiles.y
+				){
+					let index = this.tileIndex(position);
 					let tile = this.tiles[index];
 					this.setVisibility(tile, false);
 				}
 			}
 		}
 
-		let cameraTo = to.getTile();
 		for(let x = cameraTo.x - this.margin.x; x < cameraTo.x + this.cameraWidth.x + this.margin.x; x++){
 			for(let y = cameraTo.y - this.margin.y; y < cameraTo.y + this.cameraWidth.y + this.margin.y; y++){
-				let index = this.tileIndex({
-					x:x + this.offset.x,
-					y:y + this.offset.y
+
+				let position = new Position({
+					x : x + this.offset.x,
+					y : y + this.offset.y,
+					type: Position.TILE
 				});
-				if(index >= 0 && index < 200*200){
+
+				if(
+					position.x >= 0 &&
+					position.x < Colonize.map.mapData.numTiles.x &&
+					position.y >= 0 &&
+					position.y < Colonize.map.mapData.numTiles.y
+				){
+					let index = this.tileIndex(position);
 					let tile = this.tiles[index];
 					this.setVisibility(tile, true);
-				}
+				}				
 			}
 		}
 
