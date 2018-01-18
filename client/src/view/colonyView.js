@@ -5,20 +5,14 @@ import TileSprite from './tileSprite.js';
 
 class ColonyView {
 	constructor(props){
-        let center = {
-            x: Colonize.game.camera.x + 0.5*Colonize.game.width,
-            y: Colonize.game.camera.y + 0.5*Colonize.game.height
-        };
-    	this.colonyScreen = Colonize.game.add.image(center.x, center.y, 'colonyScreen');
-    	this.colonyScreen.scale = new Phaser.Point(0.5, 0.5 );
+        this.colonyScreen = Colonize.game.add.image(0.5*Colonize.game.width, 0.5*Colonize.game.height, 'colonyScreen');
+    	this.colonyScreen.scale = new Phaser.Point(0.5, 0.5);
     	this.colonyScreen.fixedToCamera = true;
         this.colonyScreen.anchor.setTo(0.5, 0.5);
-
         this.colonyScreen.visible = false;
 
+
         this.position = props.position;
-
-
         this.tileSprite = new TileSprite({
             id: props.id,
             position: this.position
@@ -29,6 +23,9 @@ class ColonyView {
 	}
 
     show(){
+        console.log(this.colonyScreen.position);
+        console.log(this.position);
+
         this.colonyScreen.visible = true;
         ColonyView.open = this;
 
