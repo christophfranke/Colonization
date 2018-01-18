@@ -10,7 +10,7 @@ import PointerInput from './input/pointerInput.js';
 import FPSCounter from './helper/fpsCounter.js';
 import Ressources from './helper/ressources.js';
 import Turn from './world/turn.js';
-import ColonyView from './view/colonyView.js';
+import Colony from './entity/colony.js';
 
 class Colonize{
 
@@ -77,7 +77,11 @@ class Colonize{
         });
         this.settler.becomeCargo(this.caravel);
 
-        this.colonyView = new ColonyView();
+        this.colony = Colony.found(new Position({
+            x: 120,
+            y: 61,
+            type: Position.TILE
+        }));
     }
 
     update() {

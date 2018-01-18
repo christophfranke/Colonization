@@ -1,6 +1,8 @@
 import Places from '../../data/places.json';
 
 import TileSprite from '../view/tileSprite.js';
+import ColonyView from '../view/colonyView.js';
+import Colonize from '../colonize.js';
 
 
 class Colony{
@@ -8,7 +10,7 @@ class Colony{
 		this.position = props.position.getTile();
 		this.props = Places.colony;
 
-		this.tileSprite = new TileSprite({
+		this.colonyView = new ColonyView({
 			id: this.props.id,
 			position: this.position
 		});
@@ -18,6 +20,25 @@ class Colony{
 		Colony.all.push(new Colony({
 			position: position
 		}));
+
+		Colony.all[Colony.all.length-1].uncoverMap();
+	}
+
+	uncoverMap(){
+		let tile = this.position.getTile();
+
+		//discover all tiles in radius 1
+		for(let x = -1; x <= 1; x++){
+			for(let y = -1; y <= 1; y++){
+				tile.x = this.position.x + x;
+				tile.y = this.position.y + y;
+				Colonize.map.discover(tile);
+			}
+		}
+	}
+
+	openCityScreen(){
+		this.colonyView.show();
 	}
 }
 

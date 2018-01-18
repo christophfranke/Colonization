@@ -14,7 +14,7 @@ class BackgroundView {
 
 		this.background = Colonize.game.add.tileSprite(0, 0, worldDimensions.x, worldDimensions.y, 'undiscovered');
 		
-		Colonize.pointerInput.registerClickLayer(this.background);
+		Colonize.pointerInput.registerMapClick(this.background);
 	}
 }
 

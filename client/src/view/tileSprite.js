@@ -11,7 +11,10 @@ class TileSprite{
 		this.movementTweenTime = 50;
 		this.tweens = {};
 
-		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles');
+		if(typeof TileSprite.layer === 'undefined')
+			TileSprite.layer = Colonize.game.add.group();
+
+		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles', 0, TileSprite.layer);
 		this.sprite.crop(this.cropRect());
 	}
 

@@ -28,6 +28,8 @@ class SpriteRenderer {
 			this.sprites[i] = [];
 		}
 
+		this.visible = true;
+
 
 
 		this.cameraWidth = new Position({
@@ -66,6 +68,16 @@ class SpriteRenderer {
 	}
 
 	initialize(){
+	}
+
+	hide(){
+		this.visible = false;
+		this.updateScreen();
+	}
+
+	show(){
+		this.visible = true;
+		this.updateScreen();
 	}
 
 
@@ -129,22 +141,16 @@ class SpriteRenderer {
 
 	}
 
-	render(){
-		//don't do anything if camera doesn't move;
-		if(this.lastCameraPosition.x == Colonize.game.camera.x && this.lastCameraPosition.y == Colonize.game.camera.y)
-			return;
-
+	updateScreen(){
 		this.layers.forEach((layer) => {
 			layer.removeChildren();
 		});
 		this.spriteCount = 0;
 		this.tileCount = 0;
 
-		this.lastCameraPosition = new Position({
-			x: Colonize.game.camera.x,
-			y: Colonize.game.camera.y,
-			type: Position.WORLD
-		});
+		if(!this.visible)
+			return;
+
 		let cameraPosition = this.lastCameraPosition.getTile();
 
 		for(let x = cameraPosition.x - this.smallMargin.x; x < cameraPosition.x + this.cameraWidth.x + this.smallMargin.x; x++){
@@ -176,6 +182,20 @@ class SpriteRenderer {
 				}
 			}
 		}		
+	}
+
+	render(){
+		//don't do anything if camera doesn't move;
+		if(this.lastCameraPosition.x == Colonize.game.camera.x && this.lastCameraPosition.y == Colonize.game.camera.y)
+			return;
+
+		this.lastCameraPosition = new Position({
+			x: Colonize.game.camera.x,
+			y: Colonize.game.camera.y,
+			type: Position.WORLD
+		});
+
+		this.updateScreen();
 	}
 
 

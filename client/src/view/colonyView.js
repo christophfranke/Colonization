@@ -1,30 +1,52 @@
 
 import Colonize from '../colonize.js';
+import TileSprite from './tileSprite.js';
+
 
 class ColonyView {
 	constructor(props){
+        let center = {
+            x: Colonize.game.camera.x + 0.5*Colonize.game.width,
+            y: Colonize.game.camera.y + 0.5*Colonize.game.height
+        };
+    	this.colonyScreen = Colonize.game.add.image(center.x, center.y, 'colonyScreen');
+    	this.colonyScreen.scale = new Phaser.Point(0.5, 0.5 );
+    	this.colonyScreen.fixedToCamera = true;
+        this.colonyScreen.anchor.setTo(0.5, 0.5);
 
-		//load colony tilemap data into phaser cache
-		// this.tileData = Colonize.game.cache.getJSON('colonyData');
-		// Colonize.game.load.tilemap('colonyTilemap', null, this.tileData, Phaser.Tilemap.TILED_JSON)
+        this.colonyScreen.visible = false;
 
-    	//cretae tilemap
-    	// this.tilemap = Colonize.game.add.tilemap('colonyTilemap');
+        this.position = props.position;
 
-    	//add tileset image
-		// this.tilemap.addTilesetImage('colony', 'colonyTiles');
 
-		//add layers
-    	// this.backgroundLayer = this.tilemap.createLayer('background');
-    	// this.buildingsLayer = this.tilemap.createLayer('buildings');
-    	// this.terrainLayer = this.tilemap.createLayer('terrain');
+        this.tileSprite = new TileSprite({
+            id: props.id,
+            position: this.position
+        });        
 
-    	// this.image = Colonize.game.add.image(0, 0, 'colonyScreen');
-    	// this.image.scale = new Phaser.Point(0.5, 0.5 );
-    	// this.image.fixedToCamera = true;
+        this.tileSprite.sprite.inputEnabled = true;
+        this.tileSprite.sprite.events.onInputDown.add(this.show, this);        
 	}
+
+    show(){
+        this.colonyScreen.visible = true;
+        ColonyView.open = this;
+
+        Colonize.map.mapView.hide();
+        TileSprite.layer.visible = false;
+    }
+
+    hide(){
+        this.colonyScreen.visible = false;
+        if(ColonyView.open === this)
+            ColonyView.open = null;
+
+        Colonize.map.mapView.show();
+        TileSprite.layer.visible = true;
+    }
 
 
 }
 
+ColonyView.open = null
 export default ColonyView;

@@ -9,7 +9,6 @@ import MapView from '../view/mapView.js';
 
 class Map{
 	constructor(props){
-		this.holdTimeThreshold = 350; //millis
 		this.mapCenterTweenTime = 250; //also millis
 	}
 

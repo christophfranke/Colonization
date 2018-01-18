@@ -43,6 +43,14 @@ class MapView{
 		this.renderer.render();
 	}
 
+	hide(){
+		this.renderer.hide();
+	}
+
+	show(){
+		this.renderer.show();
+	}
+
 	renderTile(tile){
 		let tileView = new MapTileView();
 
