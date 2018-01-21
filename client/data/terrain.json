@@ -94,7 +94,11 @@
 		"north": 127,
 		"south": 159,
 		"east": 144,
-		"lake": 143
+		"lake": 143,
+		"southWestCorner": 158,
+		"southEastCorner": 160,
+		"northWestCorner": 126,
+		"northEastCorner": 128
 	},
 	"transparent":{
 		"id": 97

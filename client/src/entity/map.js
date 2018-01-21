@@ -38,6 +38,10 @@ class Map{
 			this.mapView.updateTile(tile.left());
 			this.mapView.updateTile(tile.down());
 			this.mapView.updateTile(tile.right());
+			this.mapView.updateTile(tile.up().left());
+			this.mapView.updateTile(tile.up().right());
+			this.mapView.updateTile(tile.down().left());
+			this.mapView.updateTile(tile.down().right());
 		}
 	}
 

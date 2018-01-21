@@ -126,11 +126,11 @@ class MapView{
 	}
 
 	renderUndiscovered(tile){
+		let undiscovered = [];
 
 		let center = this.mapData.getTileInfo(tile);
-
 		if(center === null || !center.discovered)
-			return 0;
+			return undiscovered;
 
 		let left = center.getLeft();
 		let right = center.getRight();
@@ -138,12 +138,34 @@ class MapView{
 		let down = center.getDown();
 
 
-		let undiscovered = [];
-
 		if(up !== null && right !== null && down !== null && left !== null){		
 			let name = this.neighborToName(!up.discovered, !right.discovered, !down.discovered, !left.discovered);
 			if(name !== null)
 				undiscovered.push(Terrain.undiscovered[name]);
+
+			let leftUp = left.getUp();
+			let leftDown = left.getDown();
+			let rightUp = right.getUp();
+			let rightDown = right.getDown();
+
+			if(leftUp !== null && leftDown !== null && rightUp !== null && rightDown !== null){
+				let cornerNames = this.getCornerNames(
+					!up.discovered,
+					!rightUp.discovered,
+					!right.discovered,
+					!rightDown.discovered,
+					!down.discovered,
+					!leftDown.discovered,
+					!left.discovered,
+					!leftUp.discovered
+				);
+				for(let name of cornerNames){
+					// console.error(tile, name);
+					undiscovered.push(Terrain.undiscovered[name]);
+				}
+							
+			}
+
 		}
 
 		return undiscovered;
@@ -292,37 +314,48 @@ class MapView{
 				let rightDown = right.getDown();
 
 				if(
-					leftUp !== null && typeof leftUp.props !== 'undefined' && leftUp.props.domain === 'land' &&
-					typeof left.props !== 'undefined' && left.props.domain === 'sea' &&
-					typeof up.props !== 'undefined' && up.props.domain === 'sea'
+					leftUp !== null && typeof leftUp.props !== 'undefined' &&
+					rightUp !== null && typeof rightUp.props !== 'undefined' &&
+					leftDown !== null && typeof leftDown.props !== 'undefined' &&
+					rightDown !== null && typeof rightDown.props !== 'undefined'
 				){
-					corners.push(Terrain.coast.southEastCorner);
-				}
-				if(
-					leftDown !== null && typeof leftDown.props !== 'undefined' && leftDown.props.domain === 'land' &&
-					typeof left.props !== 'undefined' && left.props.domain === 'sea' &&
-					typeof down.props !== 'undefined' && down.props.domain === 'sea'
-				){
-					corners.push(Terrain.coast.northEastCorner);
-				}
-				if(
-					rightUp !== null && typeof rightUp.props !== 'undefined' && rightUp.props.domain === 'land' &&
-					typeof right.props !== 'undefined' && right.props.domain === 'sea' &&
-					typeof up.props !== 'undefined' && up.props.domain === 'sea'
-				){
-					corners.push(Terrain.coast.southWestCorner);
-				}
-				if(
-					rightDown !== null && typeof rightDown.props !== 'undefined' && rightDown.props.domain === 'land' &&
-					typeof right.props !== 'undefined' && right.props.domain === 'sea' &&
-					typeof down.props !== 'undefined' && down.props.domain === 'sea'
-				){
-					corners.push(Terrain.coast.northWestCorner);
+					let cornerNames = this.getCornerNames(
+						up.props.domain === 'land',
+						rightUp.props.domain === 'land',
+						right.props.domain === 'land',
+						rightDown.props.domain === 'land',
+						down.props.domain === 'land',
+						leftDown.props.domain === 'land',
+						left.props.domain === 'land',
+						leftUp.props.domain === 'land',
+					);
+					for(let name of cornerNames){
+						corners.push(Terrain.coast[name]);
+					}
 				}
 			}
 		}
 
 		return corners;
+	}
+
+	getCornerNames(up, rightUp, right, rightDown, down, leftDown, left, leftUp){
+		let cornerNames = [];
+
+		if(leftUp && !up && !left){
+			cornerNames.push('southEastCorner');
+		}
+		if(leftDown && !left && !down){
+			cornerNames.push('northEastCorner');
+		}
+		if(rightUp && !right && !up){
+			cornerNames.push('southWestCorner');
+		}
+		if(rightDown && !right && !down){
+			cornerNames.push('northWestCorner');
+		}
+
+		return cornerNames;
 	}
 
 	neighborToName(top, right, down, left){
