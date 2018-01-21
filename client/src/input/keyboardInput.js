@@ -59,6 +59,8 @@ class KeyboardInput {
 
 			if(allUnitsMoved)
 				Colonize.turn.endTurn();
+			else
+				Unit.all[0].selectNext();
 		}
 	}
 

@@ -130,8 +130,11 @@ class Unit{
 				position: this.position,
 				founder: this
 			});
+			this.movesLeft = 0;
+			this.selectNext();
 			this.disband();
 		}
+
 	}
 
 	makeMove(to){
