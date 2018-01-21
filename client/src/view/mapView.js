@@ -211,19 +211,19 @@ class MapView{
 				){
 					if(
 						(up.props.domain === 'land' || center.props.domain === 'sea') &&
-						(up.discovered || center.discovered)
+						(up.discovered && center.discovered)
 					){
 						tiles.push(up.props.centerTile + Settings.tiles.x);
 					}
 					if(
 						(left.props.domain === 'land' || center.props.domain === 'sea') &&
-						(left.discovered || center.discovered)
+						(left.discovered && center.discovered)
 					){
 						tiles.push(left.props.centerTile + 1)
 					}
 					if(
 						(upLeft.props.domain === 'land' || center.props.domain === 'sea') &&
-						(upLeft.discovered || center.discovered)
+						(upLeft.discovered && center.discovered)
 					){
 						tiles.push(upLeft.props.centerTile + Settings.tiles.x + 1);
 					}
