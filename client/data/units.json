@@ -18,10 +18,22 @@
 		"canFound": true,
 		"moves": 1
 	},
+	"settler":{
+		"id": 23,
+		"domain": "land",
+		"canFound": true,
+		"moves": 1
+	},
 	"scout":{
 		"id": 50,
 		"domain": "land",
 		"canFound": true,
 		"moves": 4
+	},
+	"expert farmer":{
+		"id": 27,
+		"domain": "land",
+		"canFound": true,
+		"moves": 1
 	}
 }
