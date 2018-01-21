@@ -2,6 +2,7 @@
 import Colonize from '../colonize.js';
 import TileSprite from './tileSprite.js';
 import ColonyMapView from './colonyMapView.js';
+import ColonistsView from './colonistsView.js';
 
 
 class ColonyView {
@@ -13,8 +14,10 @@ class ColonyView {
         this.colonyScreen.anchor.setTo(0.5, 0.5);
         this.colonyScreen.visible = false;
 
+        this.colony = props.colony;
 
-        this.position = props.position;
+
+        this.position = props.colony.position;
         this.tileSprite = new TileSprite({
             id: props.id,
             position: this.position
@@ -27,13 +30,18 @@ class ColonyView {
         this.colonyScreen.events.onInputDown.add(this.colonyClick, this);
 
         this.colonyMapView = new ColonyMapView({
-            colony: this,
+            colony: this.colony,
+            parentScreen: this.colonyScreen
+        });
+
+        this.colonistsView = new ColonistsView({
+            colony: this.colony,
             parentScreen: this.colonyScreen
         });
 	}
 
     colonyClick(){
-        console.log('click');
+        console.log(this.colony.colonists);
     }
 
     show(){

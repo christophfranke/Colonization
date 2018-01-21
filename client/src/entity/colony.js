@@ -3,25 +3,24 @@ import Places from '../../data/places.json';
 import TileSprite from '../view/tileSprite.js';
 import ColonyView from '../view/colonyView.js';
 import Colonize from '../colonize.js';
+import Colonist from './colonist.js';
 
 
 class Colony{
 	constructor(props){
 		this.position = props.position.getTile();
 		this.props = Places.colony;
+		this.colonists = [new Colonist({
+			colony: this,
+			type: 'settler'
+		})];
 
 		this.uncoverMap();
 
 		this.colonyView = new ColonyView({
 			id: this.props.id,
-			position: this.position
+			colony: this
 		});
-	}
-
-	static found(position){
-		Colony.all.push(new Colony({
-			position: position
-		}));
 	}
 
 	uncoverMap(){

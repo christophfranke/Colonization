@@ -32,6 +32,7 @@ class Colonize{
             update: () => this.update(),
             render: () => this.render()
         });
+        // Phaser.Canvas.setSmoothingEnabled(Colonize.game.context, false);
 
         Colonize.map = new Map();
         Colonize.fpsCounter = new FPSCounter();
@@ -57,7 +58,8 @@ class Colonize{
         Colonize.map.create();
         Colonize.fpsCounter.create();
 
-    	this.caravel = new Unit({
+
+        let caravel = new Unit({
     		name: 'caravel',
     		position: new Position({
     			x: 124,
@@ -65,32 +67,34 @@ class Colonize{
     			type: Position.TILE
     		})
     	});
-        this.caravel.select();
+        caravel.select();
 
-        this.settler = new Unit({
+        new Unit({
             name: 'pioneer',
             position: new Position({
                 x: 124,
                 y: 64,
                 type: Position.TILE
             })
-        });
-        this.settler.becomeCargo(this.caravel);
-        this.scout = new Unit({
+        }).becomeCargo(caravel);
+        
+        new Unit({
             name: 'scout',
             position: new Position({
                 x: 124,
                 y: 64,
                 type: Position.TILE
             })
-        });
-        this.scout.becomeCargo(this.caravel);
+        }).becomeCargo(caravel);
 
-        this.colony = Colony.found(new Position({
-            x: 120,
-            y: 61,
-            type: Position.TILE
-        }));
+        new Unit({
+            name: 'settler',
+            position: new Position({
+                x: 120,
+                y: 61, 
+                type: Position.TILE
+            })
+        }).orderFoundColony();
     }
 
     update() {

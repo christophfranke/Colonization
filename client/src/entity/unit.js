@@ -126,7 +126,10 @@ class Unit{
 
 	orderFoundColony(){
 		if(this.props.canFound){
-			Colony.found(this.position);
+			new Colony({
+				position: this.position,
+				founder: this
+			});
 			this.disband();
 		}
 	}
