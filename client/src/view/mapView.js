@@ -54,7 +54,8 @@ class MapView{
 
 		tileView.addTiles(this.renderBaseTiles(tile));
 		tileView.newLayer();
-		tileView.addTiles(this.renderTerrainBlending(tile));
+		// tileView.addTiles(this.renderTerrainBlending(tile));
+		tileView.addTiles(this.renderTerrainOverdraw(tile));
 		tileView.newLayer();
 		tileView.addTiles(this.renderCoastLine(tile));
 		tileView.newLayer();
@@ -190,6 +191,47 @@ class MapView{
 			blendTiles.push(downBlend);
 
 		return blendTiles;
+	}
+
+	renderTerrainOverdraw(tile){
+		let tiles = [];
+
+		let center = this.mapData.getTileInfo(tile);
+		let up = center.getUp();
+		let left = center.getLeft();
+
+		if(center !== null && left !== null && up !== null){
+			let upLeft = up.getLeft();
+			if(upLeft !== null){
+				if(
+					typeof center.props !== 'undefined' &&
+					typeof up.props !== 'undefined' &&
+					typeof left.props !== 'undefined' &&
+					typeof upLeft.props !== 'undefined'
+				){
+					if(
+						(up.props.domain === 'land' || center.props.domain === 'sea') &&
+						(up.discovered || center.discovered)
+					){
+						tiles.push(up.props.centerTile + Settings.tiles.x);
+					}
+					if(
+						(left.props.domain === 'land' || center.props.domain === 'sea') &&
+						(left.discovered || center.discovered)
+					){
+						tiles.push(left.props.centerTile + 1)
+					}
+					if(
+						(upLeft.props.domain === 'land' || center.props.domain === 'sea') &&
+						(upLeft.discovered || center.discovered)
+					){
+						tiles.push(upLeft.props.centerTile + Settings.tiles.x + 1);
+					}
+				}
+			}
+		}
+
+		return tiles;
 	}
 
 	renderCoastLine(tile){
