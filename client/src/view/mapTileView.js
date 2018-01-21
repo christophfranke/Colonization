@@ -32,6 +32,17 @@ class MapTileView {
 		this.layers = [[]];
 		this.numTiles = 0;
 	}
+
+	getIndices(){
+		let indices = [];
+		for(let layer of this.layers){
+			for(let tile of layer){
+				indices.push(tile);
+			}
+		}
+
+		return indices;
+	}
 }
 
 MapTileView.numLayers = 1;

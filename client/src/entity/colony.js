@@ -10,6 +10,8 @@ class Colony{
 		this.position = props.position.getTile();
 		this.props = Places.colony;
 
+		this.uncoverMap();
+
 		this.colonyView = new ColonyView({
 			id: this.props.id,
 			position: this.position
@@ -20,8 +22,6 @@ class Colony{
 		Colony.all.push(new Colony({
 			position: position
 		}));
-
-		Colony.all[Colony.all.length-1].uncoverMap();
 	}
 
 	uncoverMap(){
