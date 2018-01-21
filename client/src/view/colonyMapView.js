@@ -50,7 +50,7 @@ class ColonyMapView{
 				let newTileView = Colonize.map.mapView.renderTile(tile);
 				let currentPosition = new Position({
 					x: this.scale*(x+1)*Settings.tileSize.x + offset.x,
-					y: this.scale*(y+1)*Settings.tileSize.y + offset.y,
+					y: this.scale*(y+1)*(Settings.tileSize.y) + offset.y - y, // something strange is happening here, the "-y" term should not have to be there...
 					type: Position.WORLD
 				});
 				this.mapTiles.push(newTileView);
@@ -74,6 +74,7 @@ class ColonyMapView{
 				index-1
 			);
 			newSprite.scale = new Phaser.Point(this.scale, this.scale);
+			newSprite.smoothed = false;
 
 			this.parentScreen.addChild(newSprite);
 			this.sprites.push(newSprite);
