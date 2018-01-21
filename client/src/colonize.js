@@ -76,6 +76,15 @@ class Colonize{
             })
         });
         this.settler.becomeCargo(this.caravel);
+        this.scout = new Unit({
+            name: 'scout',
+            position: new Position({
+                x: 124,
+                y: 64,
+                type: Position.TILE
+            })
+        });
+        this.scout.becomeCargo(this.caravel);
 
         this.colony = Colony.found(new Position({
             x: 120,
