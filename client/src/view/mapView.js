@@ -53,16 +53,11 @@ class MapView{
 		let tileView = new MapTileView();
 
 		tileView.addTiles(this.renderBaseTiles(tile));
-		tileView.newLayer();
 		// tileView.addTiles(this.renderTerrainBlending(tile));
 		tileView.addTiles(this.renderTerrainOverdraw(tile));
-		tileView.newLayer();
 		tileView.addTiles(this.renderCoastLine(tile));
-		tileView.newLayer();
 		tileView.addTiles(this.renderCoastCorners(tile));
-		tileView.newLayer();
 		tileView.addTiles(this.renderTopTiles(tile));
-		tileView.newLayer();
 		tileView.addTiles(this.renderUndiscovered(tile));
 
 		return tileView;
@@ -178,10 +173,10 @@ class MapView{
 
 		if(center !== null && center.discovered){
 			if(center.coastTerrain !== null){
-				baseTiles.push(center.coastTerrain.id);
+				baseTiles.push(center.coastTerrain.centerTile);
 			}
 			else{
-				baseTiles.push(center.id);
+				baseTiles.push(center.props.centerTile);
 			}
 		}
 
