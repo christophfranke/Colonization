@@ -24,6 +24,9 @@ class FPSCounter {
 		if(this.debug){		
 			if(this.currentFrame == this.skipFrames){
 				let spritesPerTile = Math.round(100*Colonize.renderer.spriteCount / Colonize.renderer.tileCount) / 100;
+				let memoryUsage = window.performance.memory.totalJSHeapSize / (1000*1000);
+				let memoryLimit = window.performance.memory.jsHeapSizeLimit / (1000*1000);
+				let memoryPercentage = Math.round(100*memoryUsage/memoryLimit);
 				Colonize.game.debug.start(20, 20, 'white');
 				Colonize.game.debug.line(Colonize.game.time.fps + ' fps');
 				Colonize.game.debug.line(Colonize.renderer.spriteCount + ' sprites');
@@ -31,6 +34,7 @@ class FPSCounter {
 				Colonize.game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				Colonize.game.debug.line(MapTileView.numLayers + '/' + Colonize.renderer.layers.length + ' layers per tile (max)');
 				Colonize.game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
+				Colonize.game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
 				Colonize.game.debug.stop();
 				
 				this.currentFrame = 0;
