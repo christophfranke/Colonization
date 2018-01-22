@@ -52,9 +52,7 @@ class MapView{
 	renderTile(tile){
 		let tileView = new MapTileView();
 
-		tileView.addTiles(this.renderBaseTiles(tile));
-		// tileView.addTiles(this.renderTerrainBlending(tile));
-		tileView.addTiles(this.renderTerrainOverdraw(tile));
+		tileView.addTiles(this.renderBaseBlock(tile));
 		tileView.addTiles(this.renderCoastLine(tile));
 		tileView.addTiles(this.renderCoastCorners(tile));
 		tileView.addTiles(this.renderTopTiles(tile));
@@ -118,6 +116,62 @@ class MapView{
 		}
 
 		return 0;
+	}
+
+	renderBaseBlock(tile){
+		let indices = [];
+
+		let center = this.mapData.getTileInfo(tile);
+		if(center === null || !center.discovered || typeof center.props === 'undefined')
+			return indices;
+
+		let left = center.getLeft();
+		let right = center.getRight();
+		let up = center.getUp();
+		let down = center.getDown();
+
+		if(up !== null && right !== null && down !== null && left !== null){		
+			let leftUp = left.getUp();
+			let leftDown = left.getDown();
+			let rightUp = right.getUp();
+			let rightDown = right.getDown();
+			if(leftUp !== null && leftDown !== null && rightUp !== null && rightDown !== null){
+
+				if(typeof rightDown.props !== 'undefined')
+					indices.push(this.getTileIndex(rightDown, -1, -1, center.props.domain, center.coastTerrain !== null));
+				if(typeof down.props !== 'undefined')
+					indices.push(this.getTileIndex(down, 0, -1, center.props.domain, center.coastTerrain !== null));
+				if(typeof leftDown.props !== 'undefined')
+					indices.push(this.getTileIndex(leftDown, 1, -1, center.props.domain, center.coastTerrain !== null));
+
+				if(typeof right.props !== 'undefined')
+					indices.push(this.getTileIndex(right, -1, 0, center.props.domain, center.coastTerrain !== null));
+				if(typeof center.props !== 'undefined')
+					indices.push(this.getTileIndex(center, 0, 0, center.props.domain, center.coastTerrain !== null));
+				if(typeof left.props !== 'undefined')
+					indices.push(this.getTileIndex(left, 1, 0, center.props.domain, center.coastTerrain !== null));
+
+				if(typeof rightUp.props !== 'undefined')
+					indices.push(this.getTileIndex(rightUp, -1, 1, center.props.domain, center.coastTerrain !== null));
+				if(typeof up.props !== 'undefined')
+					indices.push(this.getTileIndex(up, 0, 1, center.props.domain, center.coastTerrain !== null));
+				if(typeof leftUp.props !== 'undefined')
+					indices.push(this.getTileIndex(leftUp, 1, 1, center.props.domain, center.coastTerrain !== null));
+			}
+		}
+
+		return indices;
+	}
+
+	centerTileMod(x, y){
+		return Settings.tiles.x*y+x;
+	}
+
+	getTileIndex(tileInfo, x, y, domain, coast){
+		if((domain === 'land' || coast === true) && tileInfo.props.domain === 'sea' && tileInfo.coastTerrain !== null)
+			return tileInfo.coastTerrain.centerTile + this.centerTileMod(x, y);
+		else
+			return tileInfo.props.centerTile + this.centerTileMod(x, y);
 	}
 
 	renderUndiscovered(tile){
