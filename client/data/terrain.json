@@ -61,11 +61,6 @@
 		"id": 95,
 		"singleTile": 313
 	},
-	
-	"river":{
-		"id": 305,
-		"singleTile": 305
-	},
 	"coast":{
 		"east": 150,
 		"west": 145,
