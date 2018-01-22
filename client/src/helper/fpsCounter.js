@@ -28,7 +28,7 @@ class FPSCounter {
 				let memoryLimit = 'n/a';
 				let memoryPercentage = 'n/a';
 				if(typeof window.performance.memory !== 'undefined'){
-					memoryUsage = window.performance.memory.totalJSHeapSize / (1000*1000);
+					memoryUsage = window.performance.memory.usedJSHeapSize / (1000*1000);
 					memoryLimit = window.performance.memory.jsHeapSizeLimit / (1000*1000);
 					memoryPercentage = Math.round(100*memoryUsage/memoryLimit);
 				}
