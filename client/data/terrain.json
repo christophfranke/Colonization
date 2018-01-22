@@ -50,13 +50,16 @@
 		"centerTile": 322
 	},
 	"forest":{
-		"id": 92
+		"id": 92,
+		"singleTile": 309
 	},
 	"hills":{
-		"id": 94
+		"id": 94,
+		"singleTile": 317
 	},
 	"mountains":{
-		"id": 95
+		"id": 95,
+		"singleTile": 313
 	},
 	"coast":{
 		"east": 150,

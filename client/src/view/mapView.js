@@ -433,19 +433,70 @@ class MapView{
 			return null;
 	}
 
+	getForestTileModifier(up, right, down, left){
+		let y = Settings.tiles.x;
+
+		if(!up && !right && !down && !left)
+			return 0;
+
+		if(!up && right && !down && !left)
+			return 1;
+		if(!up && right && !down && left)
+			return 2;
+		if(!up && !right && !down && left)
+			return 3;
+
+		if(!up && !right && down && !left)
+			return 1*y;
+		if(up && !right && down && !left)
+			return 2*y;
+		if(up && !right && !down && !left)
+			return 3*y;
+
+		if(!up && right && down && !left)
+			return 1*y + 1;
+		if(!up && right && down && left)
+			return 1*y + 2;
+		if(!up && !right && down && left)
+			return 1*y + 3;
+
+		if(up && right && down && !left)
+			return 2*y + 1;
+		if(up && right && down && left)
+			return 2*y + 2;
+		if(up && !right && down && left)
+			return 2*y + 3;
+
+		if(up && right && !down && !left)
+			return 3*y + 1;
+		if(up && right && !down && left)
+			return 3*y + 2;
+		if(up && !right && !down && left)
+			return 3*y + 3;
+
+	}
+
 	renderTopTiles(position){
 		let center = this.mapData.getTileInfo(position);
 
 		let topTiles = [];
-		if(center !== null && center.discovered){		
+		if(center !== null && center.discovered){
+			let left = center.getLeft();
+			let right = center.getRight();
+			let up = center.getUp();
+			let down = center.getDown();
+
 			if(center.forest){
-				topTiles.push(Terrain.forest.id);
+				let mod = this.getForestTileModifier(up.forest, right.forest, down.forest, left.forest);
+				topTiles.push(Terrain.forest.singleTile + mod);
 			}
 			if(center.hills){
-				topTiles.push(Terrain.hills.id);
+				let mod = this.getForestTileModifier(up.hills, right.hills, down.hills, left.hills);
+				topTiles.push(Terrain.hills.singleTile + mod);
 			}
 			if(center.mountains){
-				topTiles.push(Terrain.mountains.id);
+				let mod = this.getForestTileModifier(up.mountains, right.mountains, down.mountains, left.mountains);
+				topTiles.push(Terrain.mountains.singleTile + mod);
 			}
 		}
 
