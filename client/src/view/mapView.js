@@ -249,6 +249,28 @@ class MapView{
 					){
 						tiles.push(upLeft.props.centerTile + Settings.tiles.x + 1);
 					}
+
+					if(
+						(up.props.domain === 'sea' && center.props.domain === 'land') &&
+						(up.discovered && center.discovered) &&
+						(up.coastTerrain !== null)
+					){
+						tiles.push(up.coastTerrain.centerTile + Settings.tiles.x);
+					}
+					if(
+						(left.props.domain === 'sea' && center.props.domain === 'land') &&
+						(left.discovered && center.discovered) &&
+						(left.coastTerrain !== null)
+					){
+						tiles.push(left.coastTerrain.centerTile + 1)
+					}
+					if(
+						(upLeft.props.domain === 'sea' && center.props.domain === 'land') &&
+						(upLeft.discovered && center.discovered) &&
+						(upLeft.coastTerrain !== null)
+					){
+						tiles.push(upLeft.coastTerrain.centerTile + Settings.tiles.x + 1);
+					}
 				}
 			}
 		}
