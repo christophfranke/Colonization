@@ -34,7 +34,7 @@ class FPSCounter {
 				}
 				Colonize.game.debug.start(20, 20, 'white');
 				Colonize.game.debug.line(Colonize.game.time.fps + ' fps');
-				Colonize.game.debug.line(Colonize.renderer.spriteCount + ' sprites');
+				Colonize.game.debug.line(Colonize.renderer.spriteCount + '/2000 sprites');
 				Colonize.game.debug.line(Colonize.renderer.tileCount + ' tiles');
 				Colonize.game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				Colonize.game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
