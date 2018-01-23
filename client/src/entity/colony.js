@@ -21,6 +21,12 @@ class Colony{
 			id: this.props.id,
 			colony: this
 		});
+
+		this.storage = {
+			'food': 0
+		};
+
+		Colony.all.push(this);
 	}
 
 	uncoverMap(){
@@ -34,6 +40,16 @@ class Colony{
 				Colonize.map.discover(tile);
 			}
 		}
+	}
+
+	produce(){
+		for(let colonist of this.colonists){
+			if(colonist.production){
+				let type = colonist.production.type
+				this.storage[type] += colonist.production.tile.getProduction(type);
+			}
+		}
+		console.log(this.storage);
 	}
 
 	openCityScreen(){

@@ -1,5 +1,6 @@
 
 import Unit from '../entity/unit.js';
+import Colony from '../entity/colony.js';
 
 class Turn{
 	constructr(props){
@@ -9,6 +10,11 @@ class Turn{
 	endTurn(){
 		for(let u of Unit.all){
 			u.nextTurn();
+		}
+
+
+		for(let c of Colony.all){
+			c.produce();
 		}
 
 		if(Unit.all.length > 0){

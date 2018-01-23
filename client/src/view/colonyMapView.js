@@ -11,9 +11,10 @@ class ColonyMapView{
 	constructor(props){
 		this.colony = props.colony;
 		this.parentScreen = props.parentScreen;
+		this.layer = new Phaser.Group(Colonize.game);
+		this.parentScreen.addChild(this.layer);
 
 
-		this.mapTiles = [];
 		this.sprites = [];
 
 		this.scale = 4;
@@ -31,7 +32,6 @@ class ColonyMapView{
 			sprite.destroy();
 		}
 
-		this.mapTiles = [];
 		this.sprites = [];
 		let offset = new Position({
 			x: 256,
@@ -48,13 +48,13 @@ class ColonyMapView{
 					type: Position.TILE
 				});
 				let newTileView = Colonize.map.mapView.renderTile(tile);
+				let tileInfo = Colonize.map.getTileInfo(tile);
 				let currentPosition = new Position({
 					x: this.scale*(x+1)*Settings.tileSize.x + offset.x,
 					y: this.scale*(y+1)*Settings.tileSize.y + offset.y - y, // something strange is happening here, the "-y" term should not have to be there...
 					type: Position.WORLD
 				});
-				this.mapTiles.push(newTileView);
-				this.createMapSprite(newTileView, currentPosition);
+				this.createMapSprite(newTileView, currentPosition, tileInfo);
 				if(x === 0 && y === 0){
 					this.createColonySprite(currentPosition);
 				}
@@ -62,7 +62,22 @@ class ColonyMapView{
 		}
 	}
 
-	createMapSprite(tileView, position){
+	tileAt(position){
+		for(let sprite of this.sprites){
+			if(
+				position.x >= sprite.x &&
+				position.x <= sprite.x+sprite.width &&
+				position.y >= sprite.y &&
+				position.y <= sprite.y + sprite.width
+			){
+				return sprite.data.tileInfo;
+			}
+		}
+
+		return null;
+	}
+
+	createMapSprite(tileView, position, tileInfo){
 		let indices = tileView.indices;
 		let pos = position.getWorld();
 		for(let index of indices){
@@ -75,8 +90,9 @@ class ColonyMapView{
 			);
 			newSprite.scale = new Phaser.Point(this.scale, this.scale);
 			newSprite.smoothed = false;
+			newSprite.data.tileInfo = tileInfo;
 
-			this.parentScreen.addChild(newSprite);
+			this.layer.addChild(newSprite);
 			this.sprites.push(newSprite);
 		}
 	}
@@ -92,7 +108,7 @@ class ColonyMapView{
 		);
 		newSprite.scale = new Phaser.Point(this.scale, this.scale);
 
-		this.parentScreen.addChild(newSprite);
+		this.layer.addChild(newSprite);
 		this.sprites.push(newSprite);
 	}
 }

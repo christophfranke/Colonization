@@ -1,5 +1,6 @@
 import Terrain from '../../data/terrain.json';
 import Colonize from '../colonize.js';
+import Production from '../../data/production.json';
 
 class MapTile {
 	constructor(props){
@@ -20,10 +21,12 @@ class MapTile {
 		}
 
 		this.discovered = true;
+		this.used = false;
 
 		for(let type in Terrain){
 			if(Terrain[type].id === this.id){
 				this.props = Terrain[type];
+				this.name = type;
 			}
 		};
 
@@ -35,6 +38,11 @@ class MapTile {
 			this.position.y === Colonize.map.mapData.numTiles.y-1);
 
 		this.units = [];
+	}
+
+	getProduction(type){
+		let modifier = 'plain';
+		return Production[this.name][modifier][type];
 	}
 
 	getLeft(){

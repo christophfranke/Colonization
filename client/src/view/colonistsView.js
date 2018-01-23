@@ -15,7 +15,7 @@ class ColonistsView {
 			y: 350,
 			type: Position.WORLD
 		})
-		for(let colonist of this .colonists){
+		for(let colonist of this.colonists){
 			let newSprite = new Phaser.Sprite(
 				Colonize.game,
 				position.x,
@@ -27,8 +27,17 @@ class ColonistsView {
 			this.parentScreen.addChild(newSprite);
 			this.sprites.push(newSprite);
 
+			newSprite.inputEnabled = true;
+			newSprite.input.enableDrag(true);
+			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(colonist, sprite.position);});
+
 			position.x += 32;
 		}
+	}
+
+	dragColonist(colonist, position){
+		let tile = this.colony.colonyView.colonyMapView.tileAt(position);
+		colonist.workOn(tile);
 	}
 }
 
