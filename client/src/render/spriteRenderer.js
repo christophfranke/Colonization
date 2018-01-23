@@ -108,6 +108,8 @@ class SpriteRenderer {
 			this.sprites[where].cacheAsBitmap = true;
 			this.spritesUpdated += indices.length;
 		}
+
+		this.hasChanged = true;
 	}
 
 	tileIndex(tile){
@@ -137,6 +139,7 @@ class SpriteRenderer {
 	}
 
 	updateScreen(){
+		this.display.cacheAsBitmap = false;
 		this.display.removeChildren();
 		this.spriteCount = 0;
 		this.tileCount = 0;
@@ -174,8 +177,12 @@ class SpriteRenderer {
 
 	render(){
 		//don't do anything if camera doesn't move;
-		if(this.lastCameraPosition.x == Colonize.game.camera.x && this.lastCameraPosition.y == Colonize.game.camera.y)
+		if(this.lastCameraPosition.x == Colonize.game.camera.x && this.lastCameraPosition.y == Colonize.game.camera.y){
+			this.display.cacheAsBitmap = !this.hasChanged;
+			this.hasChanged = false;
 			return;
+		}
+
 
 		this.lastCameraPosition = new Position({
 			x: Colonize.game.camera.x,
