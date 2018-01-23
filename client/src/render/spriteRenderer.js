@@ -13,16 +13,20 @@ class SpriteRenderer {
 		Colonize.renderer = this;
 
 		this.tileCaching = false;
+		this.displayCaching = false;
 
 
 		this.display = Colonize.game.add.group();
-		this.display.cacheAsBitmap = true;
+		this.display.cacheAsBitmap = this.displayCaching;
 
 		//fill array with empty spriteBatches
 		this.sprites = Array(Colonize.map.mapData.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
 			let tile = this.tileAt(i);
-			this.sprites[i] = new Phaser.Group(Colonize.game, this.display);
+			if(this.tileCaching)
+				this.sprites[i] = new Phaser.Group(Colonize.game, this.display);
+			else
+				this.sprites[i] = new Phaser.SpriteBatch(Colonize.game, this.display);
 			this.sprites[i].x = tile.x*Settings.tileSize.x;
 			this.sprites[i].y = tile.y*Settings.tileSize.y;
 			this.sprites[i].interactiveChildren = false;
@@ -46,12 +50,21 @@ class SpriteRenderer {
 
 		this.lastDisplayUpdate = this.lastCameraPosition.getWorld();
 
-		//cullin margin for cheap culling (needs more!)
-		this.margin = new Position({
-			x: Math.ceil(0.5*this.cameraWidth.x),
-			y: Math.ceil(0.5*this.cameraWidth.y),
-			type: Position.TILE
-		});
+		//display caching relies on large margin for smooth scroll performance
+		if(this.displayCaching){		
+			this.margin = new Position({
+				x: Math.ceil(0.5*this.cameraWidth.x),
+				y: Math.ceil(0.5*this.cameraWidth.y),
+				type: Position.TILE
+			});
+		}
+		else{
+			this.margin = new Position({
+				x: 2,
+				y: 2,
+				type: Position.TILE
+			});
+		}
 
 		//somehow the center is off by 1... (looks like a bug!)
 		this.offset = new Position({
@@ -184,13 +197,15 @@ class SpriteRenderer {
 	}
 
 	render(){
+		//camera is out of bounds, disable caching and render quickly!
 		if(!this.cameraInBounds()){
 			this.display.cacheAsBitmap = false;
 			this.updateScreen();
 			this.hasChanged = false;
 		}
 
-		//don't do anything if camera doesn't move;
+		//camera is not moving, good time to update the render image
+		//when not using dislpay cache nothing has to be done
 		if(
 			this.hasChanged ||
 			(this.lastCameraPosition.x === Colonize.game.camera.x &&
@@ -198,18 +213,20 @@ class SpriteRenderer {
 		    this.lastDisplayUpdate.x !== Colonize.game.camera.x &&
 		    this.lastDisplayUpdate.y !== Colonize.game.camera.y)
 		){
-			this.updateScreen();
-			if(this.display.cacheAsBitmap)
-				this.display.updateCache();
-			else
-				this.display.cacheAsBitmap = true;
-			this.lastDisplayUpdate = new Position({
-				x: Colonize.game.camera.x,
-				y: Colonize.game.camera.y,
-				type: Position.WORLD
-			});		
+			if(this.displayCaching){		
+				this.updateScreen();
+				if(this.display.cacheAsBitmap)
+					this.display.updateCache();
+				else
+					this.display.cacheAsBitmap = true;
+				this.lastDisplayUpdate = new Position({
+					x: Colonize.game.camera.x,
+					y: Colonize.game.camera.y,
+					type: Position.WORLD
+				});		
 
-			this.hasChanged = false;
+				this.hasChanged = false;
+			}
 		}
 
 		this.lastCameraPosition.x = Colonize.game.camera.x;
