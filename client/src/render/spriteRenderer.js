@@ -12,8 +12,8 @@ class SpriteRenderer {
 	constructor(){
 		Colonize.renderer = this;
 
-		this.tileCaching = false;
-		this.displayCaching = true;
+		this.tileCaching = true;
+		this.displayCaching = false;
 		this.scrollCaching = false;
 
 
@@ -76,7 +76,7 @@ class SpriteRenderer {
 	}
 
 	pushTile(tile, view){
-		this.updateTile(tile, view);
+		this.updateSprites(tile, view.indices);
 	}
 
 	initialize(){
@@ -109,25 +109,26 @@ class SpriteRenderer {
 				index - 1,
 				this.sprites[where]
 			);
-
 		}
 
-		if(indices.length > 0){
+		this.hasChanged = true;
+		this.spritesUpdated += indices.length;
+	}
+
+	showSprite(tile){
+		let where = this.tileIndex(tile);
+		if(this.sprites[where].children.length > 0){		
 			if(this.sprites[where].parent !== this.display){
 				this.display.addChild(this.sprites[where]);
 				this.tileCount++;
-				this.spriteCount += indices.length;
 			}
 
-			if(this.tileCaching){			
+			if(this.tileCaching){
 				if(!this.sprites[where].cacheAsBitmap)
 					this.sprites[where].cacheAsBitmap = true;
 				this.sprites[where].updateCache();
 			}
-			this.spritesUpdated += indices.length;
 		}
-
-		this.hasChanged = true;
 	}
 
 	tileIndex(tile){
@@ -153,7 +154,7 @@ class SpriteRenderer {
 		}
 
 		this.updateSprites(tile, view.indices);
-
+		this.showSprite(tile);
 	}
 
 	updateScreen(){
@@ -190,6 +191,8 @@ class SpriteRenderer {
 						this.display.addChild(this.sprites[at]);
 						this.tileCount++;
 						this.spriteCount += this.sprites[at].children.length;
+						if(!this.sprites[at].cacheAsBitmap)
+							this.showSprite(position);
 					}
 				}
 			}
