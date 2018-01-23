@@ -51,7 +51,11 @@
 	},
 	"coastal sea":{
 		"domain": "sea",
-		"centerTile": 178
+		"centerTile": 178,
+		"southEastCorner": 120,
+		"southWestCorner": 136,
+		"northWestCorner": 152,
+		"northEastCorner": 168
 	},
 	"forest":{
 		"id": 92,

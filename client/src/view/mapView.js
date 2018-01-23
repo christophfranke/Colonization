@@ -54,8 +54,7 @@ class MapView{
 
 		tileView.addTiles(this.renderBaseBlock(tile));
 		tileView.addTiles(this.renderTopTiles(tile));
-		tileView.addTiles(this.renderCoastLine(tile));
-		tileView.addTiles(this.renderCoastCorners(tile));
+		tileView.addTiles(this.renderCoast(tile));
 		tileView.addTiles(this.renderUndiscovered(tile));
 
 		return tileView;
@@ -325,6 +324,64 @@ class MapView{
 		}
 
 		return tiles;
+	}
+
+	renderCoast(tile){
+		let indices = [];		
+		indices = [...indices, ...this.renderCoastLine(tile)];
+		indices = [...indices, ...this.renderCoastCorners(tile)];
+		indices = [...indices, ...this.renderCoastalSea(tile)];
+
+		return indices;
+	}
+
+	renderCoastalSea(tile){
+		let indices = [];
+
+		let center = this.mapData.getTileInfo(tile);
+		let left = center.getLeft();
+		let right = center.getRight();
+		let up = center.getUp();
+		let down = center.getDown();
+
+		if(
+			center !== null &&
+			center.discovered &&
+			left !== null &&
+			right !== null &&
+			up !== null &&
+			down !== null &&
+			typeof center.props !== 'undefined' &&
+			typeof left.props !== 'undefined' &&
+			typeof up.props !== 'undefined' &&
+			typeof down.props !== 'undefined' &&
+			typeof right.props !== 'undefined' &&
+			center.props.domain === 'sea' &&
+			center.coastTerrain !== null
+		){
+			let leftUp = left.getUp();
+			let leftDown = left.getDown();
+			let rightUp = right.getUp();
+			let rightDown = right.getDown();
+
+			if(
+				leftUp !== null && typeof leftUp.props !== 'undefined' &&
+				rightUp !== null && typeof rightUp.props !== 'undefined' &&
+				leftDown !== null && typeof leftDown.props !== 'undefined' &&
+				rightDown !== null && typeof rightDown.props !== 'undefined'
+			){
+				if(leftUp.props.domain === 'sea' && left.props.domain === 'sea' && up.props.domain === 'sea')
+					indices.push(Terrain['coastal sea'].northWestCorner);
+				if(leftDown.props.domain === 'sea' && left.props.domain === 'sea' && down.props.domain === 'sea')
+					indices.push(Terrain['coastal sea'].southWestCorner);
+				if(rightUp.props.domain === 'sea' && right.props.domain === 'sea' && up.props.domain === 'sea')
+					indices.push(Terrain['coastal sea'].northEastCorner);
+				if(rightDown.props.domain === 'sea' && right.props.domain === 'sea' && down.props.domain === 'sea')
+					indices.push(Terrain['coastal sea'].southEastCorner);
+			}
+		}
+
+		return indices;
 	}
 
 	renderCoastLine(tile){
