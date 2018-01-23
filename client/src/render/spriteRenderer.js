@@ -13,7 +13,8 @@ class SpriteRenderer {
 		Colonize.renderer = this;
 
 		this.tileCaching = false;
-		this.displayCaching = false;
+		this.displayCaching = true;
+		this.scrollCaching = false;
 
 
 		this.display = Colonize.game.add.group();
@@ -51,7 +52,7 @@ class SpriteRenderer {
 		this.lastDisplayUpdate = this.lastCameraPosition.getWorld();
 
 		//display caching relies on large margin for smooth scroll performance
-		if(this.displayCaching){		
+		if(this.displayCaching && this.scrollCaching){		
 			this.margin = new Position({
 				x: Math.ceil(0.5*this.cameraWidth.x),
 				y: Math.ceil(0.5*this.cameraWidth.y),
