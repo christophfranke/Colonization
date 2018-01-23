@@ -49,6 +49,10 @@
 		"domain": "sea",
 		"centerTile": 286
 	},
+	"coastal sea":{
+		"domain": "sea",
+		"centerTile": 178
+	},
 	"forest":{
 		"id": 92,
 		"singleTile": 309
