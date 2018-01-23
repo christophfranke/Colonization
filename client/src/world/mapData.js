@@ -66,6 +66,9 @@ class MapData{
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
 			this.tiles[index].createCoastTerrain();
 		}		
+		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
+			this.tiles[index].createCoastalSea();
+		}		
 	}
 }
 

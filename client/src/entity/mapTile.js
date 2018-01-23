@@ -103,6 +103,38 @@ class MapTile {
 		}
 	}
 
+	createCoastalSea(){
+		this.isCoastalSea = false;
+		if(typeof this.props !== 'undefined' && this.props.domain === 'sea' && this.coastTerrain === null){
+			let left = Colonize.map.mapData.getTileInfo(this.position.left());
+			let right = Colonize.map.mapData.getTileInfo(this.position.right());
+			let up = Colonize.map.mapData.getTileInfo(this.position.up());
+			let down = Colonize.map.mapData.getTileInfo(this.position.down());
+			if(left !== null && right !== null){
+				let leftUp = left.getUp();
+				let leftDown = left.getDown();
+				let rightUp = right.getUp();
+				let rightDown = right.getDown();
+
+				if(
+					up !== null && rightUp !== null && right !== null && rightDown !== null &&
+					down !== null && leftDown !== null && left !== null && leftUp !== null
+				){
+				this.isCoastalSea =
+					(up.coastTerrain !== null) ||
+					(rightUp.coastTerrain !== null) ||
+					(right.coastTerrain !== null) ||
+					(rightDown.coastTerrain !== null) ||
+					(down.coastTerrain !== null) ||
+					(leftDown.coastTerrain !== null) ||
+					(left.coastTerrain !== null) ||
+					(leftUp.coastTerrain !== null);
+				}
+			}
+		}
+
+	}
+
 }
 
 export default MapTile;
