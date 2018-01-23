@@ -16,6 +16,7 @@ class SpriteRenderer {
 
 
 		this.display = Colonize.game.add.group();
+		this.display.cacheAsBitmap = true;
 
 		//fill array with empty spriteBatches
 		this.sprites = Array(Colonize.map.mapData.numTiles.total);
@@ -43,23 +44,21 @@ class SpriteRenderer {
 			type: Position.WORLD
 		});
 
-		//cullin margin for cheap culling (needs more!)
-		this.margin = {
-			x: Math.ceil(0.6*this.cameraWidth.x),
-			y: Math.ceil(0.6*this.cameraWidth.y)
-		};
+		this.lastDisplayUpdate = this.lastCameraPosition.getWorld();
 
-		//and for expensive culling
-		this.smallMargin = {
-			x: 2,
-			y: 2
-		};
+		//cullin margin for cheap culling (needs more!)
+		this.margin = new Position({
+			x: Math.ceil(0.5*this.cameraWidth.x),
+			y: Math.ceil(0.5*this.cameraWidth.y),
+			type: Position.TILE
+		});
 
 		//somehow the center is off by 1... (looks like a bug!)
-		this.offset = {
+		this.offset = new Position({
 			x: 1,
-			y: 1
-		};
+			y: 1,
+			type: Position.TILE
+		});
 	}
 
 	pushTile(tile, view){
@@ -144,7 +143,6 @@ class SpriteRenderer {
 	}
 
 	updateScreen(){
-		this.display.cacheAsBitmap = false;
 		this.display.removeChildren();
 		this.spriteCount = 0;
 		this.tileCount = 0;
@@ -152,10 +150,14 @@ class SpriteRenderer {
 		if(!this.visible)
 			return;
 
-		let cameraPosition = this.lastCameraPosition.getTile();
+		let cameraPosition = new Position({
+			x: Colonize.game.camera.x,
+			y: Colonize.game.camera.y,
+			type: Position.WORLD
+		}).getTile();
 
-		for(let x = cameraPosition.x - this.smallMargin.x; x < cameraPosition.x + this.cameraWidth.x + this.smallMargin.x; x++){
-			for(let y = cameraPosition.y - this.smallMargin.y; y < cameraPosition.y + this.cameraWidth.y + this.smallMargin.y; y++){
+		for(let x = cameraPosition.x - this.margin.x; x < cameraPosition.x + this.cameraWidth.x + this.margin.x; x++){
+			for(let y = cameraPosition.y - this.margin.y; y < cameraPosition.y + this.cameraWidth.y + this.margin.y; y++){
 
 				let position = new Position({
 					x : x + this.offset.x,
@@ -177,25 +179,48 @@ class SpriteRenderer {
 					}
 				}
 			}
-		}		
+		}
+
 	}
 
 	render(){
-		//don't do anything if camera doesn't move;
-		if(this.lastCameraPosition.x == Colonize.game.camera.x && this.lastCameraPosition.y == Colonize.game.camera.y){
-			this.display.cacheAsBitmap = !this.hasChanged;
+		if(!this.cameraInBounds()){
+			this.display.cacheAsBitmap = false;
+			this.updateScreen();
 			this.hasChanged = false;
-			return;
 		}
 
+		//don't do anything if camera doesn't move;
+		if(
+			this.hasChanged ||
+			(this.lastCameraPosition.x === Colonize.game.camera.x &&
+		    this.lastCameraPosition.y === Colonize.game.camera.y &&
+		    this.lastDisplayUpdate.x !== Colonize.game.camera.x &&
+		    this.lastDisplayUpdate.y !== Colonize.game.camera.y)
+		){
+			this.updateScreen();
+			if(this.display.cacheAsBitmap)
+				this.display.updateCache();
+			else
+				this.display.cacheAsBitmap = true;
+			this.lastDisplayUpdate = new Position({
+				x: Colonize.game.camera.x,
+				y: Colonize.game.camera.y,
+				type: Position.WORLD
+			});		
 
-		this.lastCameraPosition = new Position({
-			x: Colonize.game.camera.x,
-			y: Colonize.game.camera.y,
-			type: Position.WORLD
-		});
+			this.hasChanged = false;
+		}
 
-		this.updateScreen();
+		this.lastCameraPosition.x = Colonize.game.camera.x;
+		this.lastCameraPosition.y = Colonize.game.camera.y;
+	}
+
+	cameraInBounds(){
+		let margin = this.margin.getWorld();
+		return (
+			Math.abs(this.lastDisplayUpdate.x - Colonize.game.camera.x) < margin.x &&
+			Math.abs(this.lastDisplayUpdate.y - Colonize.game.camera.y) < margin.y)
 	}
 
 
