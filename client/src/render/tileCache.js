@@ -24,7 +24,7 @@ class TileCache{
 	}
 
 	addStencil(indices){
-		if(indices.length === 0)
+		if(indices.length <= 1)
 			return false;
 
 		if(this.hasStencil(indices)){
