@@ -51,8 +51,8 @@ class MapData{
 				id: this.baseLayer.data[index],
 				top: this.topLayer.data[index],
 				position: new Position({
-					x: index % this.numTiles.y,
-					y: index / this.numTiles.y,
+					x: index % this.numTiles.x,
+					y: index / this.numTiles.x,
 					type: Position.TILE
 				})
 			});
