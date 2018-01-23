@@ -39,6 +39,8 @@ class Colonize{
 
         Colonize.ressources = new Ressources();
         Colonize.turn = new Turn();
+
+        this.globals = Colonize;
     }
 
     preload() {
