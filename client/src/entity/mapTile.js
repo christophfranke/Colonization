@@ -19,7 +19,7 @@ class MapTile {
 			this.river = true;
 		}
 
-		this.discovered = false;
+		this.discovered = true;
 
 		for(let type in Terrain){
 			if(Terrain[type].id === this.id){
@@ -81,6 +81,25 @@ class MapTile {
 
 			if(landNeighbor !== null)
 				this.coastTerrain = landNeighbor.props;
+
+			if(landNeighbor === null && left !== null && right !== null){
+				let leftUp = left.getUp();
+				let leftDown = left.getDown();
+				let rightUp = right.getUp();
+				let rightDown = right.getDown();
+
+				if(leftUp !== null && typeof leftUp.props !== 'undefined' && leftUp.props.domain === 'land')
+					landNeighbor = leftUp;
+				if(leftDown !== null && typeof leftDown.props !== 'undefined' && leftDown.props.domain === 'land')
+					landNeighbor = leftDown;
+				if(rightUp !== null && typeof rightUp.props !== 'undefined' && rightUp.props.domain === 'land')
+					landNeighbor = rightUp;
+				if(rightDown !== null && typeof rightDown.props !== 'undefined' && rightDown.props.domain === 'land')
+					landNeighbor = rightDown;
+
+				if(landNeighbor !== null)
+					this.coastTerrain = landNeighbor.props;
+			}
 		}
 	}
 
