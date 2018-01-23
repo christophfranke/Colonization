@@ -85,7 +85,6 @@ class SpriteRenderer {
 			sprite.destroy();
 		}
 		this.sprites[where].removeChildren();
-		this.sprites[where].cacheAsBitmap = false;
 
 		for(let index of indices){
 			let newSprite = Colonize.game.add.sprite(
@@ -105,7 +104,9 @@ class SpriteRenderer {
 				this.spriteCount += indices.length;
 			}
 
-			this.sprites[where].cacheAsBitmap = true;
+			if(!this.sprites[where].cacheAsBitmap)
+				this.sprites[where].cacheAsBitmap = true;
+			this.sprites[where].updateCache();
 			this.spritesUpdated += indices.length;
 		}
 
