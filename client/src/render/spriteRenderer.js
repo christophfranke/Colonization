@@ -12,6 +12,8 @@ class SpriteRenderer {
 	constructor(){
 		Colonize.renderer = this;
 
+		this.tileCaching = false;
+
 
 		this.display = Colonize.game.add.group();
 
@@ -104,9 +106,11 @@ class SpriteRenderer {
 				this.spriteCount += indices.length;
 			}
 
-			if(!this.sprites[where].cacheAsBitmap)
-				this.sprites[where].cacheAsBitmap = true;
-			this.sprites[where].updateCache();
+			if(this.tileCaching){			
+				if(!this.sprites[where].cacheAsBitmap)
+					this.sprites[where].cacheAsBitmap = true;
+				this.sprites[where].updateCache();
+			}
 			this.spritesUpdated += indices.length;
 		}
 
