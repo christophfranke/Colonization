@@ -32,7 +32,7 @@ class Colonize{
             update: () => this.update(),
             render: () => this.render()
         });
-        // Phaser.Canvas.setSmoothingEnabled(Colonize.game.context, false);
+        Phaser.Canvas.setSmoothingEnabled(Colonize.game, false);
 
         Colonize.map = new Map();
         Colonize.fpsCounter = new FPSCounter();
