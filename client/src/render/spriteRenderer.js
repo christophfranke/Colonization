@@ -13,14 +13,16 @@ class SpriteRenderer {
 		Colonize.renderer = this;
 
 
-		this.display = Colonize.game.add.spriteBatch();
+		this.display = Colonize.game.add.group();
 
-		//fill array with empty arrays
+		//fill array with empty spriteBatches
 		this.sprites = Array(Colonize.map.mapData.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
-			this.sprites[i] = [];
+			let tile = this.tileAt(i);
+			this.sprites[i] = new Phaser.SpriteBatch(Colonize.game, this.display);
+			this.sprites[i].x = tile.x*Settings.tileSize.x;
+			this.sprites[i].y = tile.y*Settings.tileSize.y;
 		}
-
 		this.visible = true;
 
 
@@ -75,44 +77,39 @@ class SpriteRenderer {
 
 
 	updateSprites(tile, indices){
-		let index = this.tileIndex(tile);
+		let where = this.tileIndex(tile);
 
-		//update common sprites
-		let common = Math.min(indices.length, this.sprites[index].length)
-		for(let i = 0; i < common; i++){
-			this.sprites[index][i].frame = indices[i]-1;
+		this.sprites[where].removeAll(true); //remove and destroy all children
+
+		for(let index of indices){
+			let newSprite = Colonize.game.add.sprite(
+				0,
+				0,
+				'mapSheet',
+				index - 1,
+				this.sprites[where]
+			);
+
 		}
 
-		//create new sprites
-		if(indices.length > this.sprites[index].length){
-
-			for(let i = common; i < indices.length; i++){
-
-				let newSprite = Colonize.game.add.sprite(
-					tile.x*Settings.tileSize.x,
-					tile.y*Settings.tileSize.y,
-					'mapSheet',
-					indices[i] - 1,
-					this.display
-				);
-
-				this.sprites[index].push(newSprite);
-				this.spriteCount++;
-			}
-		}
-
-		//remove old sprites
-		if(indices.length < this.sprites[index].length){
-			for(let i = common; i < this.sprites[index].length; i++){
-				this.sprites[index][i].destroy();
-				this.spriteCount--;
-			}
-			this.sprites[index].length = common;
+		if(indices.length > 0 && this.sprites[where].parent !== this.display){
+			this.display.addChild(this.sprites[where]);
+			this.spriteCount += indices.length;
+			this.tileCount++;
+			this.sprites[where].cacheAsBitmap = true;
 		}
 	}
 
 	tileIndex(tile){
 		return tile.x + tile.y*Colonize.map.mapData.numTiles.x;
+	}
+
+	tileAt(index){
+		return new Position({
+			x: index % Colonize.map.mapData.numTiles.x,
+			y: Math.floor(index / Colonize.map.mapData.numTiles.x),
+			type: Position.TILE
+		});
 	}
 
 	updateTile(tile, view){
@@ -124,6 +121,7 @@ class SpriteRenderer {
 		){
 			return;
 		}
+
 		this.updateSprites(tile, view.indices);
 
 	}
@@ -153,15 +151,12 @@ class SpriteRenderer {
 					position.y >= 0 &&
 					position.y < Colonize.map.mapData.numTiles.y
 				){
-					let from = this.tileIndex(position);
-					let added = false;
-					for(let sprite of this.sprites[from]){
-						this.display.addChild(sprite);
-						this.spriteCount++;
-						added = true;
-					}
-					if(added)
+					let at = this.tileIndex(position);
+					if(this.sprites[at].children.length > 0){
+						this.display.addChild(this.sprites[at]);
 						this.tileCount++;
+						this.spriteCount += this.sprites[at].children.length;
+					}
 				}
 			}
 		}		
