@@ -39,6 +39,7 @@ class FPSCounter {
 				Colonize.game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				Colonize.game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
 				Colonize.game.debug.line(Colonize.renderer.spritesUpdated + ' sprites updated');
+				Colonize.game.debug.line(Colonize.renderer.tileCache.numFrames + '/' + Colonize.renderer.tileCache.cacheSize + ' sprites in cache');
 				if(memoryUsage !=='n/a')
 					Colonize.game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
 				Colonize.game.debug.stop();

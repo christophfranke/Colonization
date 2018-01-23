@@ -5,6 +5,7 @@ import Settings from '../../data/settings.json';
 import Phaser from 'phaser';
 import Position from '../helper/position.js';
 import MapTileView from '../view/mapTileView.js';
+import TileCache from './tileCache.js';
 
 
 
@@ -12,13 +13,16 @@ class SpriteRenderer {
 	constructor(){
 		Colonize.renderer = this;
 
-		this.tileCaching = true;
+		this.tileCaching = false;
 		this.displayCaching = false;
+		this.stencilCaching = true;
 		this.scrollCaching = false;
 
 
 		this.display = Colonize.game.add.group();
 		this.display.cacheAsBitmap = this.displayCaching;
+
+		this.tileCache = new TileCache();
 
 		//fill array with empty spriteBatches
 		this.sprites = Array(Colonize.map.mapData.numTiles.total);
@@ -76,7 +80,8 @@ class SpriteRenderer {
 	}
 
 	pushTile(tile, view){
-		this.updateSprites(tile, view.indices);
+		this.updateSprites(tile, view.cached);
+		this.updateSprites(tile, view.indices, false);
 	}
 
 	initialize(){
@@ -93,26 +98,43 @@ class SpriteRenderer {
 	}
 
 
-	updateSprites(tile, indices){
+	updateSprites(tile, indices, clearBaseSprite = true){
 		let where = this.tileIndex(tile);
 
-		for(let sprite of this.sprites[where].children){
-			sprite.destroy();
+		if(clearBaseSprite){		
+			for(let sprite of this.sprites[where].children){
+				sprite.destroy();
+			}
+			this.sprites[where].removeChildren();
 		}
-		this.sprites[where].removeChildren();
 
+		let fromCache = false;
+		if(this.stencilCaching){
+			let sprite = this.tileCache.createSprite(indices);
+			if(sprite !== null){
+				this.sprites[where].addChild(sprite);
+				this.spritesUpdated++;
+				fromCache = true;
+			}
+		}
+		if(!fromCache){
+			this.createSprites(indices, this.sprites[where]);
+			this.spritesUpdated += indices.length;
+		}
+
+		this.hasChanged = true;
+	}
+
+	createSprites(indices, parent){
 		for(let index of indices){
 			let newSprite = Colonize.game.add.sprite(
 				0,
 				0,
 				'mapSheet',
 				index - 1,
-				this.sprites[where]
+				parent
 			);
 		}
-
-		this.hasChanged = true;
-		this.spritesUpdated += indices.length;
 	}
 
 	showSprite(tile){
@@ -153,7 +175,8 @@ class SpriteRenderer {
 			return;
 		}
 
-		this.updateSprites(tile, view.indices);
+		this.updateSprites(tile, view.cached);
+		this.updateSprites(tile, view.indices, false);
 		this.showSprite(tile);
 	}
 
