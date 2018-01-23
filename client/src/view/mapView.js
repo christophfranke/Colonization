@@ -53,7 +53,6 @@ class MapView{
 		let tileView = new MapTileView();
 
 		tileView.addTiles(this.renderBaseBlock(tile));
-		tileView.prepareForCaching();
 		tileView.addTiles(this.renderTopTiles(tile));
 		tileView.addTiles(this.renderCoastLine(tile));
 		tileView.addTiles(this.renderCoastCorners(tile));

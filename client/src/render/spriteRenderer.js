@@ -80,8 +80,10 @@ class SpriteRenderer {
 	}
 
 	pushTile(tile, view){
-		this.updateSprites(tile, view.cached);
-		this.updateSprites(tile, view.indices, false);
+		this.clearSprite(tile)
+		for(let indices of view.layers){
+			this.updateSprites(tile, indices);
+		}
 	}
 
 	initialize(){
@@ -97,16 +99,17 @@ class SpriteRenderer {
 		this.updateScreen();
 	}
 
-
-	updateSprites(tile, indices, clearBaseSprite = true){
+	clearSprite(tile){
 		let where = this.tileIndex(tile);
-
-		if(clearBaseSprite){		
-			for(let sprite of this.sprites[where].children){
-				sprite.destroy();
-			}
-			this.sprites[where].removeChildren();
+		for(let sprite of this.sprites[where].children){
+			sprite.destroy();
 		}
+		this.sprites[where].removeChildren();		
+	}
+
+
+	updateSprites(tile, indices){
+		let where = this.tileIndex(tile);
 
 		let fromCache = false;
 		if(this.stencilCaching){
@@ -175,8 +178,10 @@ class SpriteRenderer {
 			return;
 		}
 
-		this.updateSprites(tile, view.cached);
-		this.updateSprites(tile, view.indices, false);
+		this.clearSprite(tile)
+		for(let indices of view.layers){
+			this.updateSprites(tile, indices);
+		}
 		this.showSprite(tile);
 	}
 

@@ -1,27 +1,27 @@
 
-import Colonize from '../colonize.js';
 
 
 class MapTileView {
 	constructor(props){
-		this.indices = [];
-		this.cached = null;
+		this.reset();
+	}
+
+	newCachingLayer(){
+		this.layers.push([]);
 	}
 
 	addTiles(indices){
+		this.layers[this.layers.length-1] = [...this.layers[this.layers.length-1], ...indices];
 		this.indices = [...this.indices, ...indices];
-		if(this.indices.length > MapTileView.numTiles)
-			MapTileView.numTiles = this.indices.length;
+		this.numTiles += indices.length;
+		if(this.numTiles > MapTileView.numTiles)
+			MapTileView.numTiles = this.numTiles;
 	}
 
-	prepareForCaching(){
-		if(this.cached !== null){
-			console.log('Warning: can only prepare for caching once!');
-		}
-		else{
-			this.cached = this.indices;
-			this.indices = [];
-		}
+	reset(){
+		this.layers = [[]];
+		this.indices = [];
+		this.numTiles = 0;
 	}
 }
 
