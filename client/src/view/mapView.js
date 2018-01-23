@@ -535,10 +535,6 @@ class MapView{
 			let up = center.getUp();
 			let down = center.getDown();
 
-			if(center.forest){
-				let mod = this.getForestTileModifier(up.forest, right.forest, down.forest, left.forest);
-				topTiles.push(Terrain.forest.singleTile + mod);
-			}
 			if(center.hills){
 				let mod = this.getForestTileModifier(up.hills, right.hills, down.hills, left.hills);
 				topTiles.push(Terrain.hills.singleTile + mod);
@@ -550,6 +546,10 @@ class MapView{
 			if(center.river){
 				let mod = this.getForestTileModifier(up.river, right.river, down.river, left.river);
 				topTiles.push(Terrain.river.singleTile + mod);
+			}
+			if(center.forest){
+				let mod = this.getForestTileModifier(up.forest, right.forest, down.forest, left.forest);
+				topTiles.push(Terrain.forest.singleTile + mod);
 			}
 		}
 
