@@ -19,9 +19,10 @@ class SpriteRenderer {
 		this.sprites = Array(Colonize.map.mapData.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
 			let tile = this.tileAt(i);
-			this.sprites[i] = new Phaser.SpriteBatch(Colonize.game, this.display);
+			this.sprites[i] = new Phaser.Group(Colonize.game, this.display);
 			this.sprites[i].x = tile.x*Settings.tileSize.x;
 			this.sprites[i].y = tile.y*Settings.tileSize.y;
+			this.sprites[i].interactiveChildren = false;
 		}
 		this.visible = true;
 
@@ -79,7 +80,11 @@ class SpriteRenderer {
 	updateSprites(tile, indices){
 		let where = this.tileIndex(tile);
 
-		this.sprites[where].removeAll(true); //remove and destroy all children
+		for(let sprite of this.sprites[where].children){
+			sprite.destroy();
+		}
+		this.sprites[where].removeChildren();
+		this.sprites[where].cacheAsBitmap = false;
 
 		for(let index of indices){
 			let newSprite = Colonize.game.add.sprite(
@@ -92,10 +97,13 @@ class SpriteRenderer {
 
 		}
 
-		if(indices.length > 0 && this.sprites[where].parent !== this.display){
-			this.display.addChild(this.sprites[where]);
-			this.spriteCount += indices.length;
-			this.tileCount++;
+		if(indices.length > 0){
+			if(this.sprites[where].parent !== this.display){
+				this.display.addChild(this.sprites[where]);
+				this.tileCount++;
+				this.spriteCount += indices.length;
+			}
+
 			this.sprites[where].cacheAsBitmap = true;
 		}
 	}
