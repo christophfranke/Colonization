@@ -4,7 +4,7 @@ import MapTileView from '../view/mapTileView.js';
 
 class FPSCounter {
 	constructor(props){
-		this.skipFrames = 1; //only update everey 30 frames
+		this.skipFrames = 1; //only update every x frames
 		this.debug = false;
 		
 		this.currentFrame = this.skipFrames;
