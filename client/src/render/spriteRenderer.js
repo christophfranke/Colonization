@@ -25,6 +25,7 @@ class SpriteRenderer {
 			this.sprites[i].interactiveChildren = false;
 		}
 		this.visible = true;
+		this.spritesUpdated = 0;
 
 
 
@@ -105,6 +106,7 @@ class SpriteRenderer {
 			}
 
 			this.sprites[where].cacheAsBitmap = true;
+			this.spritesUpdated += indices.length;
 		}
 	}
 
