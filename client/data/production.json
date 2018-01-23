@@ -1,0 +1,112 @@
+{
+	"arctic":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"marsh":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"plains":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"grassland":{
+		"plain":{
+			"food": 3
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"prairie":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"savannah":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"swamp":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"tundra":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"desert":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	},
+	"sea lane":{
+		"plain":{
+			"food": 0
+		},
+		"forest":{
+			"food": 0
+		},
+		"river":{
+			"food": 0
+		}
+	}
+}
