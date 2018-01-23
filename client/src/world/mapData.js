@@ -7,18 +7,28 @@ import Position from '../helper/position.js';
 class MapData{
 
 	constructor(props){
+		this.data = props.data;
+
+		this.baseLayer = this.getLayer('terrain base');
+		this.topLayer = this.getLayer('terrain top');
+
 		this.numTiles = {
-			x: props.data.layers[0].width,
-			y: props.data.layers[0].height,
+			x: this.baseLayer.width,
+			y: this.baseLayer.height,
 		};
 		this.numTiles.total = this.numTiles.x*this.numTiles.y;
-
-		this.data = props.data;
 	}
 
 	init(){
 		this.createAllTiles();
 		this.createCoastLine();
+	}
+
+	getLayer(name){
+		for(let layer of this.data.layers){
+			if(layer.name === name)
+				return layer;
+		}
 	}
 
 	getTileInfo(position){
@@ -38,8 +48,8 @@ class MapData{
 		//create tiles
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
 			this.tiles[index] = new MapTile({
-				id: data.layers[0].data[index],
-				top: data.layers[7].data[index],
+				id: this.baseLayer.data[index],
+				top: this.topLayer.data[index],
 				position: new Position({
 					x: index % this.numTiles.y,
 					y: index / this.numTiles.y,
