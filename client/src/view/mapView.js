@@ -547,6 +547,10 @@ class MapView{
 				let mod = this.getForestTileModifier(up.mountains, right.mountains, down.mountains, left.mountains);
 				topTiles.push(Terrain.mountains.singleTile + mod);
 			}
+			if(center.river){
+				let mod = this.getForestTileModifier(up.river, right.river, down.river, left.river);
+				topTiles.push(Terrain.river.singleTile + mod);
+			}
 		}
 
 		return topTiles;

@@ -15,6 +15,9 @@ class MapTile {
 		if(Terrain.mountains.id === props.top){
 			this.mountains = true;
 		}
+		if(Terrain.river.id === props.river){
+			this.river = true;
+		}
 
 		this.discovered = false;
 
