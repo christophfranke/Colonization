@@ -12,6 +12,7 @@ class MapData{
 		this.baseLayer = this.getLayer('terrain base');
 		this.topLayer = this.getLayer('terrain top');
 		this.riverLayer = this.getLayer('terrain river');
+		this.bonusLayer = this.getLayer('terrain bonus');
 
 		this.numTiles = {
 			x: this.baseLayer.width,
@@ -52,6 +53,7 @@ class MapData{
 				id: this.baseLayer.data[index],
 				top: this.topLayer.data[index],
 				river: this.riverLayer.data[index],
+				bonus: this.bonusLayer.data[index],
 				position: new Position({
 					x: index % this.numTiles.x,
 					y: index / this.numTiles.x,

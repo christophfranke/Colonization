@@ -51,6 +51,7 @@ class MapView{
 		tileView.addCacheLayer();
 		tileView.addTiles(this.renderTopTiles(tile));
 		tileView.addTiles(this.renderCoast(tile));
+		tileView.addTiles(this.renderBonusRessources(tile));
 		tileView.addTiles(this.renderUndiscovered(tile));
 
 		return tileView;
@@ -520,56 +521,56 @@ class MapView{
 	}
 
 	neighborToName(top, right, down, left){
-			if(top && !down && !left && !right){
-				return 'south';
-			}
-			if(!top && down && !left && !right){
-				return 'north';
-			}
-			if(!top && !down && left && !right){
-				return 'east';
-			}
-			if(!top && !down && !left && right){
-				return 'west';
-			}
+		if(top && !down && !left && !right){
+			return 'south';
+		}
+		if(!top && down && !left && !right){
+			return 'north';
+		}
+		if(!top && !down && left && !right){
+			return 'east';
+		}
+		if(!top && !down && !left && right){
+			return 'west';
+		}
 
-			if(top && !down && left && !right){
-				return 'southEast';
-			}
-			if(top && !down && !left && right){
-				return 'southWest';
-			}
-			if(!top && down && left && !right){
-				return 'northEast';
-			}
-			if(!top && down && !left && right){
-				return 'northWest';
-			}
+		if(top && !down && left && !right){
+			return 'southEast';
+		}
+		if(top && !down && !left && right){
+			return 'southWest';
+		}
+		if(!top && down && left && !right){
+			return 'northEast';
+		}
+		if(!top && down && !left && right){
+			return 'northWest';
+		}
 
-			if(!top && down && left && right){
-				return 'southBay';
-			}
-			if(top && !down && left && right){
-				return 'northBay';
-			}
-			if(top && down && !left && right){
-				return 'eastBay';
-			}
-			if(top && down && left && !right){
-				return 'westBay';
-			}
+		if(!top && down && left && right){
+			return 'southBay';
+		}
+		if(top && !down && left && right){
+			return 'northBay';
+		}
+		if(top && down && !left && right){
+			return 'eastBay';
+		}
+		if(top && down && left && !right){
+			return 'westBay';
+		}
 
-			if(top && down && left && right){
-				return 'lake';
-			}
-			if(top && down && !left && !right){
-				return 'eastWestPassage';
-			}
-			if(!top && !down && left && right){
-				return 'northSouthPassage';
-			}
+		if(top && down && left && right){
+			return 'lake';
+		}
+		if(top && down && !left && !right){
+			return 'eastWestPassage';
+		}
+		if(!top && !down && left && right){
+			return 'northSouthPassage';
+		}
 
-			return null;
+		return null;
 	}
 
 	getForestTileModifier(up, right, down, left){
@@ -613,6 +614,56 @@ class MapView{
 		if(up && !right && !down && left)
 			return 3*y + 3;
 
+	}
+
+	getBonusRessourceName(tileInfo){
+		if(tileInfo.hills)
+			return 'ore';
+		if(tileInfo.mountains)
+			return 'silver';
+
+		if(tileInfo.name === 'plains' && !tileInfo.forest)
+			return 'wheat';
+		if(tileInfo.name === 'grassland' && !tileInfo.forest)
+			return 'tobacco';
+		if(tileInfo.name === 'prairie' && !tileInfo.forest)
+			return 'cotton';
+		if(tileInfo.name === 'savannah' && !tileInfo.forest)
+			return 'sugar';
+
+		if(tileInfo.name === 'tundra' && tileInfo.forest)
+			return 'game';
+		if(tileInfo.name === 'prairie' && tileInfo.forest)
+			return 'game';
+		if(tileInfo.name === 'plains' && tileInfo.forest)
+			return 'fur';
+
+		if(tileInfo.name  === 'grassland' && tileInfo.forest)
+			return 'wood';
+		if(tileInfo.name  === 'savannah' && tileInfo.forest)
+			return 'wood';
+
+		if(tileInfo.name === 'desert')
+			return 'oasis';
+
+		if(tileInfo.name === 'ocean')
+			return 'fish';
+		if(tileInfo.name === 'coastal sea')
+			return 'fish';
+
+		return 'minerals';
+	}
+
+	renderBonusRessources(tile){
+		let center = this.mapData.getTileInfo(tile);
+
+		let bonus = [];
+		if(center.bonus){
+			let ressourceName = this.getBonusRessourceName(center);
+			bonus.push(Terrain.bonusRessource[ressourceName]);
+		}
+
+		return bonus
 	}
 
 	renderTopTiles(position){

@@ -19,6 +19,8 @@ class MapTile {
 		if(Terrain.river.id === props.river){
 			this.river = true;
 		}
+		if(Terrain.bonusRessource.id === props.bonus)
+			this.bonus = true;
 
 		this.discovered = true;
 		this.used = false;

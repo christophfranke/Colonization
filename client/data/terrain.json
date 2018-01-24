@@ -44,7 +44,7 @@
 		"domain":"land",
 		"centerTile": 283
 	},
-	"sea lane":{
+	"ocean":{
 		"id": 90,
 		"domain": "sea",
 		"centerTile": 286
@@ -73,7 +73,21 @@
 		"id": 305,
 		"singleTile": 305
 	},
-	
+	"bonusRessource":{
+		"id": 97,
+		"minerals": 98,
+		"wheat": 99,
+		"tobacco": 100,
+		"cotton": 101,
+		"sugar": 102,
+		"game": 103,
+		"fur": 104,
+		"oasis": 105,
+		"fish": 106,
+		"wood": 108,
+		"ore": 110,
+		"silver": 111
+	},
 	"coast":{
 		"eastWestPassage": 121,
 		"northSouthPassage": 137,
