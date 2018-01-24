@@ -6,7 +6,7 @@ class MapTileView {
 		this.reset();
 	}
 
-	newCachingLayer(){
+	addCacheLayer(){
 		this.layers.push([]);
 	}
 
