@@ -46,7 +46,7 @@ class Colony{
 		for(let colonist of this.colonists){
 			if(colonist.production){
 				let type = colonist.production.type
-				this.storage[type] += colonist.production.tile.getProduction(type);
+				this.storage[type] += colonist.production.tile.getYield(type);
 			}
 		}
 		console.log(this.storage);

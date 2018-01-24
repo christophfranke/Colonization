@@ -1,6 +1,6 @@
 import Terrain from '../../data/terrain.json';
 import Colonize from '../colonize.js';
-import Production from '../../data/production.json';
+import Yield from '../../data/yield.json';
 
 class MapTile {
 	constructor(props){
@@ -40,9 +40,8 @@ class MapTile {
 		this.units = [];
 	}
 
-	getProduction(type){
-		let modifier = 'default';
-		return Production[this.name][modifier][type];
+	getYield(type){
+		return Yield[this.name][type].base;
 	}
 
 	getLeft(){

@@ -1,0 +1,99 @@
+{
+	"arctic":{
+		"food":{
+			"base": 0
+		}
+	},
+	"marsh":{
+		"food":{
+			"base": 0
+		}
+	},
+	"defaults":{
+		"food":{
+			"base": 0
+		}
+	},
+	"grassland":{
+		"food":{
+			"base": 0,
+			"plowed": "+1",
+			"expert": "+3"
+		}
+	},
+	"prairie":{
+		"food":{
+			"base": 0
+		}
+	},
+	"savannah":{
+		"food":{
+			"base": 0
+		}
+	},
+	"swamp":{
+		"food":{
+			"base": 0
+		}
+	},
+	"tundra":{
+		"food":{
+			"base": 0
+		}
+	},
+	"desert":{
+		"food":{
+			"base": 0
+		}
+	},
+	"arcticWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"marshWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"defaultsWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"grasslandWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"prairieWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"savannahWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"swampWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"tundraWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"desertWithForest":{
+		"food":{
+			"base": 0
+		}
+	},
+	"sea lane":{
+		"food":{
+			"base": 0
+		}
+	}
+}
