@@ -30,7 +30,8 @@ class Colonize{
             preload: () => this.preload(),
             create: () => this.create(),
             update: () => this.update(),
-            render: () => this.render()
+            render: () => this.render(),
+            preRender: () => this.preRender()
         });
         Phaser.Canvas.setSmoothingEnabled(Colonize.game, false);
 
@@ -107,6 +108,9 @@ class Colonize{
 
     render(){
         Colonize.fpsCounter.render();
+    }
+
+    preRender(){
         Colonize.map.render();
     }
 }
