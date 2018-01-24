@@ -1,0 +1,20 @@
+{
+	"types":[
+		"food",
+		"sugar",
+		"tobacco",
+		"cotton",
+		"fur",
+		"wood",
+		"ore",
+		"silver",
+		"horses",
+		"rum",
+		"cigars",
+		"cloth",
+		"coats",
+		"trade goods",
+		"tools",
+		"guns"
+	]
+}

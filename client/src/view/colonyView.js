@@ -3,7 +3,7 @@ import Colonize from '../colonize.js';
 import TileSprite from './tileSprite.js';
 import ColonyMapView from './colonyMapView.js';
 import ColonistsView from './colonistsView.js';
-
+import StorageView from './storageView.js';
 
 class ColonyView {
 	constructor(props){
@@ -35,6 +35,11 @@ class ColonyView {
         });
 
         this.colonistsView = new ColonistsView({
+            colony: this.colony,
+            parentScreen: this.colonyScreen
+        });
+
+        this.storageView = new StorageView({
             colony: this.colony,
             parentScreen: this.colonyScreen
         });

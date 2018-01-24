@@ -1,4 +1,5 @@
 import Places from '../../data/places.json';
+import Ressources from '../../data/ressources.json';
 
 import TileSprite from '../view/tileSprite.js';
 import ColonyView from '../view/colonyView.js';
@@ -10,10 +11,16 @@ class Colony{
 	constructor(props){
 		this.position = props.position.getTile();
 		this.props = Places.colony;
+
 		this.colonists = [new Colonist({
 			colony: this,
 			type: 'settler'
 		})];
+
+		this.storage = {};
+		for(let type of Ressources.types){
+			this.storage[type] = 0;
+		}
 
 		this.uncoverMap();
 
@@ -21,10 +28,6 @@ class Colony{
 			id: this.props.id,
 			colony: this
 		});
-
-		this.storage = {
-			'food': 0
-		};
 
 		Colony.all.push(this);
 	}
@@ -49,7 +52,7 @@ class Colony{
 				this.storage[type] += colonist.production.tile.getYield(type);
 			}
 		}
-		console.log(this.storage);
+		this.colonyView.storageView.update();
 	}
 
 	openCityScreen(){

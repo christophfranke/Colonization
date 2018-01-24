@@ -420,20 +420,5 @@
 			"river": "+1",
 			"expert": "*2"
 		}
-	},
-	
-			"defaults":{
-		"food":{
-			"base": 0
-		}
-	},
-	
-	"defaultsWithForest":{
-		"food":{
-			"base": 0
-		}
-	}
-	
-	
-
+	}	
 }
