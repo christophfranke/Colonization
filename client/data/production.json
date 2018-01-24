@@ -1,6 +1,6 @@
 {
 	"arctic":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -11,7 +11,7 @@
 		}
 	},
 	"marsh":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -21,8 +21,8 @@
 			"food": 0
 		}
 	},
-	"plains":{
-		"plain":{
+	"defaults":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -33,7 +33,7 @@
 		}
 	},
 	"grassland":{
-		"plain":{
+		"default":{
 			"food": 3
 		},
 		"forest":{
@@ -44,7 +44,7 @@
 		}
 	},
 	"prairie":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -55,7 +55,7 @@
 		}
 	},
 	"savannah":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -66,7 +66,7 @@
 		}
 	},
 	"swamp":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -77,7 +77,7 @@
 		}
 	},
 	"tundra":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -88,7 +88,7 @@
 		}
 	},
 	"desert":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{
@@ -99,7 +99,7 @@
 		}
 	},
 	"sea lane":{
-		"plain":{
+		"default":{
 			"food": 0
 		},
 		"forest":{

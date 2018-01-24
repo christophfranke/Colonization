@@ -41,7 +41,7 @@ class MapTile {
 	}
 
 	getProduction(type){
-		let modifier = 'plain';
+		let modifier = 'default';
 		return Production[this.name][modifier][type];
 	}
 
