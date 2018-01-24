@@ -18,8 +18,8 @@ class MapView{
 		this.background = new BackgroundView();
 		this.renderer = new SpriteRenderer();
 
-		for(let y=0; y < MapSettings.height; y++){
-			for(let x=0; x < MapSettings.width; x++){
+		for(let y=0; y < this.mapData.numTiles.y; y++){
+			for(let x=0; x < this.mapData.numTiles.x; x++){
 
 				//the map is ordered column first
 				let tile = new Position({
