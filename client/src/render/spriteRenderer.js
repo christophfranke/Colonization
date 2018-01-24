@@ -229,28 +229,22 @@ class SpriteRenderer {
 	}
 
 	render(){
-		//camera is out of bounds, disable caching and render quickly!
-		if(!this.cameraInBounds()){
-			this.display.cacheAsBitmap = false;
-			this.updateScreen();
-			this.hasChanged = false;
-		}
-
-		//camera is not moving, good time to update the render image
-		//when not using dislpay cache nothing has to be done
-		if(
-			this.hasChanged ||
-			(this.lastCameraPosition.x === Colonize.game.camera.x &&
-		    this.lastCameraPosition.y === Colonize.game.camera.y &&
-		    this.lastDisplayUpdate.x !== Colonize.game.camera.x &&
-		    this.lastDisplayUpdate.y !== Colonize.game.camera.y)
-		){
-			if(this.displayCaching){		
+		if(this.displayCaching){		
+			//camera is not moving, good time to update the render image
+			//when not using dislpay cache nothing has to be done
+			if(
+				this.hasChanged ||
+				(this.lastCameraPosition.x === Colonize.game.camera.x &&
+			    this.lastCameraPosition.y === Colonize.game.camera.y &&
+			    this.lastDisplayUpdate.x !== Colonize.game.camera.x &&
+			    this.lastDisplayUpdate.y !== Colonize.game.camera.y)
+			){
 				this.updateScreen();
 				if(this.display.cacheAsBitmap)
 					this.display.updateCache();
 				else
 					this.display.cacheAsBitmap = true;
+
 				this.lastDisplayUpdate = new Position({
 					x: Colonize.game.camera.x,
 					y: Colonize.game.camera.y,
@@ -263,6 +257,15 @@ class SpriteRenderer {
 
 		this.lastCameraPosition.x = Colonize.game.camera.x;
 		this.lastCameraPosition.y = Colonize.game.camera.y;
+	}
+
+	preRender(){
+		//camera is out of bounds, disable caching and render quickly!
+		if(!this.cameraInBounds()){
+			this.display.cacheAsBitmap = false;
+			this.updateScreen();
+			this.hasChanged = false;
+		}
 	}
 
 	cameraInBounds(){

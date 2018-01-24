@@ -106,13 +106,15 @@ class Colonize{
         Colonize.keyboardInput.update();
     }
 
+    preRender(){
+        Colonize.map.mapView.renderer.preRender();
+    }
+
     render(){
+        Colonize.map.mapView.renderer.render();
         Colonize.fpsCounter.render();
     }
 
-    preRender(){
-        Colonize.map.render();
-    }
 }
 
 export default Colonize;

@@ -36,10 +36,6 @@ class MapView{
 		this.renderer.initialize();
 	}
 
-	render(){
-		this.renderer.render();
-	}
-
 	hide(){
 		this.renderer.hide();
 	}
