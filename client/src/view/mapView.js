@@ -1,7 +1,6 @@
 
 import PIXI from 'pixi';
 import Colonize from '../colonize.js';
-import MapSettings from '../../data/map.json';
 import Settings from '../../data/settings.json';
 import Terrain from '../../data/terrain.json';
 import BackgroundView from './BackgroundView.js';
