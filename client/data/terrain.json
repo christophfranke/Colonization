@@ -58,15 +58,15 @@
 		"northEastCorner": 168
 	},
 	"forest":{
-		"id": 92,
+		"id": 309,
 		"singleTile": 309
 	},
 	"hills":{
-		"id": 94,
+		"id": 317,
 		"singleTile": 317
 	},
 	"mountains":{
-		"id": 95,
+		"id": 313,
 		"singleTile": 313
 	},
 	"river":{
