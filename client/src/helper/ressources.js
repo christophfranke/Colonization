@@ -28,7 +28,7 @@ class Ressources{
 				type: Ressources.Image
 			},
 			undiscovered: {
-				url: '/assets/screens/undiscovered.png',
+				url: '/assets/screens/undiscovered.jpg',
 				type: Ressources.Image
 			},
 			mapSheet: {
