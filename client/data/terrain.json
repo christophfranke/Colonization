@@ -78,6 +78,10 @@
 		"id": 305,
 		"singleTile": 305
 	},
+	"large river":{
+		"id": 369,
+		"singleTile": 369
+	},
 	"bonusRessource":{
 		"id": 97,
 		"minerals": 98,
