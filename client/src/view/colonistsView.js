@@ -29,15 +29,19 @@ class ColonistsView {
 
 			newSprite.inputEnabled = true;
 			newSprite.input.enableDrag(true);
-			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(colonist, sprite.position);});
+			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(sprite, colonist)});
 
 			position.x += 32;
 		}
 	}
 
-	dragColonist(colonist, position){
-		let tile = this.colony.colonyView.colonyMapView.tileAt(position);
-		colonist.workOn(tile);
+	dragColonist(sprite, colonist){
+		let from = sprite.input.dragStartPoint;
+		let to = sprite.position;
+		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
+		if(!colonist.workOn(tile)){
+			sprite.position = new Phaser.Point(from.x, from.y);
+		}
 	}
 }
 

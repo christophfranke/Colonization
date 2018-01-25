@@ -1,5 +1,6 @@
 
 import Units from '../../data/units.json';
+import Colonize from '../colonize.js';
 
 
 class Colonist{
@@ -13,12 +14,13 @@ class Colonist{
 	}
 
 	workOn(tile){
-		if(!tile){
-			this.stopWorking();
-			return true;
-		}
+		if(!tile)
+			return false;
 
 		if(tile.used)
+			return false;
+
+		if(tile === Colonize.map.getTileInfo(this.colony.position))
 			return false;
 
 		this.stopWorking()
