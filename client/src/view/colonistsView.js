@@ -50,7 +50,7 @@ class ColonistsView {
 			new ContextMenu({
 				choices: choices,
 				parentScreen: sprite,
-				callback: colonist.selectProduction
+				callback: (choice) => {colonist.selectProduction(choice);}
 			});
 
 			colonist.selectProduction(choices[0]);
