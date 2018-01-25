@@ -8,7 +8,7 @@ class Ressources{
 	constructor(props){
 		this.ressources = {
 			mapData: {
-				url: '/assets/maps/test-05.json',
+				url: '/assets/maps/america_large.json',
 				type: Ressources.JSON
 			},
 			mapTiles: {
