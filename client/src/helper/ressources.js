@@ -33,7 +33,19 @@ class Ressources{
 			},
 			mapSheet: {
 				url: '/assets/tilesets/map.png',
-				type: Ressources.SpriteSheet
+				type: Ressources.SpriteSheet,
+				tileSize: {
+					x: Settings.tileSize.x,
+					y: Settings.tileSize.y
+				}
+			},
+			uiSheet: {
+				url: '/assets/tilesets/ui.png',
+				type: Ressources.SpriteSheet,
+				tileSize: {
+					x: 128,
+					y: 128
+				}
 			}
 		}
 	}
@@ -50,7 +62,7 @@ class Ressources{
 				Colonize.game.load.image(name, r.url);
 			}
 			if(r.type === Ressources.SpriteSheet){
-				Colonize.game.load.spritesheet(name, r.url, Settings.tileSize.x, Settings.tileSize.y);
+				Colonize.game.load.spritesheet(name, r.url, r.tileSize.x, r.tileSize.y);
 			}
 		}
 	}

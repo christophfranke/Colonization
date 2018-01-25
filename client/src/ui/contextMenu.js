@@ -10,6 +10,15 @@ class ContextMenu {
 		this.callback = props.callback;
 
 		this.layer = new Phaser.Group(Colonize.game, this.parentScreen);
+		this.uiBackground = Colonize.game.add.sprite(
+			0,
+			0,
+			'uiSheet',
+			0,
+			this.layer
+		);
+		this.uiBackground.anchor = new Phaser.Point(0.5, 0.5);
+		this.uiBackground.scale = new Phaser.Point(1.5, 1.5);
 
 		let angleDistance = 2*Math.PI / this.choices.length;
 		let currentAngle = -Math.PI;
