@@ -3,6 +3,7 @@ import Position from '../helper/position.js';
 import Colonize from '../colonize.js';
 import ContextMenu from '../ui/contextMenu.js';
 import Phaser from 'phaser';
+import ProductionView from './productionView';
 
 class ColonistsView {
 	constructor(props){
@@ -35,6 +36,13 @@ class ColonistsView {
 			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(sprite, colonist)});
 
 			position.x += 32;
+
+			if(!colonist.productionView){			
+				colonist.productionView = new ProductionView({
+					parentScreen: newSprite,
+					amount: 0
+				});
+			}
 		}
 	}
 
@@ -42,18 +50,38 @@ class ColonistsView {
 		let from = sprite.input.dragStartPoint;
 		let to = sprite.position;
 		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
+		let oldTile = colonist.production ? colonist.production.tile : null;
 		if(colonist.workOn(tile)){
-			let choices = tile.ressourceProduction(colonist);
-			for(let choice of choices)
-				choice.type = 'resource';
+			if(tile === oldTile || tile.getYield(colonist, colonist.production.resource) == 0){			
+				let choices = tile.ressourceProduction(colonist);
+				for(let choice of choices)
+					choice.type = 'resource';
 
-			new ContextMenu({
-				choices: choices,
-				parentScreen: sprite,
-				callback: (choice) => {colonist.selectProduction(choice);}
-			});
+				new ContextMenu({
+					choices: choices,
+					parentScreen: sprite,
+					callback: (choice) => {colonist.selectProduction(choice);}
+				});
+			}
 
-			colonist.selectProduction(choices[0]);
+			if(tile !== oldTile){
+				//take current production
+				if(colonist.production.resource){
+					let amount = tile.getYield(colonist, colonist.production.resource);
+					colonist.selectProduction({
+						amount: amount,
+						resource: colonist.production.resource
+					});
+				}
+				//fallback to food of none
+				else{
+					let amount = tile.getYield(colonist, 'food');
+					colonist.selectProduction({
+						amount: amount,
+						resource: 'food'
+					});
+				}
+			}
 		}
 		else{
 			sprite.position = new Phaser.Point(from.x, from.y);

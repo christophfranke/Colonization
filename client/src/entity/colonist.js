@@ -24,11 +24,12 @@ class Colonist{
 			return false;
 
 		this.stopWorking()
-
-		this.production = {
-			tile: tile,
-			resource: 'food'
-		};
+		if(this.production)
+			this.production.tile = tile;
+		else
+			this.production = {
+				tile: tile
+			};
 
 		return true;
 	}
@@ -36,14 +37,16 @@ class Colonist{
 	stopWorking(){
 		if(this.production){
 			this.production.tile.used = false;
-			this.production = null;
+			this.production.tile = null;
 		}
 	}
 
 	selectProduction(choice){
 		if(this.production){
-			this.production.resource = choice.resource;	
+			this.production.resource = choice.resource;
 		}
+		if(this.productionView)
+			this.productionView.setProduction(this.production.tile.getYield(this, this.production.resource), this.production.resource);
 	}
 }
 
