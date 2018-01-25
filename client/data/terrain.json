@@ -52,7 +52,7 @@
 	"coastal sea":{
 		"domain": "sea",
 		"centerTile": 178,
-		"southEastCorner": 120,
+		"southEastCorner": 184,
 		"southWestCorner": 136,
 		"northWestCorner": 152,
 		"northEastCorner": 168
