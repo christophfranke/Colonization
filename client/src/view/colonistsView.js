@@ -1,6 +1,7 @@
 
 import Position from '../helper/position.js';
 import Colonize from '../colonize.js';
+import ContextMenu from '../ui/contextMenu.js';
 
 class ColonistsView {
 	constructor(props){
@@ -39,7 +40,33 @@ class ColonistsView {
 		let from = sprite.input.dragStartPoint;
 		let to = sprite.position;
 		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
-		if(!colonist.workOn(tile)){
+		if(colonist.workOn(tile)){
+			let choices = [
+			{
+				'type': 'resource',
+				'resource': 'food',
+				'amount': 5
+			},
+			{
+				'type': 'resource',
+				'resource': 'tobaco',
+				'amount': 3
+			},
+			{
+				'type': 'resource',
+				'resource': 'wood',
+				'amount': 4
+			}
+			];
+			new ContextMenu({
+				choices: choices,
+				parentScreen: sprite,
+				callback: colonist.selectProduction
+			});
+
+			colonist.selectProduction(choices[0]);
+		}
+		else{
 			sprite.position = new Phaser.Point(from.x, from.y);
 		}
 	}

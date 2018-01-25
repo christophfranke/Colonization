@@ -27,7 +27,7 @@ class Colonist{
 
 		this.production = {
 			tile: tile,
-			type: 'food'
+			resource: 'food'
 		};
 
 		return true;
@@ -37,6 +37,12 @@ class Colonist{
 		if(this.production){
 			this.production.tile.used = false;
 			this.production = null;
+		}
+	}
+
+	selectProduction(choice){
+		if(this.production){
+			this.production.resource = choice.resource;	
 		}
 	}
 }

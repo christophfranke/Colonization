@@ -16,5 +16,53 @@
 		"trade goods",
 		"tools",
 		"guns"
-	]
+	],
+	"food":{
+		"id": 65
+	},
+	"sugar":{
+		"id": 66
+	},
+	"tobaco":{
+		"id": 67
+	},
+	"cotton":{
+		"id": 68
+	},
+	"fur":{
+		"id": 69
+	},
+	"wood":{
+		"id": 70
+	},
+	"ore":{
+		"id": 71
+	},
+	"silver":{
+		"id": 72
+	},
+	"horses":{
+		"id": 73
+	},
+	"rum":{
+		"id": 74
+	},
+	"cigars":{
+		"id": 75
+	},
+	"cloth":{
+		"id": 76
+	},
+	"coats":{
+		"id": 77
+	},
+	"trade goods":{
+		"id": 78
+	},
+	"tools":{
+		"id": 79
+	},
+	"guns":{
+		"id": 80
+	}
 }

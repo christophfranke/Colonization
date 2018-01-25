@@ -48,8 +48,8 @@ class Colony{
 	produce(){
 		for(let colonist of this.colonists){
 			if(colonist.production){
-				let type = colonist.production.type
-				this.storage[type] += colonist.production.tile.getYield(colonist, type);
+				let resource = colonist.production.resource
+				this.storage[resource] += colonist.production.tile.getYield(colonist, resource);
 			}
 		}
 		this.colonyView.storageView.update();
