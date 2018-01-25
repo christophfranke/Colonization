@@ -658,7 +658,7 @@ class MapView{
 		let center = this.mapData.getTileInfo(tile);
 
 		let bonus = [];
-		if(center.bonus){
+		if(center.discovered && center.bonus){
 			let ressourceName = this.getBonusRessourceName(center);
 			bonus.push(Terrain.bonusRessource[ressourceName]);
 		}
