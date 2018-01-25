@@ -46,7 +46,6 @@ class ColonyView {
 	}
 
     colonyClick(){
-        console.log(this.colony.colonists);
     }
 
     show(){

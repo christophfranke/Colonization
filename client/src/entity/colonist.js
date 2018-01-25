@@ -1,5 +1,6 @@
 
 import Units from '../../data/units.json';
+import Colonize from '../colonize.js';
 
 
 class Colonist{
@@ -13,19 +14,20 @@ class Colonist{
 	}
 
 	workOn(tile){
-		if(!tile){
-			this.stopWorking();
-			return true;
-		}
+		if(!tile)
+			return false;
 
 		if(tile.used)
+			return false;
+
+		if(tile === Colonize.map.getTileInfo(this.colony.position))
 			return false;
 
 		this.stopWorking()
 
 		this.production = {
 			tile: tile,
-			type: 'food'
+			resource: 'food'
 		};
 
 		return true;
@@ -35,6 +37,12 @@ class Colonist{
 		if(this.production){
 			this.production.tile.used = false;
 			this.production = null;
+		}
+	}
+
+	selectProduction(choice){
+		if(this.production){
+			this.production.resource = choice.resource;	
 		}
 	}
 }
