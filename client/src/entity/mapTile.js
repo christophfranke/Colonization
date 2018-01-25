@@ -22,6 +22,11 @@ class MapTile {
 		if(Terrain.bonusRessource.id === props.bonus)
 			this.bonus = true;
 
+		this.plowed = false;
+		this.road = false;
+		this.coast = false;
+
+
 		this.discovered = true;
 		this.used = false;
 
@@ -42,8 +47,53 @@ class MapTile {
 		this.units = [];
 	}
 
-	getYield(type){
-		return Yield[this.name][type].base;
+	getYield(colonist, type){
+		let result = this.applyModifier(0, 'base', type);
+
+		if(this.coast)
+			result = this.applyModifier(result, 'coast', type);
+		if(this.plowed)
+			result = this.applyModifier(result, 'plowed', type);
+		if(this.river)
+			result = this.applyModifier(result, 'river', type);
+		if(this.road)
+			result = this.applyModifier(result, 'road', type);
+		if(this.bonus)
+			result = this.applyModifier(result, 'resource', type);
+		if(colonist.expert === type)
+			result = this.applyModifier(result, 'expert', type);
+
+		return result;
+	}
+
+	applyModifier(base, name, type){
+		let terrainName = this.terrainName();
+		if(Yield[terrainName][type]){		
+			let mod = Yield[terrainName][type][name];
+			if(mod){
+				if(mod[0] === '+')
+					return base + parseFloat(mod.substr(1));
+				if(mod[0] === '*')
+					return base * parseFloat(mod.substr(1));
+
+				return mod;
+			}
+		}
+
+		return base;
+	}
+
+	terrainName(){
+		let terrainName = this.name;
+
+		if(this.forest)
+			terrainName += 'WithForest';
+		if(this.hills)
+			terrainName = 'hills';
+		if(this.mountains)
+			terrainName = 'mountains';
+
+		return terrainName;
 	}
 
 	getLeft(){
@@ -110,6 +160,9 @@ class MapTile {
 					this.coastTerrain = landNeighbor.props;
 			}
 		}
+
+		if(this.coastTerrain)
+			this.coast = true;
 	}
 
 	createCoastalSea(){

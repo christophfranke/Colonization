@@ -1,5 +1,5 @@
 import Places from '../../data/places.json';
-import Ressources from '../../data/ressources.json';
+import Resources from '../../data/resources.json';
 
 import TileSprite from '../view/tileSprite.js';
 import ColonyView from '../view/colonyView.js';
@@ -18,7 +18,7 @@ class Colony{
 		})];
 
 		this.storage = {};
-		for(let type of Ressources.types){
+		for(let type of Resources.types){
 			this.storage[type] = 0;
 		}
 
@@ -49,7 +49,7 @@ class Colony{
 		for(let colonist of this.colonists){
 			if(colonist.production){
 				let type = colonist.production.type
-				this.storage[type] += colonist.production.tile.getYield(type);
+				this.storage[type] += colonist.production.tile.getYield(colonist, type);
 			}
 		}
 		this.colonyView.storageView.update();

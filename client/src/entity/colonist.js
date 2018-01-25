@@ -9,6 +9,7 @@ class Colonist{
 		this.id = Units[this.type].id;
 
 		this.production = null;
+		this.expert = null;
 	}
 
 	workOn(tile){
