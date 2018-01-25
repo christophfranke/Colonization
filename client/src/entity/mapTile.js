@@ -8,6 +8,14 @@ class MapTile {
 		this.id = props.id;
 		this.position = props.position.getTile();
 
+		this.forest = false;
+		this.hills = false;
+		this.mountains = false;
+		this.riverLarge = false;
+		this.riverSmall = false;
+		this.river = false;
+		this.bonus = false;
+
 		if(Terrain.forest.id === props.top)
 			this.forest = true;
 
@@ -17,11 +25,15 @@ class MapTile {
 		if(Terrain.mountains.id === props.top){
 			this.mountains = true;
 		}
-		if(Terrain.river.id === props.river){
-			this.river = true;
+		if(Terrain['small river'].id === props.riverSmall){
+			this.riverSmall = true;
 		}
+		if(Terrain['large river'].id === props.riverLarge)
+			this.riverLarge = true;
 		if(Terrain.bonusRessource.id === props.bonus)
 			this.bonus = true;
+
+		this.river = this.riverSmall || this.riverLarge;
 
 		this.plowed = false;
 		this.road = false;

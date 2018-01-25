@@ -11,7 +11,8 @@ class MapData{
 
 		this.baseLayer = this.getLayer('terrain base');
 		this.topLayer = this.getLayer('terrain top');
-		this.riverLayer = this.getLayer('terrain river');
+		this.riverSmallLayer = this.getLayer('terrain river small');
+		this.riverLargeLayer = this.getLayer('terrain river large');
 		this.bonusLayer = this.getLayer('terrain bonus');
 
 		this.numTiles = {
@@ -35,7 +36,7 @@ class MapData{
 
 	getTileInfo(position){
 		const pos = position.getTile();
-		const index = pos.x + this.numTiles.y * pos.y;
+		const index = pos.x + this.numTiles.x * pos.y;
 
 		if (index < 0 || index >= this.numTiles.x*this.numTiles.y)
 			return null;
@@ -52,7 +53,8 @@ class MapData{
 			this.tiles[index] = new MapTile({
 				id: this.baseLayer.data[index],
 				top: this.topLayer.data[index],
-				river: this.riverLayer.data[index],
+				riverSmall: this.riverSmallLayer.data[index],
+				riverLarge: this.riverLargeLayer.data[index],
 				bonus: this.bonusLayer.data[index],
 				position: new Position({
 					x: index % this.numTiles.x,
