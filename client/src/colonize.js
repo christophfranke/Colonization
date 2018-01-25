@@ -65,8 +65,8 @@ class Colonize{
         let caravel = new Unit({
     		name: 'caravel',
     		position: new Position({
-    			x: 124,
-    			y: 64,
+    			x: 138,
+    			y: 131,
     			type: Position.TILE
     		})
     	});
@@ -75,8 +75,8 @@ class Colonize{
         new Unit({
             name: 'pioneer',
             position: new Position({
-                x: 124,
-                y: 64,
+                x: 138,
+                y: 131,
                 type: Position.TILE
             })
         }).becomeCargo(caravel);
@@ -84,8 +84,8 @@ class Colonize{
         new Unit({
             name: 'scout',
             position: new Position({
-                x: 124,
-                y: 64,
+                x: 138,
+                y: 131,
                 type: Position.TILE
             })
         }).becomeCargo(caravel);
@@ -93,8 +93,8 @@ class Colonize{
         new Unit({
             name: 'settler',
             position: new Position({
-                x: 120,
-                y: 61, 
+                x: 133,
+                y: 126, 
                 type: Position.TILE
             })
         }).orderFoundColony();
