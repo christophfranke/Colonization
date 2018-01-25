@@ -13,8 +13,8 @@ class ColonistsView {
 		this.sprites = [];
 
 		let position = new Position({
-			x: -1004,
-			y: 350,
+			x: -482,
+			y: 141,
 			type: Position.WORLD
 		})
 		for(let colonist of this.colonists){
