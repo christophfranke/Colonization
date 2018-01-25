@@ -4,7 +4,7 @@
 		"sugar",
 		"tobacco",
 		"cotton",
-		"fur",
+		"furs",
 		"wood",
 		"ore",
 		"silver",
@@ -29,7 +29,7 @@
 	"cotton":{
 		"id": 68
 	},
-	"fur":{
+	"furs":{
 		"id": 69
 	},
 	"wood":{
