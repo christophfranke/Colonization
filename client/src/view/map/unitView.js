@@ -4,17 +4,17 @@ import Phaser from 'phaser';
 import Colonize from '../colonize.js';
 
 
-class TileSprite{
+class UnitView{
 	constructor(props){
 		this.id = props.id;
 		this.position = props.position.getWorld();
 		this.movementTweenTime = 50;
 		this.tweens = {};
 
-		if(typeof TileSprite.layer === 'undefined')
-			TileSprite.layer = Colonize.game.add.group();
+		if(typeof UnitView.layer === 'undefined')
+			UnitView.layer = Colonize.game.add.group();
 
-		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles', 0, TileSprite.layer);
+		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles', 0, UnitView.layer);
 		this.sprite.crop(this.cropRect());
 	}
 
@@ -75,4 +75,4 @@ class TileSprite{
 }
 
 
-export default TileSprite;
+export default UnitView;
