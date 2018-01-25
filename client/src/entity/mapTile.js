@@ -1,6 +1,7 @@
 import Terrain from '../../data/terrain.json';
 import Colonize from '../colonize.js';
 import Yield from '../../data/yield.json';
+import Resources from '../../data/resources.json';
 
 class MapTile {
 	constructor(props){
@@ -94,6 +95,19 @@ class MapTile {
 			terrainName = 'mountains';
 
 		return terrainName;
+	}
+
+	ressourceProduction(colonist){
+		let terrainName = this.terrainName();
+		let production = [];
+
+		for(let resource of Resources.types){
+			let amount = this.getYield(colonist, resource);
+			if(amount > 0)
+				production.push({resource, amount});
+		}
+
+		return production;
 	}
 
 	getLeft(){

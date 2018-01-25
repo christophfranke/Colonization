@@ -12,7 +12,7 @@ class ContextMenu {
 		this.layer = new Phaser.Group(Colonize.game, this.parentScreen);
 
 		let angleDistance = 2*Math.PI / this.choices.length;
-		let currentAngle = 0;
+		let currentAngle = -Math.PI;
 		let radius = 75;
 		for(let choice of this.choices){
 			let index = 0;
@@ -29,8 +29,9 @@ class ContextMenu {
 				index - 1,
 				this.layer
 			);
-			choice.sprite.scale = new Phaser.Point(scale, scale);
 			choice.sprite.inputEnabled = true;
+			choice.sprite.anchor = new Phaser.Point(0.5, 0.5);
+			choice.sprite.scale = new Phaser.Point(scale, scale);
 			choice.sprite.events.onInputDown.add(() => this.select(choice), this);
 			currentAngle += angleDistance;
 		}
@@ -59,7 +60,7 @@ class ContextMenu {
 	}
 
 	scaleCorrection(scale){
-		return 0.5*Math.sqrt(scale);
+		return 0.75*Math.sqrt(scale);
 	}
 }
 
