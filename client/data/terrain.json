@@ -49,6 +49,11 @@
 		"domain": "sea",
 		"centerTile": 286
 	},
+	"sea lane":{
+		"id": 91,
+		"domain": "sea",
+		"centerTile": 181
+	},
 	"coastal sea":{
 		"domain": "sea",
 		"centerTile": 178,
