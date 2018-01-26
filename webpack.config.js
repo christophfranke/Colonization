@@ -30,8 +30,8 @@ module.exports = {
           {
             loader: "jshint-loader",
             options: { 
-              emitErrors: true, 
-              failOnHint: true
+              emitErrors: false, 
+              failOnHint: false
             } 
           }
         ]
