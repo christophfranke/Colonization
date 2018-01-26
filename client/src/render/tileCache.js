@@ -14,13 +14,26 @@ class TileCache{
 
 		this.renderer = SpriteRenderer.instance;
 
-		this.renderTexture = game.add.renderTexture(4096, 4096);
+		this.renderTextures = [];
+
 		this.tiles = {
 			x: Math.floor(4096 / Settings.tileSize.x),
 			y: Math.floor(4096 / Settings.tileSize.y)
 		};
 
-		this.cacheSize = this.tiles.x*this.tiles.y;
+		this.textureSize = this.tiles.x*this.tiles.y;
+	}
+
+	addRenderTexture(){
+		this.renderTextures.push(game.add.renderTexture(4096, 4096));
+	}
+
+	currentRenderTexture(){
+		return this.renderTextures[this.renderTextures.length-1];
+	}
+
+	currentFrame(){
+		return this.numFrames % this.textureSize;
 	}
 
 	addStencil(indices){
@@ -31,9 +44,6 @@ class TileCache{
 			this.getStencil(indices).added++;
 			return true;
 		}
-
-		if(this.numStencils >= this.tiles.x*this.tiles.y)
-			return false;
 
 		let hash = this.hash(indices);
 		this.textures[hash] = {
@@ -59,17 +69,19 @@ class TileCache{
 	}
 
 	renderStencil(indices){
+		if(this.currentFrame() === 0)
+			this.addRenderTexture();
 		let group = new Phaser.Group(game);
 		this.renderer.createSprites(indices, group);
-		let nextFrame = this.getTile(this.numFrames);
-		this.renderTexture.renderRawXY(group, nextFrame.x, nextFrame.y);
+		let nextFrame = this.getTile(this.currentFrame());
+		this.currentRenderTexture().renderRawXY(group, nextFrame.x, nextFrame.y);
 
 		for(let sprite of group.children){
 			sprite.destroy();
 		}
 		group.destroy();
 
-		this.getStencil(indices).texture = new PIXI.Texture(this.renderTexture, this.cropRect(this.numFrames));
+		this.getStencil(indices).texture = new PIXI.Texture(this.currentRenderTexture(), this.cropRect(this.currentFrame()));
 		this.numFrames++;
 	}
 
@@ -93,7 +105,7 @@ class TileCache{
 	hash(indices){
 		let hashString = '';
 		for(let i of indices){
-			hashString += i;
+			hashString += ',' + i;
 		}
 
 		return hashString;

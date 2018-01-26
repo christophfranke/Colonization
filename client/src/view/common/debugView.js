@@ -43,7 +43,7 @@ class DebugView {
 				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
 				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
-				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + '/' + SpriteRenderer.instance.tileCache.cacheSize + ' sprites in cache');
+				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + ' sprites in cache on ' + SpriteRenderer.instance.tileCache.renderTextures.length + ' textures');
 				if(memoryUsage !=='n/a')
 					game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
 				game.debug.stop();
