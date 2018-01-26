@@ -1,0 +1,21 @@
+{
+  "undef": true,
+  "unused": true,
+  "loopfunc": true,
+  "esversion": 6,
+  "eqeqeq": true,
+  "funcscope": true,
+  "latedef": "nofunc",
+  "noarg": true,
+  "nocomma": true,
+  "nonbsp": false,
+  "notypeof": true,
+  "varstmt": true,
+  "globals": {
+    "window": true,
+    "document": true,
+    "console": true,
+    "setTimeout": true,
+    "game": true
+  }
+}

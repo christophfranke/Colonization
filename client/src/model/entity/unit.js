@@ -1,9 +1,10 @@
-import UnitProps from '../../data/units.json';
+import UnitProps from 'data/units.json';
 
-import Easing from '../view/easing.js';
-import Position from '../helper/position.js';
-import Colonize from '../colonize.js';
-import TileSprite from '../view/tileSprite.js';
+import Position from 'src/utils/position.js';
+import TileSprite from 'src/view/map/unitView.js';
+import MapController from 'src/controller/map.js';
+import Map from 'src/model/entity/map.js';
+
 import Colony from './colony.js';
 
 
@@ -16,6 +17,7 @@ class Unit{
 			y: props.position.y,
 			type: props.position.type
 		});
+		this.map = props.map || Map.instance;
 
 		this.props = UnitProps[this.name];
 
@@ -37,7 +39,7 @@ class Unit{
 		else
 			this.cargo = [];
 
-		this.tileInfo = Colonize.map.getTileInfo(this.position);
+		this.tileInfo = this.map.getTileInfo(this.position);
 		this.tileInfo.enter(this);
 		this.uncoverMap();
 
@@ -45,7 +47,7 @@ class Unit{
 	}
 
 	orderMoveTo(position){
-		let target = Colonize.map.getTileInfo(position);
+		let target = this.map.getTileInfo(position);
 		
 		if(target.mapBorder)
 			return;
@@ -142,7 +144,7 @@ class Unit{
 		this.position = to.getTile();
 		this.tileSprite.moveTo(this.position);
 
-		this.tileInfo = Colonize.map.getTileInfo(this.position);
+		this.tileInfo = this.map.getTileInfo(this.position);
 		this.tileInfo.enter(this);
 
 		this.movesLeft--;
@@ -191,7 +193,7 @@ class Unit{
 			for(let y = -1; y <= 1; y++){
 				tile.x = this.position.x + x;
 				tile.y = this.position.y + y;
-				Colonize.map.discover(tile);
+				MapController.instance.discover(tile);
 			}
 		}
 	}
@@ -200,12 +202,12 @@ class Unit{
 		let screenPos = this.position.getScreen();
 		let margin = 0.15;
 		if (!(
-			screenPos.x > margin*Colonize.instance.width && 
-			screenPos.x < (1-margin)*Colonize.instance.width &&
-			screenPos.y > margin*Colonize.instance.height &&
-			screenPos.y < (1-margin)*Colonize.instance.height
+			screenPos.x > margin*game.width && 
+			screenPos.x < (1-margin)*game.width &&
+			screenPos.y > margin*game.height &&
+			screenPos.y < (1-margin)*game.height
 		)){
-			Colonize.map.centerAt(this.position);
+			MapController.instance.centerAt(this.position);
 		}
 	}
 

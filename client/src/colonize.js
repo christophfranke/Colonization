@@ -2,19 +2,20 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
 
-import Unit from './entity/unit.js';
-import Map from './entity/map.js';
-import Position from './helper/position.js';
-import KeyboardInput from './input/keyboardInput.js';
-import PointerInput from './input/pointerInput.js';
-import FPSCounter from './helper/fpsCounter.js';
-import Ressources from './helper/ressources.js';
-import Turn from './world/turn.js';
-import Colony from './entity/colony.js';
+import Unit from './model/entity/unit.js';
+import MapController from './controller/map.js';
+import Position from './utils/position.js';
+import KeyboardInput from './input/keyboard.js';
+import PointerInput from './input/pointer.js';
+import DebugView from './view/common/debugView.js';
+import Loader from './utils/loader.js';
+import Turn from './model/action/turn.js';
+import SpriteRenderer from 'src/render/spriteRenderer.js';
+
 
 class Colonize{
 
-	constructor(props){
+	constructor(){
         if(typeof Colonize.instance !== 'undefined'){
             throw new Error('Colonize defined multiple times. Nobody knows what happens next...');
         }
@@ -26,26 +27,23 @@ class Colonize{
         this.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         this.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-        Colonize.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', {
+        window.game = new Phaser.Game(this.width, this.height, Phaser.CANVAS, '', {
             preload: () => this.preload(),
             create: () => this.create(),
             update: () => this.update(),
             render: () => this.render(),
             preRender: () => this.preRender()
         });
-        Phaser.Canvas.setSmoothingEnabled(Colonize.game, false);
+        Phaser.Canvas.setSmoothingEnabled(game, false);
 
-        Colonize.map = new Map();
-        Colonize.fpsCounter = new FPSCounter();
-
-        Colonize.ressources = new Ressources();
-        Colonize.turn = new Turn();
-
-        this.globals = Colonize;
+        new MapController();
+        new DebugView();
+        new Loader();
+        new Turn();
     }
 
     preload() {
-        Colonize.ressources.preload();
+        Loader.instance.preload();
     }
 
     create() {
@@ -55,11 +53,11 @@ class Colonize{
 
 
         //create and register
-        Colonize.keyboardInput = new KeyboardInput();
-        Colonize.pointerInput = new PointerInput();
+        new KeyboardInput();
+        new PointerInput();
 
-        Colonize.map.create();
-        Colonize.fpsCounter.create();
+        MapController.instance.create();
+        DebugView.instance.create();
 
 
         let caravel = new Unit({
@@ -101,18 +99,16 @@ class Colonize{
     }
 
     update() {
-    	const delta = Colonize.game.time.physicsElapsed;
-
-        Colonize.keyboardInput.update();
+        KeyboardInput.instance.update();
     }
 
     preRender(){
-        Colonize.map.mapView.renderer.preRender();
+        SpriteRenderer.instance.preRender();
     }
 
     render(){
-        Colonize.map.mapView.renderer.render();
-        Colonize.fpsCounter.render();
+        SpriteRenderer.instance.render();
+        DebugView.instance.render();
     }
 
 }

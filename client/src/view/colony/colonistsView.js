@@ -1,8 +1,8 @@
-
-import Position from '../helper/position.js';
-import Colonize from '../colonize.js';
-import ContextMenu from '../ui/contextMenu.js';
 import Phaser from 'phaser';
+
+
+import Position from 'src/utils/position.js';
+import ContextMenu from 'src/ui/contextMenu.js';
 import ProductionView from './productionView';
 
 class ColonistsView {
@@ -17,10 +17,10 @@ class ColonistsView {
 			x: -482,
 			y: 141,
 			type: Position.WORLD
-		})
+		});
 		for(let colonist of this.colonists){
 			let newSprite = new Phaser.Sprite(
-				Colonize.game,
+				game,
 				position.x,
 				position.y,
 				'mapSheet',
@@ -33,7 +33,7 @@ class ColonistsView {
 			newSprite.inputEnabled = true;
 			newSprite.input.enableDrag(true);
 			newSprite.anchor = new Phaser.Point(0.5, 0.5);
-			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(sprite, colonist)});
+			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(sprite, colonist);});
 
 			position.x += 32;
 
@@ -52,7 +52,7 @@ class ColonistsView {
 		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
 		let oldTile = colonist.production ? colonist.production.tile : null;
 		if(colonist.workOn(tile)){
-			if(tile === oldTile || tile.getYield(colonist, colonist.production.resource) == 0){			
+			if(tile === oldTile || tile.getYield(colonist, colonist.production.resource) === 0){			
 				let choices = tile.ressourceProduction(colonist);
 				for(let choice of choices)
 					choice.type = 'resource';

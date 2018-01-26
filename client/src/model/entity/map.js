@@ -1,10 +1,8 @@
-import Settings from '../../data/settings.json';
-
-import MapTile from '../entity/mapTile.js';
-import Position from '../helper/position.js';
+import Tile from 'src/model/entity/tile.js';
+import Position from 'src/utils/position.js';
 
 
-class MapData{
+class Map{
 
 	constructor(props){
 		this.data = props.data;
@@ -20,9 +18,9 @@ class MapData{
 			y: this.baseLayer.height,
 		};
 		this.numTiles.total = this.numTiles.x*this.numTiles.y;
-	}
 
-	init(){
+		Map.instance = this;
+
 		this.createAllTiles();
 		this.createCoastLine();
 	}
@@ -45,12 +43,11 @@ class MapData{
 	}
 
 	createAllTiles(){
-		let data = this.data;
-		this.tiles = {}
+		this.tiles = {};
 
 		//create tiles
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
-			this.tiles[index] = new MapTile({
+			this.tiles[index] = new Tile({
 				id: this.baseLayer.data[index],
 				top: this.topLayer.data[index],
 				riverSmall: this.riverSmallLayer.data[index],
@@ -60,7 +57,8 @@ class MapData{
 					x: index % this.numTiles.x,
 					y: index / this.numTiles.x,
 					type: Position.TILE
-				})
+				}),
+				map: this
 			});
 		}
 	}
@@ -76,4 +74,4 @@ class MapData{
 	}
 }
 
-export default MapData;
+export default Map;

@@ -4,3 +4,4 @@ window.onload = function() {
 
 	window.colonize = new Colonize();
 };
+

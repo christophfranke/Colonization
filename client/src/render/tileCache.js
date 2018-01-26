@@ -1,39 +1,49 @@
+import Settings from '../../data/settings.json';
 
-
-import Colonize from '../colonize.js';
 import Phaser from 'phaser';
 import PIXI from 'pixi';
-import Settings from '../../data/settings.json';
+
+import SpriteRenderer from './spriteRenderer.js';
 
 class TileCache{
 
-	constructor(props){
+	constructor(){
 		this.textures = {};
 		this.numFrames = 0;
 		this.numStencils = 0;
 
-		this.renderer = Colonize.renderer;
+		this.renderer = SpriteRenderer.instance;
 
-		this.renderTexture = Colonize.game.add.renderTexture(4096, 4096);
+		this.renderTextures = [];
+
 		this.tiles = {
 			x: Math.floor(4096 / Settings.tileSize.x),
 			y: Math.floor(4096 / Settings.tileSize.y)
-		}
+		};
 
-		this.cacheSize = this.tiles.x*this.tiles.y;
+		this.textureSize = this.tiles.x*this.tiles.y;
+	}
+
+	addRenderTexture(){
+		this.renderTextures.push(game.add.renderTexture(4096, 4096));
+	}
+
+	currentRenderTexture(){
+		return this.renderTextures[this.renderTextures.length-1];
+	}
+
+	currentFrame(){
+		return this.numFrames % this.textureSize;
 	}
 
 	addStencil(indices){
-		if(indices.length <= 1)
+		if(indices.length < 1)
 			return false;
 
 		if(this.hasStencil(indices)){
 			this.getStencil(indices).added++;
 			return true;
 		}
-
-		if(this.numStencils >= this.tiles.x*this.tiles.y)
-			return false;
 
 		let hash = this.hash(indices);
 		this.textures[hash] = {
@@ -59,17 +69,19 @@ class TileCache{
 	}
 
 	renderStencil(indices){
-		let group = new Phaser.Group(Colonize.game);
+		if(this.currentFrame() === 0)
+			this.addRenderTexture();
+		let group = new Phaser.Group(game);
 		this.renderer.createSprites(indices, group);
-		let nextFrame = this.getTile(this.numFrames);
-		this.renderTexture.renderRawXY(group, nextFrame.x, nextFrame.y);
+		let nextFrame = this.getTile(this.currentFrame());
+		this.currentRenderTexture().renderRawXY(group, nextFrame.x, nextFrame.y);
 
 		for(let sprite of group.children){
 			sprite.destroy();
 		}
 		group.destroy();
 
-		this.getStencil(indices).texture = new PIXI.Texture(this.renderTexture, this.cropRect(this.numFrames));
+		this.getStencil(indices).texture = new PIXI.Texture(this.currentRenderTexture(), this.cropRect(this.currentFrame()));
 		this.numFrames++;
 	}
 
@@ -85,7 +97,7 @@ class TileCache{
 
 		let hash = this.hash(indices);
 		this.textures[hash].used++;
-		let sprite = new Phaser.Sprite(Colonize.game, 0, 0, this.textures[hash].texture);
+		let sprite = new Phaser.Sprite(game, 0, 0, this.textures[hash].texture);
 
 		return sprite;
 	}
@@ -93,7 +105,7 @@ class TileCache{
 	hash(indices){
 		let hashString = '';
 		for(let i of indices){
-			hashString += i;
+			hashString += ',' + i;
 		}
 
 		return hashString;
@@ -108,7 +120,7 @@ class TileCache{
 		return {
 			x : ((frame) % this.tiles.x) * Settings.tileSize.x,
 			y : Math.floor(frame / this.tiles.y) * Settings.tileSize.y
-		}
+		};
 	}
 
 }

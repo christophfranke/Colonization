@@ -21,14 +21,31 @@ module.exports = {
       { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'client/src') },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
-      { test: /p2\.js/, use: ['expose-loader?p2'] }
+      { test: /p2\.js/, use: ['expose-loader?p2'] },
+      {
+        test: /\.js$/, // include .js files
+        enforce: "pre", // preload the jshint loader
+        exclude: /node_modules/, // exclude any and all files in the node_modules folder
+        use: [
+          {
+            loader: "jshint-loader",
+            options: { 
+              emitErrors: true, 
+              failOnHint: true
+            } 
+          }
+        ]
+      }
     ]
   },
  	resolve: {
     alias: {
       phaser: phaser,
       pixi: pixi,
-      p2: p2
-	   }
+      p2: p2,
+      src: path.resolve(__dirname, 'client/src'),
+      data: path.resolve(__dirname, 'client/data'),
+      client: path.resolve(__dirname, 'client')
+    }
 	}
 };

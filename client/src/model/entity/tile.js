@@ -1,12 +1,13 @@
-import Terrain from '../../data/terrain.json';
-import Colonize from '../colonize.js';
-import Yield from '../../data/yield.json';
-import Resources from '../../data/resources.json';
+import Terrain from 'data/terrain.json';
+import Yield from 'data/yield.json';
+import Resources from 'data/resources.json';
+
 
 class MapTile {
 	constructor(props){
 		this.id = props.id;
 		this.position = props.position.getTile();
+		this.map = props.map;
 
 		this.forest = false;
 		this.hills = false;
@@ -48,14 +49,14 @@ class MapTile {
 				this.props = Terrain[type];
 				this.name = type;
 			}
-		};
+		}
 
 		this.coastTerrain = null;
 		this.mapBorder = (
 			this.position.x === 0 ||
 			this.position.y === 0 ||
-			this.position.x === Colonize.map.mapData.numTiles.x-1 ||
-			this.position.y === Colonize.map.mapData.numTiles.y-1);
+			this.position.x === this.map.numTiles.x-1 ||
+			this.position.y === this.map.numTiles.y-1);
 
 		this.units = [];
 	}
@@ -110,7 +111,6 @@ class MapTile {
 	}
 
 	ressourceProduction(colonist){
-		let terrainName = this.terrainName();
 		let production = [];
 
 		for(let resource of Resources.types){
@@ -123,19 +123,19 @@ class MapTile {
 	}
 
 	getLeft(){
-		return Colonize.map.mapData.getTileInfo(this.position.left());
+		return this.map.getTileInfo(this.position.left());
 	}
 
 	getUp(){
-		return Colonize.map.mapData.getTileInfo(this.position.up());
+		return this.map.getTileInfo(this.position.up());
 	}
 
 	getRight(){
-		return Colonize.map.mapData.getTileInfo(this.position.right());
+		return this.map.getTileInfo(this.position.right());
 	}
 
 	getDown(){
-		return Colonize.map.mapData.getTileInfo(this.position.down());
+		return this.map.getTileInfo(this.position.down());
 	}
 
 	enter(unit){
@@ -149,10 +149,10 @@ class MapTile {
 
 	createCoastTerrain(){
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea'){
-			let left = Colonize.map.mapData.getTileInfo(this.position.left());
-			let right = Colonize.map.mapData.getTileInfo(this.position.right());
-			let up = Colonize.map.mapData.getTileInfo(this.position.up());
-			let down = Colonize.map.mapData.getTileInfo(this.position.down());
+			let left = this.map.getTileInfo(this.position.left());
+			let right = this.map.getTileInfo(this.position.right());
+			let up = this.map.getTileInfo(this.position.up());
+			let down = this.map.getTileInfo(this.position.down());
 
 			let landNeighbor = null;
 			if(left !== null && typeof left.props !== 'undefined' && left.props.domain === 'land')
@@ -194,10 +194,10 @@ class MapTile {
 	createCoastalSea(){
 		this.isCoastalSea = false;
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea' && this.coastTerrain === null){
-			let left = Colonize.map.mapData.getTileInfo(this.position.left());
-			let right = Colonize.map.mapData.getTileInfo(this.position.right());
-			let up = Colonize.map.mapData.getTileInfo(this.position.up());
-			let down = Colonize.map.mapData.getTileInfo(this.position.down());
+			let left = this.map.getTileInfo(this.position.left());
+			let right = this.map.getTileInfo(this.position.right());
+			let up = this.map.getTileInfo(this.position.up());
+			let down = this.map.getTileInfo(this.position.down());
 			if(left !== null && right !== null){
 				let leftUp = left.getUp();
 				let leftDown = left.getDown();
