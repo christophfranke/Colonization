@@ -51,7 +51,7 @@ class MapTile {
 				this.props = Terrain[type];
 				this.name = type;
 			}
-		};
+		}
 
 		this.coastTerrain = null;
 		this.mapBorder = (
@@ -113,7 +113,6 @@ class MapTile {
 	}
 
 	ressourceProduction(colonist){
-		let terrainName = this.terrainName();
 		let production = [];
 
 		for(let resource of Resources.types){

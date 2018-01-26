@@ -1,5 +1,3 @@
-import Settings from 'data/settings.json';
-
 import MapTile from 'src/model/entity/tile.js';
 import Position from 'src/utils/position.js';
 
@@ -45,8 +43,7 @@ class MapData{
 	}
 
 	createAllTiles(){
-		let data = this.data;
-		this.tiles = {}
+		this.tiles = {};
 
 		//create tiles
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){

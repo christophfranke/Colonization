@@ -18,7 +18,7 @@ class ColonistsView {
 			x: -482,
 			y: 141,
 			type: Position.WORLD
-		})
+		});
 		for(let colonist of this.colonists){
 			let newSprite = new Phaser.Sprite(
 				Colonize.game,
@@ -34,7 +34,7 @@ class ColonistsView {
 			newSprite.inputEnabled = true;
 			newSprite.input.enableDrag(true);
 			newSprite.anchor = new Phaser.Point(0.5, 0.5);
-			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(sprite, colonist)});
+			newSprite.events.onDragStop.add((sprite) => {this.dragColonist(sprite, colonist);});
 
 			position.x += 32;
 

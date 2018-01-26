@@ -5,7 +5,6 @@ import Settings from 'data/settings.json';
 import Colonize from 'src/colonize.js';
 
 import Position from 'src/utils/position.js';
-import MapTileView from 'src/view/common/mapTileView.js';
 
 import TileCache from './tileCache.js';
 
@@ -82,7 +81,7 @@ class SpriteRenderer {
 	}
 
 	pushTile(tile, view){
-		this.clearSprite(tile)
+		this.clearSprite(tile);
 		for(let indices of view.layers){
 			this.updateSprites(tile, indices);
 		}
@@ -132,7 +131,7 @@ class SpriteRenderer {
 
 	createSprites(indices, parent){
 		for(let index of indices){
-			let newSprite = Colonize.game.add.sprite(
+			Colonize.game.add.sprite(
 				0,
 				0,
 				'mapSheet',
@@ -180,7 +179,7 @@ class SpriteRenderer {
 			return;
 		}
 
-		this.clearSprite(tile)
+		this.clearSprite(tile);
 		for(let indices of view.layers){
 			this.updateSprites(tile, indices);
 		}
@@ -274,7 +273,8 @@ class SpriteRenderer {
 		let margin = this.margin.getWorld();
 		return (
 			Math.abs(this.lastDisplayUpdate.x - Colonize.game.camera.x) < margin.x &&
-			Math.abs(this.lastDisplayUpdate.y - Colonize.game.camera.y) < margin.y)
+			Math.abs(this.lastDisplayUpdate.y - Colonize.game.camera.y) < margin.y
+		);
 	}
 
 

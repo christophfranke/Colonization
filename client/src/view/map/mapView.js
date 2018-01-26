@@ -1,10 +1,5 @@
-
-import PIXI from 'pixi';
-
 import Settings from 'data/settings.json';
 import Terrain from 'data/terrain.json';
-
-import Colonize from 'src/colonize.js';
 
 import BackgroundView from 'src/view/common/BackgroundView.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
@@ -326,7 +321,7 @@ class MapView{
 						(left.props.domain === 'land' || center.props.domain === 'sea') &&
 						(left.discovered && center.discovered)
 					){
-						tiles.push(left.props.centerTile + 1)
+						tiles.push(left.props.centerTile + 1);
 					}
 					if(
 						(upLeft.props.domain === 'land' || center.props.domain === 'sea') &&
@@ -347,7 +342,7 @@ class MapView{
 						(left.discovered && center.discovered) &&
 						(left.coastTerrain !== null)
 					){
-						tiles.push(left.coastTerrain.centerTile + 1)
+						tiles.push(left.coastTerrain.centerTile + 1);
 					}
 					if(
 						(upLeft.props.domain === 'sea' && center.props.domain === 'land') &&
@@ -499,7 +494,7 @@ class MapView{
 						down.props.domain === 'land',
 						leftDown.props.domain === 'land',
 						left.props.domain === 'land',
-						leftUp.props.domain === 'land',
+						leftUp.props.domain === 'land'
 					);
 					for(let name of cornerNames){
 						corners.push(Terrain.coast[name]);
@@ -673,7 +668,7 @@ class MapView{
 			bonus.push(Terrain.bonusRessource[ressourceName]);
 		}
 
-		return bonus
+		return bonus;
 	}
 
 	renderTopTiles(position){

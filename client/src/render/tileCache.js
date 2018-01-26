@@ -7,7 +7,7 @@ import Settings from '../../data/settings.json';
 
 class TileCache{
 
-	constructor(props){
+	constructor(){
 		this.textures = {};
 		this.numFrames = 0;
 		this.numStencils = 0;
@@ -18,7 +18,7 @@ class TileCache{
 		this.tiles = {
 			x: Math.floor(4096 / Settings.tileSize.x),
 			y: Math.floor(4096 / Settings.tileSize.y)
-		}
+		};
 
 		this.cacheSize = this.tiles.x*this.tiles.y;
 	}
@@ -108,7 +108,7 @@ class TileCache{
 		return {
 			x : ((frame) % this.tiles.x) * Settings.tileSize.x,
 			y : Math.floor(frame / this.tiles.y) * Settings.tileSize.y
-		}
+		};
 	}
 
 }

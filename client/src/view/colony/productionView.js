@@ -26,7 +26,7 @@ class ProductionView {
 
 			let index = Resources[this.resource].id;
 			for(let i=0; i < this.amount; i++){
-				let newSprite = Colonize.game.add.sprite(
+				Colonize.game.add.sprite(
 					Math.round(i*this.width / amount) - 50,
 					20,
 					'mapSheet',

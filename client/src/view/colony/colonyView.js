@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 
 import Colonize from 'src/colonize.js';
 
@@ -73,5 +74,5 @@ class ColonyView {
 
 }
 
-ColonyView.open = null
+ColonyView.open = null;
 export default ColonyView;
