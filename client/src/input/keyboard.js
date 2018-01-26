@@ -146,7 +146,7 @@ class KeyboardInput {
 
 	emitKeypress(x, y){
 		if(Unit.selectedUnit !== null){
-			var newPosition = Unit.selectedUnit.position.getTile();
+			let newPosition = Unit.selectedUnit.position.getTile();
 			newPosition.x += x;
 			newPosition.y += y;
 			Unit.selectedUnit.orderMoveTo(newPosition);
