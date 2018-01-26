@@ -1,13 +1,12 @@
 import Colonize from 'src/colonize.js';
 
-import MapTileView from 'src/view/common/mapTileView.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 
 
 class DebugView {
 	constructor(){
 		this.skipFrames = 1; //only update every x frames
-		this.debug = false;
+		this.debug = true;
 
 		DebugView.instance = this;
 		
@@ -31,6 +30,7 @@ class DebugView {
 				let memoryUsage = 'n/a';
 				let memoryLimit = 'n/a';
 				let memoryPercentage = 'n/a';
+				let spriteCount = SpriteRenderer.instance.display.total;
 				if(typeof window.performance.memory !== 'undefined'){
 					memoryUsage = window.performance.memory.usedJSHeapSize / (1000*1000);
 					memoryLimit = window.performance.memory.jsHeapSizeLimit / (1000*1000);
@@ -38,10 +38,9 @@ class DebugView {
 				}
 				game.debug.start(20, 20, 'white');
 				game.debug.line(game.time.fps + ' fps');
-				game.debug.line(SpriteRenderer.instance.spriteCount + '/2000 sprites');
+				game.debug.line(spriteCount + '/' + SpriteRenderer.instance.spriteCount + ' sprites');
 				game.debug.line(SpriteRenderer.instance.tileCount + ' tiles');
 				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
-				game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
 				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
 				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + ' sprites in cache on ' + SpriteRenderer.instance.tileCache.renderTextures.length + ' textures');
 				if(memoryUsage !=='n/a')
