@@ -32,6 +32,7 @@ class SpriteRenderer {
 		}
 		this.visible = true;
 		this.spritesUpdated = 0;
+		this.display.removeChildren();
 
 
 
@@ -56,7 +57,7 @@ class SpriteRenderer {
 		};
 	}
 
-	pushTile(tile, view){
+	initTile(tile, view){
 		this.clearSprite(tile);
 		for(let indices of view.layers){
 			this.updateSprites(tile, indices);
@@ -123,6 +124,7 @@ class SpriteRenderer {
 			if(this.sprites[where].parent !== this.display){
 				this.display.addChild(this.sprites[where]);
 				this.tileCount++;
+				this.spriteCount += this.sprites[where].children.length;
 			}
 		}
 	}
@@ -196,6 +198,8 @@ class SpriteRenderer {
 			}
 		}
 
+		this.lastDisplayUpdate.x = game.camera.x;
+		this.lastDisplayUpdate.y = game.camera.y;
 	}
 
 	render(){

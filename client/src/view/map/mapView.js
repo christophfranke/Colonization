@@ -37,7 +37,7 @@ class MapView{
 				});
 
 				let layers = this.renderTile(tile);
-				this.renderer.pushTile(tile, layers);
+				this.renderer.initTile(tile, layers);
 			}
 		}
 
