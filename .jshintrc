@@ -3,6 +3,7 @@
   "unused": true,
   "loopfunc": true,
   "esversion": 6,
+  "eqeqeq": true,
   "globals": {
     "window": true,
     "document": true,

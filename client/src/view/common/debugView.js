@@ -26,7 +26,7 @@ class DebugView {
 
 	render(){
 		if(this.debug){		
-			if(this.currentFrame == this.skipFrames){
+			if(this.currentFrame === this.skipFrames){
 				let spritesPerTile = Math.round(100*SpriteRenderer.instance.spriteCount / SpriteRenderer.instance.tileCount) / 100;
 				let memoryUsage = 'n/a';
 				let memoryLimit = 'n/a';

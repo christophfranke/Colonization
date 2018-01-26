@@ -110,7 +110,7 @@ class MapView{
 		if(center.discovered && other.discovered){
 			//blend between land
 			if(other.props.domain === 'land'){
-				if(other.props.id != center.props.id)
+				if(other.props.id !== center.props.id)
 					return other.props.centerTile + offset;
 			}
 

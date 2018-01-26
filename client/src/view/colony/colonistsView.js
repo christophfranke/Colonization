@@ -52,7 +52,7 @@ class ColonistsView {
 		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
 		let oldTile = colonist.production ? colonist.production.tile : null;
 		if(colonist.workOn(tile)){
-			if(tile === oldTile || tile.getYield(colonist, colonist.production.resource) == 0){			
+			if(tile === oldTile || tile.getYield(colonist, colonist.production.resource) === 0){			
 				let choices = tile.ressourceProduction(colonist);
 				for(let choice of choices)
 					choice.type = 'resource';
