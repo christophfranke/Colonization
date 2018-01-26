@@ -5,7 +5,7 @@ import Settings from '../../data/settings.json';
 
 class Ressources{
 
-	constructor(props){
+	constructor(){
 		this.ressources = {
 			mapData: {
 				url: '/assets/maps/america_large.json',
@@ -47,7 +47,7 @@ class Ressources{
 					y: 128
 				}
 			}
-		}
+		};
 	}
 
 

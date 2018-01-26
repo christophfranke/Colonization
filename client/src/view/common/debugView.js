@@ -1,9 +1,9 @@
 
-import Colonize from '../colonize.js';
-import MapTileView from '../view/mapTileView.js';
+import Colonize from 'src/colonize.js';
+import MapTileView from 'src/view/common/mapTileView.js';
 
 class FPSCounter {
-	constructor(props){
+	constructor(){
 		this.skipFrames = 1; //only update every x frames
 		this.debug = false;
 		

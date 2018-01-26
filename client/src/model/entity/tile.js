@@ -1,7 +1,8 @@
-import Terrain from '../../data/terrain.json';
-import Colonize from '../colonize.js';
-import Yield from '../../data/yield.json';
-import Resources from '../../data/resources.json';
+import Terrain from '/client/data/terrain.json';
+import Yield from '/client/data/yield.json';
+import Resources from '/client/data/resources.json';
+
+import Colonize from '/client/colonize.js';
 
 class MapTile {
 	constructor(props){

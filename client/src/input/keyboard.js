@@ -1,10 +1,11 @@
+import Unit from 'src/model/entity/unit.js';
+import Colonize from 'src/colonize.js';
 
-import Unit from '../entity//unit.js';
-import Colonize from '../colonize.js';
+import Phaser from 'phaser';
 
 
 class KeyboardInput {
-	constructor(props){
+	constructor(){
 		this.game = Colonize.game;
 		this.map = Colonize.map;
 

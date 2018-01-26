@@ -2,7 +2,7 @@
 
 
 class MapTileView {
-	constructor(props){
+	constructor(){
 		this.reset();
 	}
 

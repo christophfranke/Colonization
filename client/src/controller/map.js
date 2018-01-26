@@ -1,14 +1,12 @@
-import TerrainProps from '../../data/terrain.json';
-import Settings from '../../data/settings.json';
+import Position from 'src/utils/position.js';
+import MapData from 'src/model/entity/map.js';
+import Colonize from 'src/colonize.js';
+import MapView from 'src/view/map/mapView.js';
 
-import Unit from './unit.js';
-import Position from '../helper/position.js';
-import MapData from '../world/mapData.js';
-import Colonize from '../colonize.js';
-import MapView from '../view/mapView.js';
+import Phaser from 'phaser';
 
 class Map{
-	constructor(props){
+	constructor(){
 		this.mapCenterTweenTime = 250; //also millis
 	}
 
@@ -50,12 +48,6 @@ class Map{
 		const cameraTarget = new Position({
 			x: Math.floor(clickPosition.getWorld().x - 0.5*(Colonize.game.width / Colonize.game.camera.scale.x)),
 			y: Math.floor(clickPosition.getWorld().y - 0.5*(Colonize.game.height / Colonize.game.camera.scale.y)),
-			type: Position.WORLD
-		});
-
-		const cameraPosition = new Position({
-			x: Colonize.game.camera.x,
-			y: Colonize.game.camera.y,
 			type: Position.WORLD
 		});
 

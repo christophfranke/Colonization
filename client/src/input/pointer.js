@@ -1,11 +1,11 @@
-import Colonize from '../colonize.js';
-import Position from '../helper/position.js';
-import ColonyView from '../view/colonyView.js';
-import Unit from '../entity/unit.js';
+import Colonize from 'src/colonize.js';
+import Position from 'src/utils/position.js';
+import ColonyView from 'src/view/colony/colonyView.js';
+import Unit from 'src/model/entity/unit.js';
 
 
 class PointerInput{
-	constructor(props){
+	constructor(){
 		this.holdTimeThreshold = 350; //millis
 		this.downAt = null;
 

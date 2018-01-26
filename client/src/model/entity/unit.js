@@ -1,9 +1,9 @@
-import UnitProps from '../../data/units.json';
+import UnitProps from 'data/units.json';
 
-import Easing from '../view/easing.js';
-import Position from '../helper/position.js';
-import Colonize from '../colonize.js';
-import TileSprite from '../view/tileSprite.js';
+import Position from 'src/utils/position.js';
+import Colonize from 'src/colonize.js';
+import TileSprite from 'src/view/map/unitView.js';
+
 import Colony from './colony.js';
 
 

@@ -2,19 +2,18 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
 
-import Unit from './entity/unit.js';
-import Map from './entity/map.js';
-import Position from './helper/position.js';
-import KeyboardInput from './input/keyboardInput.js';
-import PointerInput from './input/pointerInput.js';
-import FPSCounter from './helper/fpsCounter.js';
-import Ressources from './helper/ressources.js';
-import Turn from './world/turn.js';
-import Colony from './entity/colony.js';
+import Unit from './model/entity/unit.js';
+import Map from './controller/map.js';
+import Position from './utils/position.js';
+import KeyboardInput from './input/keyboard.js';
+import PointerInput from './input/pointer.js';
+import FPSCounter from './view/common/debugView.js';
+import Ressources from './utils/loader.js';
+import Turn from './model/action/turn.js';
 
 class Colonize{
 
-	constructor(props){
+	constructor(){
         if(typeof Colonize.instance !== 'undefined'){
             throw new Error('Colonize defined multiple times. Nobody knows what happens next...');
         }
@@ -101,8 +100,6 @@ class Colonize{
     }
 
     update() {
-    	const delta = Colonize.game.time.physicsElapsed;
-
         Colonize.keyboardInput.update();
     }
 

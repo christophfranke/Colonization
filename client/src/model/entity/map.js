@@ -1,7 +1,7 @@
-import Settings from '../../data/settings.json';
+import Settings from '/client/data/settings.json';
 
-import MapTile from '../entity/mapTile.js';
-import Position from '../helper/position.js';
+import MapTile from '/client/model/entity/tile.js';
+import Position from '/client/utils/position.js';
 
 
 class MapData{

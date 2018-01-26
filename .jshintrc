@@ -4,6 +4,7 @@
   "esversion": 6,
   "globals": {
     "window": true,
-    "document": true
+    "document": true,
+    "console": true
   }
 }

@@ -1,6 +1,6 @@
 
-import Units from '../../data/units.json';
-import Colonize from '../colonize.js';
+import Units from 'data/units.json';
+import Colonize from 'src/colonize.js';
 
 
 class Colonist{
@@ -23,7 +23,7 @@ class Colonist{
 		if(tile === Colonize.map.getTileInfo(this.colony.position))
 			return false;
 
-		this.stopWorking()
+		this.stopWorking();
 		if(this.production)
 			this.production.tile = tile;
 		else

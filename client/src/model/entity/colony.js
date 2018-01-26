@@ -1,9 +1,9 @@
-import Places from '../../data/places.json';
-import Resources from '../../data/resources.json';
+import Places from 'data/places.json';
+import Resources from 'data/resources.json';
 
-import TileSprite from '../view/tileSprite.js';
-import ColonyView from '../view/colonyView.js';
-import Colonize from '../colonize.js';
+import ColonyView from 'src/view/colonyView.js';
+import Colonize from 'src/colonize.js';
+
 import Colonist from './colonist.js';
 
 
@@ -48,7 +48,7 @@ class Colony{
 	produce(){
 		for(let colonist of this.colonists){
 			if(colonist.production){
-				let resource = colonist.production.resource
+				let resource = colonist.production.resource;
 				this.storage[resource] += colonist.production.tile.getYield(colonist, resource);
 			}
 		}
