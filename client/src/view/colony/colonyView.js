@@ -9,11 +9,19 @@ import StorageView from './storageView.js';
 class ColonyView {
 	constructor(props){
 
+        this.layer = game.add.group();
+        this.background = game.add.tileSprite(0, 0, game.width, game.height, 'undiscovered');
+        this.background.inputEnabled = true;
+        this.background.events.onInputDown.add(this.hide, this);
+        this.layer.add(this.background);
+        this.background.fixedToCamera = true;
         this.colonyScreen = game.add.image(0.5*game.width, 0.5*game.height, 'colonyScreen');
     	this.colonyScreen.scale = new Phaser.Point(0.5, 0.5);
     	this.colonyScreen.fixedToCamera = true;
         this.colonyScreen.anchor.setTo(0.5, 0.5);
-        this.colonyScreen.visible = false;
+        this.layer.add(this.colonyScreen);
+        
+        this.layer.visible = false;
 
         this.colony = props.colony;
 
@@ -32,17 +40,17 @@ class ColonyView {
 
         this.colonyMapView = new ColonyMapView({
             colony: this.colony,
-            parentScreen: this.colonyScreen
+            parentScreen: this.layer
         });
 
         this.colonistsView = new ColonistsView({
             colony: this.colony,
-            parentScreen: this.colonyScreen
+            parentScreen: this.layer
         });
 
         this.storageView = new StorageView({
             colony: this.colony,
-            parentScreen: this.colonyScreen
+            parentScreen: this.layer
         });
 	}
 
@@ -50,7 +58,7 @@ class ColonyView {
     }
 
     show(){
-        this.colonyScreen.visible = true;
+        this.layer.visible = true;
         ColonyView.open = this;
 
         this.colonyMapView.show();
@@ -60,7 +68,7 @@ class ColonyView {
     }
 
     hide(){
-        this.colonyScreen.visible = false;
+        this.layer.visible = false;
         if(ColonyView.open === this)
             ColonyView.open = null;
 

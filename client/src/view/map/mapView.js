@@ -1,7 +1,6 @@
 import Settings from 'data/settings.json';
 import Terrain from 'data/terrain.json';
 
-import BackgroundView from 'src/view/common/BackgroundView.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 import Position from 'src/utils/position.js';
 import MapTileView from 'src/view/common/mapTileView.js';
@@ -21,7 +20,6 @@ class MapView{
 		game.world.resize(worldDimensions.x, worldDimensions.y);
 
 
-		this.background = new BackgroundView();
 		this.renderer = new SpriteRenderer({
 			map: this.map
 		});

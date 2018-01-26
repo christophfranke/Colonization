@@ -13,19 +13,13 @@ class PointerInput{
 
 		game.canvas.oncontextmenu = (e) => { e.preventDefault(); };
     	game.input.mouse.capture = true;
-	}
 
-	registerMapClick(layer){
-    	layer.inputEnabled = true;
-    	layer.events.onInputDown.add(this.inputDown, this);
-    	layer.events.onInputUp.add(this.inputUp, this);
-
+		game.input.onDown.add(this.inputDown, this);
+		game.input.onUp.add(this.inputUp, this);
 	}
 
 	inputDown(){
-		if(ColonyView.open !== null)
-			ColonyView.open.hide();
-		else
+		if(ColonyView.open === null)
 			this.downAt = game.time.now;
 	}
 

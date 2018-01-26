@@ -21,6 +21,9 @@ class SpriteRenderer {
 		this.display = game.add.group();
 		this.tileCache = new TileCache();
 
+		this.background = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'undiscovered');
+		this.display.addChild(this.background);
+
 		//fill array with empty spriteBatches
 		this.sprites = Array(this.map.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
@@ -172,6 +175,7 @@ class SpriteRenderer {
 			type: Position.WORLD
 		}).getTile();
 
+		let needBackground = false;
 		for(let x = cameraPosition.x - this.margin.left; x < cameraPosition.x + this.cameraWidth.x + this.margin.right; x++){
 			for(let y = cameraPosition.y - this.margin.up; y < cameraPosition.y + this.cameraWidth.y + this.margin.down; y++){
 
@@ -194,8 +198,14 @@ class SpriteRenderer {
 						this.spriteCount += this.sprites[at].children.length;
 						this.showSprite(position);
 					}
+					else{
+						needBackground = true;
+					}
 				}
 			}
+
+			if(needBackground)
+				this.display.addChildAt(this.background, 0);
 		}
 
 		this.lastDisplayUpdate.x = game.camera.x;
