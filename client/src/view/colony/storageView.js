@@ -1,6 +1,5 @@
-
-import Colonize from 'src/colonize.js';
 import Phaser from 'phaser';
+
 
 class StorageView{
 	constructor(props){
@@ -12,7 +11,7 @@ class StorageView{
 		this.colony = props.colony;
 		this.parentScreen = props.parentScreen;
 
-		this.layer = new Phaser.Group(Colonize.game);
+		this.layer = new Phaser.Group(game);
 		this.parentScreen.addChild(this.layer);
 
 		this.createStorageView();
@@ -21,7 +20,7 @@ class StorageView{
 	createStorageView(){
 		let i =0;
 		for(let ressource in this.colony.storage){
-			this.textSprites[ressource] = Colonize.game.add.text(-962 + 127*i, 537, this.colony.storage[ressource], this.style, this.layer);
+			this.textSprites[ressource] = game.add.text(-962 + 127*i, 537, this.colony.storage[ressource], this.style, this.layer);
 			i++;
 		}
 	}

@@ -2,17 +2,18 @@ import Phaser from 'phaser';
 
 import Settings from 'data/settings.json';
 
-import Colonize from 'src/colonize.js';
-
 import Position from 'src/utils/position.js';
+import Map from 'src/model/entity/map.js';
 
 import TileCache from './tileCache.js';
 
 
 
+
 class SpriteRenderer {
-	constructor(){
-		Colonize.renderer = this;
+	constructor(props){
+		SpriteRenderer.instance = this;
+		this.map = props.map || Map.instance;
 
 		this.tileCaching = false;
 		this.displayCaching = false;
@@ -20,19 +21,19 @@ class SpriteRenderer {
 		this.scrollCaching = false;
 
 
-		this.display = Colonize.game.add.group();
+		this.display = game.add.group();
 		this.display.cacheAsBitmap = this.displayCaching;
 
 		this.tileCache = new TileCache();
 
 		//fill array with empty spriteBatches
-		this.sprites = Array(Colonize.map.mapData.numTiles.total);
+		this.sprites = Array(this.map.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
 			let tile = this.tileAt(i);
 			if(this.tileCaching)
-				this.sprites[i] = new Phaser.Group(Colonize.game, this.display);
+				this.sprites[i] = new Phaser.Group(game, this.display);
 			else
-				this.sprites[i] = new Phaser.SpriteBatch(Colonize.game, this.display);
+				this.sprites[i] = new Phaser.SpriteBatch(game, this.display);
 			this.sprites[i].x = tile.x*Settings.tileSize.x;
 			this.sprites[i].y = tile.y*Settings.tileSize.y;
 			this.sprites[i].interactiveChildren = false;
@@ -43,14 +44,14 @@ class SpriteRenderer {
 
 
 		this.cameraWidth = new Position({
-			x: Colonize.game.width,
-			y: Colonize.game.height,
+			x: game.width,
+			y: game.height,
 			type: Position.WORLD
 		}).getTile();
 
 		this.lastCameraPosition = new Position({
-			x: Colonize.game.camera.x,
-			y: Colonize.game.camera.y,
+			x: game.camera.x,
+			y: game.camera.y,
 			type: Position.WORLD
 		});
 
@@ -131,7 +132,7 @@ class SpriteRenderer {
 
 	createSprites(indices, parent){
 		for(let index of indices){
-			Colonize.game.add.sprite(
+			game.add.sprite(
 				0,
 				0,
 				'mapSheet',
@@ -158,13 +159,13 @@ class SpriteRenderer {
 	}
 
 	tileIndex(tile){
-		return tile.x + tile.y*Colonize.map.mapData.numTiles.x;
+		return tile.x + tile.y*this.map.numTiles.x;
 	}
 
 	tileAt(index){
 		return new Position({
-			x: index % Colonize.map.mapData.numTiles.x,
-			y: Math.floor(index / Colonize.map.mapData.numTiles.x),
+			x: index % this.map.numTiles.x,
+			y: Math.floor(index / this.map.numTiles.x),
 			type: Position.TILE
 		});
 	}
@@ -172,9 +173,9 @@ class SpriteRenderer {
 	updateTile(tile, view){
 		if(
 			tile.x < 0 ||
-			tile.x >= Colonize.map.mapData.numTiles.x ||
+			tile.x >= this.map.numTiles.x ||
 			tile.y < 0 ||
-			tile.y >= Colonize.map.mapData.numTiles.y
+			tile.y >= this.map.numTiles.y
 		){
 			return;
 		}
@@ -195,8 +196,8 @@ class SpriteRenderer {
 			return;
 
 		let cameraPosition = new Position({
-			x: Colonize.game.camera.x,
-			y: Colonize.game.camera.y,
+			x: game.camera.x,
+			y: game.camera.y,
 			type: Position.WORLD
 		}).getTile();
 
@@ -211,9 +212,9 @@ class SpriteRenderer {
 
 				if(
 					position.x >= 0 &&
-					position.x < Colonize.map.mapData.numTiles.x &&
+					position.x < this.map.numTiles.x &&
 					position.y >= 0 &&
-					position.y < Colonize.map.mapData.numTiles.y
+					position.y < this.map.numTiles.y
 				){
 					let at = this.tileIndex(position);
 					if(this.sprites[at].children.length > 0){
@@ -235,10 +236,10 @@ class SpriteRenderer {
 			//when not using dislpay cache nothing has to be done
 			if(
 				this.hasChanged ||
-				(this.lastCameraPosition.x === Colonize.game.camera.x &&
-			    this.lastCameraPosition.y === Colonize.game.camera.y &&
-			    this.lastDisplayUpdate.x !== Colonize.game.camera.x &&
-			    this.lastDisplayUpdate.y !== Colonize.game.camera.y)
+				(this.lastCameraPosition.x === game.camera.x &&
+			    this.lastCameraPosition.y === game.camera.y &&
+			    this.lastDisplayUpdate.x !== game.camera.x &&
+			    this.lastDisplayUpdate.y !== game.camera.y)
 			){
 				this.updateScreen();
 				if(this.display.cacheAsBitmap)
@@ -247,8 +248,8 @@ class SpriteRenderer {
 					this.display.cacheAsBitmap = true;
 
 				this.lastDisplayUpdate = new Position({
-					x: Colonize.game.camera.x,
-					y: Colonize.game.camera.y,
+					x: game.camera.x,
+					y: game.camera.y,
 					type: Position.WORLD
 				});		
 
@@ -256,8 +257,8 @@ class SpriteRenderer {
 			}
 		}
 
-		this.lastCameraPosition.x = Colonize.game.camera.x;
-		this.lastCameraPosition.y = Colonize.game.camera.y;
+		this.lastCameraPosition.x = game.camera.x;
+		this.lastCameraPosition.y = game.camera.y;
 	}
 
 	preRender(){
@@ -272,8 +273,8 @@ class SpriteRenderer {
 	cameraInBounds(){
 		let margin = this.margin.getWorld();
 		return (
-			Math.abs(this.lastDisplayUpdate.x - Colonize.game.camera.x) < margin.x &&
-			Math.abs(this.lastDisplayUpdate.y - Colonize.game.camera.y) < margin.y
+			Math.abs(this.lastDisplayUpdate.x - game.camera.x) < margin.x &&
+			Math.abs(this.lastDisplayUpdate.y - game.camera.y) < margin.y
 		);
 	}
 

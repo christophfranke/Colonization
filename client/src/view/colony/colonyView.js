@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 
-import Colonize from 'src/colonize.js';
-
 import TileSprite from 'src/view/map/unitView.js'; //TODO: this is not good! do not use unit view in colony screen
+import MapView from 'src/view/map/mapView.js';
 import ColonyMapView from './colonyMapView.js';
 import ColonistsView from './colonistsView.js';
 import StorageView from './storageView.js';
@@ -10,7 +9,7 @@ import StorageView from './storageView.js';
 class ColonyView {
 	constructor(props){
 
-        this.colonyScreen = Colonize.game.add.image(0.5*Colonize.game.width, 0.5*Colonize.game.height, 'colonyScreen');
+        this.colonyScreen = game.add.image(0.5*game.width, 0.5*game.height, 'colonyScreen');
     	this.colonyScreen.scale = new Phaser.Point(0.5, 0.5);
     	this.colonyScreen.fixedToCamera = true;
         this.colonyScreen.anchor.setTo(0.5, 0.5);
@@ -56,7 +55,7 @@ class ColonyView {
 
         this.colonyMapView.show();
 
-        Colonize.map.mapView.hide();
+        MapView.instance.hide();
         TileSprite.layer.visible = false;
     }
 
@@ -67,7 +66,7 @@ class ColonyView {
 
         this.colonyMapView.hide();
 
-        Colonize.map.mapView.show();
+        MapView.instance.show();
         TileSprite.layer.visible = true;
     }
 

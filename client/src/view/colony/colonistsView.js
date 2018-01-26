@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import Colonize from 'src/colonize.js';
 
 import Position from 'src/utils/position.js';
 import ContextMenu from 'src/ui/contextMenu.js';
@@ -21,7 +20,7 @@ class ColonistsView {
 		});
 		for(let colonist of this.colonists){
 			let newSprite = new Phaser.Sprite(
-				Colonize.game,
+				game,
 				position.x,
 				position.y,
 				'mapSheet',

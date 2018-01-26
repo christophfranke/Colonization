@@ -1,13 +1,15 @@
-import Unit from 'src/model/entity/unit.js';
-import Colonize from 'src/colonize.js';
-
 import Phaser from 'phaser';
+
+import Unit from 'src/model/entity/unit.js';
+import MapController from 'src/controller/map.js';
+import DebugView from 'src/view/common/debugView.js';
+import Turn from 'src/model/action/turn.js';
 
 
 class KeyboardInput {
 	constructor(){
-		this.game = Colonize.game;
-		this.map = Colonize.map;
+		KeyboardInput.instance = this;
+		this.game = game;
 
 		this.wasDown = {
 			leftKey: false,
@@ -28,7 +30,7 @@ class KeyboardInput {
 	keyUp(e){
 		if(e.key === 'c'){
 			if(Unit.selectedUnit !== null)
-				this.map.centerAt(Unit.selectedUnit.position);
+				MapController.instance.centerAt(Unit.selectedUnit.position);
 		}
 		if(e.key === 'b'){
 			if(Unit.selectedUnit !== null)
@@ -49,7 +51,7 @@ class KeyboardInput {
 		}
 
 		if(e.keyCode === 27){
-			Colonize.fpsCounter.toggleDebugInfo();
+			DebugView.instance.toggleDebugInfo();
 		}
 
 		if(e.keyCode === 13){
@@ -59,7 +61,7 @@ class KeyboardInput {
 			}
 
 			if(allUnitsMoved)
-				Colonize.turn.endTurn();
+				Turn.instance.endTurn();
 			else
 				Unit.all[0].selectNext();
 		}

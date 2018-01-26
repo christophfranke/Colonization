@@ -1,6 +1,4 @@
-
 import Units from 'data/units.json';
-import Colonize from 'src/colonize.js';
 
 
 class Colonist{
@@ -20,7 +18,7 @@ class Colonist{
 		if(tile.used)
 			return false;
 
-		if(tile === Colonize.map.getTileInfo(this.colony.position))
+		if(tile === this.colony.map.getTileInfo(this.colony.position))
 			return false;
 
 		this.stopWorking();

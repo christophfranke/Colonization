@@ -1,9 +1,9 @@
+import Settings from '../../data/settings.json';
 
-
-import Colonize from '../colonize.js';
 import Phaser from 'phaser';
 import PIXI from 'pixi';
-import Settings from '../../data/settings.json';
+
+import SpriteRenderer from './spriteRenderer.js';
 
 class TileCache{
 
@@ -12,9 +12,9 @@ class TileCache{
 		this.numFrames = 0;
 		this.numStencils = 0;
 
-		this.renderer = Colonize.renderer;
+		this.renderer = SpriteRenderer.instance;
 
-		this.renderTexture = Colonize.game.add.renderTexture(4096, 4096);
+		this.renderTexture = game.add.renderTexture(4096, 4096);
 		this.tiles = {
 			x: Math.floor(4096 / Settings.tileSize.x),
 			y: Math.floor(4096 / Settings.tileSize.y)
@@ -59,7 +59,7 @@ class TileCache{
 	}
 
 	renderStencil(indices){
-		let group = new Phaser.Group(Colonize.game);
+		let group = new Phaser.Group(game);
 		this.renderer.createSprites(indices, group);
 		let nextFrame = this.getTile(this.numFrames);
 		this.renderTexture.renderRawXY(group, nextFrame.x, nextFrame.y);
@@ -85,7 +85,7 @@ class TileCache{
 
 		let hash = this.hash(indices);
 		this.textures[hash].used++;
-		let sprite = new Phaser.Sprite(Colonize.game, 0, 0, this.textures[hash].texture);
+		let sprite = new Phaser.Sprite(game, 0, 0, this.textures[hash].texture);
 
 		return sprite;
 	}

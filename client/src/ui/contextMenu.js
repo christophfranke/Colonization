@@ -1,6 +1,5 @@
 
 import Phaser from 'phaser';
-import Colonize from '../colonize.js';
 import Resources from '../../data/resources.json';
 
 class ContextMenu {
@@ -9,8 +8,8 @@ class ContextMenu {
 		this.parentScreen = props.parentScreen;
 		this.callback = props.callback;
 
-		this.layer = new Phaser.Group(Colonize.game, this.parentScreen);
-		this.uiBackground = Colonize.game.add.sprite(
+		this.layer = new Phaser.Group(game, this.parentScreen);
+		this.uiBackground = game.add.sprite(
 			0,
 			0,
 			'uiSheet',
@@ -31,7 +30,7 @@ class ContextMenu {
 				scale = this.scaleCorrection(choice.amount);
 			}
 
-			choice.sprite = Colonize.game.add.sprite(
+			choice.sprite = game.add.sprite(
 				Math.round(radius*Math.sin(currentAngle)),
 				Math.round(radius*Math.cos(currentAngle)),
 				'mapSheet',
@@ -45,7 +44,7 @@ class ContextMenu {
 			currentAngle += angleDistance;
 		}
 
-		Colonize.game.input.onDown.addOnce(this.globalPointerDown, this);
+		game.input.onDown.addOnce(this.globalPointerDown, this);
 	}
 
 	globalPointerDown(){

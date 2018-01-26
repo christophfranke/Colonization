@@ -1,19 +1,11 @@
-import Settings from 'data/settings.json';
-
-import Colonize from 'src/colonize.js';
+import PointerInput from 'src/input/pointer.js';
 
 
 class BackgroundView {
 	constructor(){
-		let worldDimensions = {
-			x: Colonize.map.mapData.numTiles.x*Settings.tileSize.x,
-			y: Colonize.map.mapData.numTiles.y*Settings.tileSize.y
-		};
-		Colonize.game.world.resize(worldDimensions.x, worldDimensions.y);
-
-		this.background = Colonize.game.add.tileSprite(0, 0, worldDimensions.x, worldDimensions.y, 'undiscovered');
+		this.background = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'undiscovered');
 		
-		Colonize.pointerInput.registerMapClick(this.background);
+		PointerInput.instance.registerMapClick(this.background);
 	}
 }
 

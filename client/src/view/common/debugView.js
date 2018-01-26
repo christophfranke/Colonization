@@ -1,29 +1,33 @@
-
 import Colonize from 'src/colonize.js';
-import MapTileView from 'src/view/common/mapTileView.js';
 
-class FPSCounter {
+import MapTileView from 'src/view/common/mapTileView.js';
+import SpriteRenderer from 'src/render/spriteRenderer.js';
+
+
+class DebugView {
 	constructor(){
 		this.skipFrames = 1; //only update every x frames
 		this.debug = false;
+
+		DebugView.instance = this;
 		
 		this.currentFrame = this.skipFrames;
 	}
 
 	create(){
-		Colonize.game.time.advancedTiming = Colonize.instance.debug;
+		game.time.advancedTiming = Colonize.instance.debug;
 	}
 
     toggleDebugInfo(){
         this.debug = !this.debug && Colonize.instance.debug;
-		Colonize.game.debug.reset();
+		game.debug.reset();
 		this.currentFrame = this.skipFrames;
     }
 
 	render(){
 		if(this.debug){		
 			if(this.currentFrame == this.skipFrames){
-				let spritesPerTile = Math.round(100*Colonize.renderer.spriteCount / Colonize.renderer.tileCount) / 100;
+				let spritesPerTile = Math.round(100*SpriteRenderer.instance.spriteCount / SpriteRenderer.instance.tileCount) / 100;
 				let memoryUsage = 'n/a';
 				let memoryLimit = 'n/a';
 				let memoryPercentage = 'n/a';
@@ -32,17 +36,17 @@ class FPSCounter {
 					memoryLimit = window.performance.memory.jsHeapSizeLimit / (1000*1000);
 					memoryPercentage = Math.round(100*memoryUsage/memoryLimit);
 				}
-				Colonize.game.debug.start(20, 20, 'white');
-				Colonize.game.debug.line(Colonize.game.time.fps + ' fps');
-				Colonize.game.debug.line(Colonize.renderer.spriteCount + '/2000 sprites');
-				Colonize.game.debug.line(Colonize.renderer.tileCount + ' tiles');
-				Colonize.game.debug.line(spritesPerTile + ' sprites per tile (avg)');
-				Colonize.game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
-				Colonize.game.debug.line(Colonize.renderer.spritesUpdated + ' sprites updated');
-				Colonize.game.debug.line(Colonize.renderer.tileCache.numFrames + '/' + Colonize.renderer.tileCache.cacheSize + ' sprites in cache');
+				game.debug.start(20, 20, 'white');
+				game.debug.line(game.time.fps + ' fps');
+				game.debug.line(SpriteRenderer.instance.spriteCount + '/2000 sprites');
+				game.debug.line(SpriteRenderer.instance.tileCount + ' tiles');
+				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
+				game.debug.line(MapTileView.numTiles + ' sprites per tile (max)');
+				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
+				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + '/' + SpriteRenderer.instance.tileCache.cacheSize + ' sprites in cache');
 				if(memoryUsage !=='n/a')
-					Colonize.game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
-				Colonize.game.debug.stop();
+					game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
+				game.debug.stop();
 				
 				this.currentFrame = 0;
 			}
@@ -53,4 +57,4 @@ class FPSCounter {
 }
 
 
-export default FPSCounter;
+export default DebugView;

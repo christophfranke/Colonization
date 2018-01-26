@@ -11,13 +11,23 @@ import MapTileView from 'src/view/common/mapTileView.js';
 class MapView{
 
 	constructor(props){
-		this.mapData = props.mapData;
+		MapView.instance = this;
+		this.map = props.map;
+
+		let worldDimensions = {
+			x: this.map.numTiles.x*Settings.tileSize.x,
+			y: this.map.numTiles.y*Settings.tileSize.y
+		};
+		game.world.resize(worldDimensions.x, worldDimensions.y);
+
 
 		this.background = new BackgroundView();
-		this.renderer = new SpriteRenderer();
+		this.renderer = new SpriteRenderer({
+			map: this.map
+		});
 
-		for(let y=0; y < this.mapData.numTiles.y; y++){
-			for(let x=0; x < this.mapData.numTiles.x; x++){
+		for(let y=0; y < this.map.numTiles.y; y++){
+			for(let x=0; x < this.map.numTiles.x; x++){
 
 				//the map is ordered column first
 				let tile = new Position({
@@ -115,7 +125,7 @@ class MapView{
 	renderBaseBlock(tile){
 		let indices = [];
 
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		if(center === null || !center.discovered || typeof center.props === 'undefined')
 			return indices;
 
@@ -208,7 +218,7 @@ class MapView{
 	renderUndiscovered(tile){
 		let undiscovered = [];
 
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		if(center === null || !center.discovered)
 			return undiscovered;
 
@@ -254,7 +264,7 @@ class MapView{
 
 	renderBaseTiles(tile){
 		let baseTiles = [];
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 
 		if(center !== null && center.discovered){
 			if(center.coastTerrain !== null){
@@ -270,7 +280,7 @@ class MapView{
 
 
 	renderTerrainBlending(tile){
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		let left = center.getLeft();
 		let right = center.getRight();
 		let up = center.getUp();
@@ -298,7 +308,7 @@ class MapView{
 	renderTerrainOverdraw(tile){
 		let tiles = [];
 
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		let up = center.getUp();
 		let left = center.getLeft();
 
@@ -370,7 +380,7 @@ class MapView{
 	renderCoastalSea(tile){
 		let indices = [];
 
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		if(!center)
 			return indices;
 
@@ -422,7 +432,7 @@ class MapView{
 	renderCoastLine(tile){
 		let coastTiles = [];
 
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		if(!center)
 			return coastTiles;
 
@@ -462,7 +472,7 @@ class MapView{
 	renderCoastCorners(tile){
 		let corners = [];
 
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 		if(center !== null){
 			//no corners on land tiles
 			if(typeof center.props === 'undefined' || center.props.domain === 'land' || !center.discovered)
@@ -660,7 +670,7 @@ class MapView{
 	}
 
 	renderBonusRessources(tile){
-		let center = this.mapData.getTileInfo(tile);
+		let center = this.map.getTileInfo(tile);
 
 		let bonus = [];
 		if(center && center.discovered && center.bonus){
@@ -672,7 +682,7 @@ class MapView{
 	}
 
 	renderTopTiles(position){
-		let center = this.mapData.getTileInfo(position);
+		let center = this.map.getTileInfo(position);
 
 		let topTiles = [];
 		if(center !== null && center.discovered){

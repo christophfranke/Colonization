@@ -1,5 +1,3 @@
-import Colonize from 'src/colonize.js';
-
 import Resources from 'data/resources.json';
 
 
@@ -7,7 +5,7 @@ class ProductionView {
 	constructor(props){
 		this.parentScreen = props.parentScreen;
 
-		this.layer = Colonize.game.add.group();
+		this.layer = game.add.group();
 		this.parentScreen.addChild(this.layer);
 		this.width = 100;
 
@@ -26,7 +24,7 @@ class ProductionView {
 
 			let index = Resources[this.resource].id;
 			for(let i=0; i < this.amount; i++){
-				Colonize.game.add.sprite(
+				game.add.sprite(
 					Math.round(i*this.width / amount) - 50,
 					20,
 					'mapSheet',

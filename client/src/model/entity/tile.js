@@ -2,14 +2,12 @@ import Terrain from 'data/terrain.json';
 import Yield from 'data/yield.json';
 import Resources from 'data/resources.json';
 
-import Global from 'src/global.js';
-
-
 
 class MapTile {
 	constructor(props){
 		this.id = props.id;
 		this.position = props.position.getTile();
+		this.map = props.map;
 
 		this.forest = false;
 		this.hills = false;
@@ -57,8 +55,8 @@ class MapTile {
 		this.mapBorder = (
 			this.position.x === 0 ||
 			this.position.y === 0 ||
-			this.position.x === Global.map.numTiles.x-1 ||
-			this.position.y === Global.map.numTiles.y-1);
+			this.position.x === this.map.numTiles.x-1 ||
+			this.position.y === this.map.numTiles.y-1);
 
 		this.units = [];
 	}
@@ -125,19 +123,19 @@ class MapTile {
 	}
 
 	getLeft(){
-		return Global.map.getTileInfo(this.position.left());
+		return this.map.getTileInfo(this.position.left());
 	}
 
 	getUp(){
-		return Global.map.getTileInfo(this.position.up());
+		return this.map.getTileInfo(this.position.up());
 	}
 
 	getRight(){
-		return Global.map.getTileInfo(this.position.right());
+		return this.map.getTileInfo(this.position.right());
 	}
 
 	getDown(){
-		return Global.map.getTileInfo(this.position.down());
+		return this.map.getTileInfo(this.position.down());
 	}
 
 	enter(unit){
@@ -151,10 +149,10 @@ class MapTile {
 
 	createCoastTerrain(){
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea'){
-			let left = Global.map.getTileInfo(this.position.left());
-			let right = Global.map.getTileInfo(this.position.right());
-			let up = Global.map.getTileInfo(this.position.up());
-			let down = Global.map.getTileInfo(this.position.down());
+			let left = this.map.getTileInfo(this.position.left());
+			let right = this.map.getTileInfo(this.position.right());
+			let up = this.map.getTileInfo(this.position.up());
+			let down = this.map.getTileInfo(this.position.down());
 
 			let landNeighbor = null;
 			if(left !== null && typeof left.props !== 'undefined' && left.props.domain === 'land')
@@ -196,10 +194,10 @@ class MapTile {
 	createCoastalSea(){
 		this.isCoastalSea = false;
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea' && this.coastTerrain === null){
-			let left = Global.map.getTileInfo(this.position.left());
-			let right = Global.map.getTileInfo(this.position.right());
-			let up = Global.map.getTileInfo(this.position.up());
-			let down = Global.map.getTileInfo(this.position.down());
+			let left = this.map.getTileInfo(this.position.left());
+			let right = this.map.getTileInfo(this.position.right());
+			let up = this.map.getTileInfo(this.position.up());
+			let down = this.map.getTileInfo(this.position.down());
 			if(left !== null && right !== null){
 				let leftUp = left.getUp();
 				let leftDown = left.getDown();

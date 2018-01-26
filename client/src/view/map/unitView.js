@@ -1,7 +1,5 @@
 import Settings from 'data/settings.json';
 
-import Colonize from 'src/colonize.js';
-
 import Phaser from 'phaser';
 
 
@@ -13,9 +11,9 @@ class UnitView{
 		this.tweens = {};
 
 		if(typeof UnitView.layer === 'undefined')
-			UnitView.layer = Colonize.game.add.group();
+			UnitView.layer = game.add.group();
 
-		this.sprite = Colonize.game.add.sprite(this.position.x, this.position.y, 'mapTiles', 0, UnitView.layer);
+		this.sprite = game.add.sprite(this.position.x, this.position.y, 'mapTiles', 0, UnitView.layer);
 		this.sprite.crop(this.cropRect());
 	}
 
@@ -52,7 +50,7 @@ class UnitView{
 	moveTo(position){
 		this.position = position.getWorld();
 
-		this.tweens.walk = Colonize.game.add.tween(this.sprite).to( {
+		this.tweens.walk = game.add.tween(this.sprite).to( {
 				x: this.position.x,
 				y: this.position.y
 			},
@@ -66,7 +64,7 @@ class UnitView{
 	}
 
 	startBlinking(){
-	    this.tweens.blink = Colonize.game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);		
+	    this.tweens.blink = game.add.tween(this.sprite).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 0, -1, true);		
 	}
 
 	stopBlinking(){

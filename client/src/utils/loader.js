@@ -1,39 +1,38 @@
-
-import Colonize from '../colonize.js';
 import Settings from '../../data/settings.json';
 
 
-class Ressources{
+class Loader{
 
 	constructor(){
-		this.ressources = {
+		Loader.instance = this;
+		this.assets = {
 			mapData: {
 				url: '/assets/maps/america_large.json',
-				type: Ressources.JSON
+				type: Loader.JSON
 			},
 			mapTiles: {
 				url: '/assets/tilesets/map.png',
-				type: Ressources.Image
+				type: Loader.Image
 			},
 			colonyTiles: {
 				url: '/assets/tilesets/colony.png',
-				type: Ressources.Image
+				type: Loader.Image
 			},
 			colonyData: {
 				url: '/assets/screens/colony-01.json',
-				type: Ressources.JSON
+				type: Loader.JSON
 			},
 			colonyScreen: {
 				url: '/assets/screens/colony.png',
-				type: Ressources.Image
+				type: Loader.Image
 			},
 			undiscovered: {
 				url: '/assets/screens/undiscovered.jpg',
-				type: Ressources.Image
+				type: Loader.Image
 			},
 			mapSheet: {
 				url: '/assets/tilesets/map.png',
-				type: Ressources.SpriteSheet,
+				type: Loader.SpriteSheet,
 				tileSize: {
 					x: Settings.tileSize.x,
 					y: Settings.tileSize.y
@@ -41,7 +40,7 @@ class Ressources{
 			},
 			uiSheet: {
 				url: '/assets/tilesets/ui.png',
-				type: Ressources.SpriteSheet,
+				type: Loader.SpriteSheet,
 				tileSize: {
 					x: 128,
 					y: 128
@@ -53,23 +52,23 @@ class Ressources{
 
 	preload(){
 
-		for(let name in this.ressources){
-			let r = this.ressources[name];
-			if(r.type === Ressources.JSON){
-				Colonize.game.load.json(name, r.url);
+		for(let name in this.assets){
+			let r = this.assets[name];
+			if(r.type === Loader.JSON){
+				game.load.json(name, r.url);
 			}
-			if(r.type === Ressources.Image){
-				Colonize.game.load.image(name, r.url);
+			if(r.type === Loader.Image){
+				game.load.image(name, r.url);
 			}
-			if(r.type === Ressources.SpriteSheet){
-				Colonize.game.load.spritesheet(name, r.url, r.tileSize.x, r.tileSize.y);
+			if(r.type === Loader.SpriteSheet){
+				game.load.spritesheet(name, r.url, r.tileSize.x, r.tileSize.y);
 			}
 		}
 	}
 }
 
-Ressources.JSON = 0;
-Ressources.Image = 1;
-Ressources.SpriteSheet = 2;
+Loader.JSON = 0;
+Loader.Image = 1;
+Loader.SpriteSheet = 2;
 
-export default Ressources;
+export default Loader;

@@ -3,7 +3,8 @@ import Unit from '../entity/unit.js';
 import Colony from '../entity/colony.js';
 
 class Turn{
-	constructr(){
+	constructor(){
+		Turn.instance = this;
 		this.round = 0;
 	}
 

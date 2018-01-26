@@ -1,5 +1,3 @@
-import Global from 'src/global.js';
-
 import Tile from 'src/model/entity/tile.js';
 import Position from 'src/utils/position.js';
 
@@ -21,7 +19,7 @@ class Map{
 		};
 		this.numTiles.total = this.numTiles.x*this.numTiles.y;
 
-		Global.register('map', this);
+		Map.instance = this;
 
 		this.createAllTiles();
 		this.createCoastLine();
@@ -59,7 +57,8 @@ class Map{
 					x: index % this.numTiles.x,
 					y: index / this.numTiles.x,
 					type: Position.TILE
-				})
+				}),
+				map: this
 			});
 		}
 	}

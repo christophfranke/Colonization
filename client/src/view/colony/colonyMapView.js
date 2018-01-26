@@ -1,17 +1,18 @@
 import Settings from 'data/settings.json';
 import Places from 'data/places.json';
 
-import Colonize from 'src/colonize.js';
+import Phaser from 'phaser';
+
+import MapView from 'src/view/map/mapView.js';
 import Position from 'src/utils/position.js';
 
-import Phaser from 'phaser';
 
 
 class ColonyMapView{
 	constructor(props){
 		this.colony = props.colony;
 		this.parentScreen = props.parentScreen;
-		this.layer = new Phaser.Group(Colonize.game);
+		this.layer = new Phaser.Group(game);
 		this.parentScreen.addChild(this.layer);
 
 
@@ -47,8 +48,8 @@ class ColonyMapView{
 					y: colonyPosition.y + y,
 					type: Position.TILE
 				});
-				let newTileView = Colonize.map.mapView.renderTile(tile);
-				let tileInfo = Colonize.map.getTileInfo(tile);
+				let newTileView = MapView.instance.renderTile(tile);
+				let tileInfo = this.colony.map.getTileInfo(tile);
 				let currentPosition = new Position({
 					x: this.scale*(x+1)*Settings.tileSize.x + offset.x,
 					y: this.scale*(y+1)*Settings.tileSize.y + offset.y - y, // something strange is happening here, the "-y" term should not have to be there...
@@ -82,7 +83,7 @@ class ColonyMapView{
 		let pos = position.getWorld();
 		for(let index of indices){
 			let newSprite = new Phaser.Sprite(
-				Colonize.game,
+				game,
 				pos.x,
 				pos.y,
 				'mapSheet',
@@ -100,7 +101,7 @@ class ColonyMapView{
 	createColonySprite(position){
 		let pos = position.getWorld();
 		let newSprite = new Phaser.Sprite(
-			Colonize.game,
+			game,
 			pos.x,
 			pos.y,
 			'mapSheet',
