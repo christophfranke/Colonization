@@ -1,6 +1,7 @@
 
-import Colonize from '../colonize.js';
-import TileSprite from './tileSprite.js';
+import Colonize from 'src/colonize.js';
+
+import TileSprite from 'src/view/map/unitView.js'; //TODO: this is not good! do not use unit view in colony screen
 import ColonyMapView from './colonyMapView.js';
 import ColonistsView from './colonistsView.js';
 import StorageView from './storageView.js';

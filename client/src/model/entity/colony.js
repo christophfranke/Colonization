@@ -1,7 +1,7 @@
 import Places from 'data/places.json';
 import Resources from 'data/resources.json';
 
-import ColonyView from 'src/view/colonyView.js';
+import ColonyView from 'src/view/colony/colonyView.js';
 import Colonize from 'src/colonize.js';
 
 import Colonist from './colonist.js';

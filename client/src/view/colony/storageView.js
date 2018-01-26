@@ -1,5 +1,5 @@
 
-import Colonize from '../colonize.js';
+import Colonize from 'src/colonize.js';
 import Phaser from 'phaser';
 
 class StorageView{

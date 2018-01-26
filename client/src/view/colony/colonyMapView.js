@@ -1,9 +1,9 @@
+import Settings from 'data/settings.json';
+import Places from 'data/places.json';
 
+import Colonize from 'src/colonize.js';
+import Position from 'src/utils/position.js';
 
-import Colonize from '../colonize.js';
-import Position from '../helper/position.js';
-import Settings from '../../data/settings.json';
-import Places from '../../data/places.json';
 import Phaser from 'phaser';
 
 

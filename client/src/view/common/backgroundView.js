@@ -1,7 +1,6 @@
+import Settings from 'data/settings.json';
 
-
-import Colonize from '../colonize.js';
-import Settings from '../../data/settings.json';
+import Colonize from 'src/colonize.js';
 
 
 class BackgroundView {

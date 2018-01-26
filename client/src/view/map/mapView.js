@@ -1,13 +1,16 @@
 
 import PIXI from 'pixi';
-import Colonize from '../colonize.js';
-import Settings from '../../data/settings.json';
-import Terrain from '../../data/terrain.json';
-import BackgroundView from './BackgroundView.js';
-import SpriteRenderer from '../render/spriteRenderer.js';
-import MapTileView from './mapTileView.js';
 
-import Position from '../helper/position.js';
+import Settings from 'data/settings.json';
+import Terrain from 'data/terrain.json';
+
+import Colonize from 'src/colonize.js';
+
+import BackgroundView from 'src/view/common/BackgroundView.js';
+import SpriteRenderer from 'src/render/spriteRenderer.js';
+import Position from 'src/utils/position.js';
+import MapTileView from 'src/view/common/mapTileView.js';
+
 
 
 class MapView{

@@ -1,7 +1,6 @@
+import Colonize from 'src/colonize.js';
 
-
-import Colonize from '../colonize.js';
-import Resources from '../../data/resources.json';
+import Resources from 'data/resources.json';
 
 
 class ProductionView {

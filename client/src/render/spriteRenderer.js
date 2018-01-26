@@ -1,10 +1,12 @@
-
-// import Phaser from 'phaser';
-import Colonize from '../colonize.js';
-import Settings from '../../data/settings.json';
 import Phaser from 'phaser';
-import Position from '../helper/position.js';
-import MapTileView from '../view/mapTileView.js';
+
+import Settings from 'data/settings.json';
+
+import Colonize from 'src/colonize.js';
+
+import Position from 'src/utils/position.js';
+import MapTileView from 'src/view/common/mapTileView.js';
+
 import TileCache from './tileCache.js';
 
 

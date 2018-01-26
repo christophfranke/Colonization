@@ -1,8 +1,9 @@
-
-import Position from '../helper/position.js';
-import Colonize from '../colonize.js';
-import ContextMenu from '../ui/contextMenu.js';
 import Phaser from 'phaser';
+
+import Colonize from 'src/colonize.js';
+
+import Position from 'src/utils/position.js';
+import ContextMenu from 'src/ui/contextMenu.js';
 import ProductionView from './productionView';
 
 class ColonistsView {

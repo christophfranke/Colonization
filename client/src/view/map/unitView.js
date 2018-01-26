@@ -1,7 +1,8 @@
-import Settings from '../../data/settings.json';
+import Settings from 'data/settings.json';
+
+import Colonize from 'src/colonize.js';
 
 import Phaser from 'phaser';
-import Colonize from '../colonize.js';
 
 
 class UnitView{
