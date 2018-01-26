@@ -1,8 +1,10 @@
-import MapTile from 'src/model/entity/tile.js';
+import Global from 'src/global.js';
+
+import Tile from 'src/model/entity/tile.js';
 import Position from 'src/utils/position.js';
 
 
-class MapData{
+class Map{
 
 	constructor(props){
 		this.data = props.data;
@@ -18,9 +20,9 @@ class MapData{
 			y: this.baseLayer.height,
 		};
 		this.numTiles.total = this.numTiles.x*this.numTiles.y;
-	}
 
-	init(){
+		Global.register('map', this);
+
 		this.createAllTiles();
 		this.createCoastLine();
 	}
@@ -47,7 +49,7 @@ class MapData{
 
 		//create tiles
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
-			this.tiles[index] = new MapTile({
+			this.tiles[index] = new Tile({
 				id: this.baseLayer.data[index],
 				top: this.topLayer.data[index],
 				riverSmall: this.riverSmallLayer.data[index],
@@ -73,4 +75,4 @@ class MapData{
 	}
 }
 
-export default MapData;
+export default Map;

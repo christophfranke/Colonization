@@ -2,7 +2,7 @@ import Terrain from 'data/terrain.json';
 import Yield from 'data/yield.json';
 import Resources from 'data/resources.json';
 
-import Colonize from 'src/colonize.js';
+import Global from 'src/global.js';
 
 
 
@@ -57,8 +57,8 @@ class MapTile {
 		this.mapBorder = (
 			this.position.x === 0 ||
 			this.position.y === 0 ||
-			this.position.x === Colonize.map.mapData.numTiles.x-1 ||
-			this.position.y === Colonize.map.mapData.numTiles.y-1);
+			this.position.x === Global.map.numTiles.x-1 ||
+			this.position.y === Global.map.numTiles.y-1);
 
 		this.units = [];
 	}
@@ -125,19 +125,19 @@ class MapTile {
 	}
 
 	getLeft(){
-		return Colonize.map.mapData.getTileInfo(this.position.left());
+		return Global.map.getTileInfo(this.position.left());
 	}
 
 	getUp(){
-		return Colonize.map.mapData.getTileInfo(this.position.up());
+		return Global.map.getTileInfo(this.position.up());
 	}
 
 	getRight(){
-		return Colonize.map.mapData.getTileInfo(this.position.right());
+		return Global.map.getTileInfo(this.position.right());
 	}
 
 	getDown(){
-		return Colonize.map.mapData.getTileInfo(this.position.down());
+		return Global.map.getTileInfo(this.position.down());
 	}
 
 	enter(unit){
@@ -151,10 +151,10 @@ class MapTile {
 
 	createCoastTerrain(){
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea'){
-			let left = Colonize.map.mapData.getTileInfo(this.position.left());
-			let right = Colonize.map.mapData.getTileInfo(this.position.right());
-			let up = Colonize.map.mapData.getTileInfo(this.position.up());
-			let down = Colonize.map.mapData.getTileInfo(this.position.down());
+			let left = Global.map.getTileInfo(this.position.left());
+			let right = Global.map.getTileInfo(this.position.right());
+			let up = Global.map.getTileInfo(this.position.up());
+			let down = Global.map.getTileInfo(this.position.down());
 
 			let landNeighbor = null;
 			if(left !== null && typeof left.props !== 'undefined' && left.props.domain === 'land')
@@ -196,10 +196,10 @@ class MapTile {
 	createCoastalSea(){
 		this.isCoastalSea = false;
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea' && this.coastTerrain === null){
-			let left = Colonize.map.mapData.getTileInfo(this.position.left());
-			let right = Colonize.map.mapData.getTileInfo(this.position.right());
-			let up = Colonize.map.mapData.getTileInfo(this.position.up());
-			let down = Colonize.map.mapData.getTileInfo(this.position.down());
+			let left = Global.map.getTileInfo(this.position.left());
+			let right = Global.map.getTileInfo(this.position.right());
+			let up = Global.map.getTileInfo(this.position.up());
+			let down = Global.map.getTileInfo(this.position.down());
 			if(left !== null && right !== null){
 				let leftUp = left.getUp();
 				let leftDown = left.getDown();
