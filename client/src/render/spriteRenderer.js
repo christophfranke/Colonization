@@ -15,25 +15,17 @@ class SpriteRenderer {
 		SpriteRenderer.instance = this;
 		this.map = props.map || Map.instance;
 
-		this.tileCaching = false;
-		this.displayCaching = false;
 		this.stencilCaching = true;
-		this.scrollCaching = false;
 
 
 		this.display = game.add.group();
-		this.display.cacheAsBitmap = this.displayCaching;
-
 		this.tileCache = new TileCache();
 
 		//fill array with empty spriteBatches
 		this.sprites = Array(this.map.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
 			let tile = this.tileAt(i);
-			if(this.tileCaching)
-				this.sprites[i] = new Phaser.Group(game, this.display);
-			else
-				this.sprites[i] = new Phaser.SpriteBatch(game, this.display);
+			this.sprites[i] = new Phaser.SpriteBatch(game, this.display);
 			this.sprites[i].x = tile.x*Settings.tileSize.x;
 			this.sprites[i].y = tile.y*Settings.tileSize.y;
 			this.sprites[i].interactiveChildren = false;
@@ -43,11 +35,10 @@ class SpriteRenderer {
 
 
 
-		this.cameraWidth = new Position({
-			x: game.width,
-			y: game.height,
-			type: Position.WORLD
-		}).getTile();
+		this.cameraWidth = {
+			x: Math.ceil(game.width / Settings.tileSize.x),
+			y: Math.ceil(game.height / Settings.tileSize.y)
+		};
 
 		this.lastCameraPosition = new Position({
 			x: game.camera.x,
@@ -57,28 +48,12 @@ class SpriteRenderer {
 
 		this.lastDisplayUpdate = this.lastCameraPosition.getWorld();
 
-		//display caching relies on large margin for smooth scroll performance
-		if(this.displayCaching && this.scrollCaching){		
-			this.margin = new Position({
-				x: Math.ceil(0.5*this.cameraWidth.x),
-				y: Math.ceil(0.5*this.cameraWidth.y),
-				type: Position.TILE
-			});
-		}
-		else{
-			this.margin = new Position({
-				x: 2,
-				y: 2,
-				type: Position.TILE
-			});
-		}
-
-		//somehow the center is off by 1... (looks like a bug!)
-		this.offset = new Position({
-			x: 1,
-			y: 1,
-			type: Position.TILE
-		});
+		this.margin = {
+			left: 0,
+			right: 1,
+			up: 0,
+			down: 1
+		};
 	}
 
 	pushTile(tile, view){
@@ -149,12 +124,6 @@ class SpriteRenderer {
 				this.display.addChild(this.sprites[where]);
 				this.tileCount++;
 			}
-
-			if(this.tileCaching){
-				if(!this.sprites[where].cacheAsBitmap)
-					this.sprites[where].cacheAsBitmap = true;
-				this.sprites[where].updateCache();
-			}
 		}
 	}
 
@@ -201,12 +170,12 @@ class SpriteRenderer {
 			type: Position.WORLD
 		}).getTile();
 
-		for(let x = cameraPosition.x - this.margin.x; x < cameraPosition.x + this.cameraWidth.x + this.margin.x; x++){
-			for(let y = cameraPosition.y - this.margin.y; y < cameraPosition.y + this.cameraWidth.y + this.margin.y; y++){
+		for(let x = cameraPosition.x - this.margin.left; x < cameraPosition.x + this.cameraWidth.x + this.margin.right; x++){
+			for(let y = cameraPosition.y - this.margin.up; y < cameraPosition.y + this.cameraWidth.y + this.margin.down; y++){
 
 				let position = new Position({
-					x : x + this.offset.x,
-					y : y + this.offset.y,
+					x : x,
+					y : y,
 					type: Position.TILE
 				});
 
@@ -221,8 +190,7 @@ class SpriteRenderer {
 						this.display.addChild(this.sprites[at]);
 						this.tileCount++;
 						this.spriteCount += this.sprites[at].children.length;
-						if(!this.sprites[at].cacheAsBitmap)
-							this.showSprite(position);
+						this.showSprite(position);
 					}
 				}
 			}
@@ -231,32 +199,6 @@ class SpriteRenderer {
 	}
 
 	render(){
-		if(this.displayCaching){		
-			//camera is not moving, good time to update the render image
-			//when not using dislpay cache nothing has to be done
-			if(
-				this.hasChanged ||
-				(this.lastCameraPosition.x === game.camera.x &&
-			    this.lastCameraPosition.y === game.camera.y &&
-			    this.lastDisplayUpdate.x !== game.camera.x &&
-			    this.lastDisplayUpdate.y !== game.camera.y)
-			){
-				this.updateScreen();
-				if(this.display.cacheAsBitmap)
-					this.display.updateCache();
-				else
-					this.display.cacheAsBitmap = true;
-
-				this.lastDisplayUpdate = new Position({
-					x: game.camera.x,
-					y: game.camera.y,
-					type: Position.WORLD
-				});		
-
-				this.hasChanged = false;
-			}
-		}
-
 		this.lastCameraPosition.x = game.camera.x;
 		this.lastCameraPosition.y = game.camera.y;
 	}
@@ -271,10 +213,9 @@ class SpriteRenderer {
 	}
 
 	cameraInBounds(){
-		let margin = this.margin.getWorld();
 		return (
-			Math.abs(this.lastDisplayUpdate.x - game.camera.x) < margin.x &&
-			Math.abs(this.lastDisplayUpdate.y - game.camera.y) < margin.y
+			Math.abs(this.lastDisplayUpdate.x - game.camera.x) < 0.1 &&
+			Math.abs(this.lastDisplayUpdate.y - game.camera.y) < 0.1
 		);
 	}
 
