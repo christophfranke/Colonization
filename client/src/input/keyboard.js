@@ -5,6 +5,8 @@ import MapController from 'src/controller/map.js';
 import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
 
+import InputContext from './context.js';
+
 
 class KeyboardInput {
 	constructor(){
@@ -28,119 +30,126 @@ class KeyboardInput {
 	}
 
 	keyUp(e){
-		if(e.key === 'c'){
-			if(Unit.selectedUnit !== null)
-				MapController.instance.centerAt(Unit.selectedUnit.position);
-		}
-		if(e.key === 'b'){
-			if(Unit.selectedUnit !== null)
-				Unit.selectedUnit.orderFoundColony();
-		}
+		if(InputContext.instance.context === InputContext.UNIT){
+			if(e.key === 'c'){
+				if(Unit.selectedUnit !== null)
+					MapController.instance.centerAt(Unit.selectedUnit.position);
+			}
+			if(e.key === 'b'){
+				if(Unit.selectedUnit !== null)
+					Unit.selectedUnit.orderFoundColony();
+			}
 
-		if(e.key === 'w'){
-			if(Unit.selectedUnit !== null){
-				Unit.selectedUnit.selectNext();
+			if(e.key === 'w'){
+				if(Unit.selectedUnit !== null){
+					Unit.selectedUnit.selectNext();
+				}
+			}
+
+			if(e.keyCode === 32){
+				if(Unit.selectedUnit !== null){
+					Unit.selectedUnit.waiting = true;
+					Unit.selectedUnit.selectNext();
+				}
 			}
 		}
 
-		if(e.keyCode === 32){
-			if(Unit.selectedUnit !== null){
-				Unit.selectedUnit.waiting = true;
-				Unit.selectedUnit.selectNext();
+		if(InputContext.instance.context === InputContext.MAP){			
+			if(e.keyCode === 13){
+				let allUnitsMoved = true;
+				for(let u of Unit.all){
+					allUnitsMoved &= (u.movesLeft === 0 || u.waiting || u.isCargo);
+				}
+
+				if(allUnitsMoved)
+					Turn.instance.endTurn();
+				else
+					Unit.all[0].selectNext();
 			}
 		}
 
-		if(e.keyCode === 27){
+		
+		if(e.keyCode === 192){
 			DebugView.instance.toggleDebugInfo();
-		}
-
-		if(e.keyCode === 13){
-			let allUnitsMoved = true;
-			for(let u of Unit.all){
-				allUnitsMoved &= (u.movesLeft === 0 || u.waiting || u.isCargo);
-			}
-
-			if(allUnitsMoved)
-				Turn.instance.endTurn();
-			else
-				Unit.all[0].selectNext();
 		}
 	}
 
 	update(){
-		if(!this.updateKeys){
-			//wait until all keys are released
-			this.updateKeys = (!this.leftKey.isDown) && (!this.rightKey.isDown) && (!this.upKey.isDown) && (!this.downKey.isDown);
+		if(InputContext.instance.context === InputContext.UNIT){
+			if(!this.updateKeys){
+				//wait until all keys are released
+				this.updateKeys = (!this.leftKey.isDown) && (!this.rightKey.isDown) && (!this.upKey.isDown) && (!this.downKey.isDown);
 
-			//clear key history
-			this.wasDown = {
-				left: false,
-				right: false,
-				up: false,
-				down: false
-			};
-		}
-
-		if(this.updateKeys){
-
-			//just released left key
-			if(!this.leftKey.isDown && this.wasDown.leftKey){
-				//just released or still pressing upKey
-				if(this.upKey.isDown || this.wasDown.upKey){
-					this.emitKeypress(-1, -1);
-				}
-				//just released or still pressing downKey
-				else if(this.downKey.isDown || this.wasDown.downKey){
-					this.emitKeypress(-1, 1);
-				}
-				else{
-					this.emitKeypress(-1, 0);
-				}
-			}
-
-			else if(!this.rightKey.isDown && this.wasDown.rightKey){
-				if(this.upKey.isDown || this.wasDown.upKey){
-					this.emitKeypress(1, -1);
-				}
-				else if(this.downKey.isDown || this.wasDown.downKey){
-					this.emitKeypress(1, 1);
-				}
-				else{
-					this.emitKeypress(1, 0);
-				}
-			}		
-
-			else if(!this.upKey.isDown && this.wasDown.upKey){
-				if(this.leftKey.isDown || this.wasDown.leftKey){
-					this.emitKeypress(-1, -1);
-				}
-				else if(this.rightKey.isDown || this.wasDown.rightKey){
-					this.emitKeypress(1, -1);
-				}
-				else{
-					this.emitKeypress(0, -1);
-				}
-			}
-
-			else if(!this.downKey.isDown && this.wasDown.downKey){
-				if(this.leftKey.isDown || this.wasDown.leftKey){
-					this.emitKeypress(-1, 1);
-				}
-				else if(this.rightKey.isDown ||this.wasDown.rightKey){
-					this.emitKeypress(1, 1);
-				}
-				else{
-					this.emitKeypress(0, 1);
-				}
+				//clear key history
+				this.wasDown = {
+					left: false,
+					right: false,
+					up: false,
+					down: false
+				};
 			}
 
 			if(this.updateKeys){
-				this.wasDown.leftKey = this.leftKey.isDown;
-				this.wasDown.rightKey = this.rightKey.isDown;
-				this.wasDown.upKey = this.upKey.isDown;
-				this.wasDown.downKey = this.downKey.isDown;
-			}
 
+				//just released left key
+				if(!this.leftKey.isDown && this.wasDown.leftKey){
+					//just released or still pressing upKey
+					if(this.upKey.isDown || this.wasDown.upKey){
+						this.emitKeypress(-1, -1);
+					}
+					//just released or still pressing downKey
+					else if(this.downKey.isDown || this.wasDown.downKey){
+						this.emitKeypress(-1, 1);
+					}
+					else{
+						this.emitKeypress(-1, 0);
+					}
+				}
+
+				else if(!this.rightKey.isDown && this.wasDown.rightKey){
+					if(this.upKey.isDown || this.wasDown.upKey){
+						this.emitKeypress(1, -1);
+					}
+					else if(this.downKey.isDown || this.wasDown.downKey){
+						this.emitKeypress(1, 1);
+					}
+					else{
+						this.emitKeypress(1, 0);
+					}
+				}		
+
+				else if(!this.upKey.isDown && this.wasDown.upKey){
+					if(this.leftKey.isDown || this.wasDown.leftKey){
+						this.emitKeypress(-1, -1);
+					}
+					else if(this.rightKey.isDown || this.wasDown.rightKey){
+						this.emitKeypress(1, -1);
+					}
+					else{
+						this.emitKeypress(0, -1);
+					}
+				}
+
+				else if(!this.downKey.isDown && this.wasDown.downKey){
+					if(this.leftKey.isDown || this.wasDown.leftKey){
+						this.emitKeypress(-1, 1);
+					}
+					else if(this.rightKey.isDown ||this.wasDown.rightKey){
+						this.emitKeypress(1, 1);
+					}
+					else{
+						this.emitKeypress(0, 1);
+					}
+				}
+
+				if(this.updateKeys){
+					this.wasDown.leftKey = this.leftKey.isDown;
+					this.wasDown.rightKey = this.rightKey.isDown;
+					this.wasDown.upKey = this.upKey.isDown;
+					this.wasDown.downKey = this.downKey.isDown;
+				}
+
+			}
 		}
 	}
 

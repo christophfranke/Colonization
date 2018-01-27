@@ -11,6 +11,8 @@ import DebugView from './view/common/debugView.js';
 import Loader from './utils/loader.js';
 import Turn from './model/action/turn.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
+import InputContext from 'src/input/context.js';
+
 
 
 class Colonize{
@@ -55,6 +57,9 @@ class Colonize{
         //create and register
         new KeyboardInput();
         new PointerInput();
+        new InputContext({
+            context: InputContext.MAP
+        });
 
         MapController.instance.create();
         DebugView.instance.create();

@@ -4,6 +4,7 @@ import Position from 'src/utils/position.js';
 import TileSprite from 'src/view/map/unitView.js';
 import MapController from 'src/controller/map.js';
 import Map from 'src/model/entity/map.js';
+import InputContext from 'src/input/context.js';
 
 import Colony from './colony.js';
 
@@ -219,7 +220,10 @@ class Unit{
 			}
 		}
 
-		this.unselect();
+		//no unit found: switch back to last Context
+		if(Unit.selectedUnit)
+			Unit.selectedUnit.unselect();
+		InputContext.instance.switchBack();
 	}
 
 	select(){
@@ -240,6 +244,7 @@ class Unit{
 		if(this.movesLeft === 0)
 			this.unselect();
 
+		InputContext.instance.switch(InputContext.UNIT);
 	}
 
 	unselect(){

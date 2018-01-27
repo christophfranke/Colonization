@@ -5,6 +5,7 @@ import MapView from 'src/view/map/mapView.js';
 import ColonyMapView from './colonyMapView.js';
 import ColonistsView from './colonistsView.js';
 import StorageView from './storageView.js';
+import InputContext from 'src/input/context.js';
 
 class ColonyView {
 	constructor(props){
@@ -59,6 +60,7 @@ class ColonyView {
     show(){
         this.layer.visible = true;
         ColonyView.open = this;
+        InputContext.instance.switch(InputContext.COLONY);
 
         this.colonyMapView.show();
 
@@ -70,6 +72,7 @@ class ColonyView {
         this.layer.visible = false;
         if(ColonyView.open === this)
             ColonyView.open = null;
+        InputContext.instance.switchBack();
 
         this.colonyMapView.hide();
 
