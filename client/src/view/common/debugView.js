@@ -1,6 +1,7 @@
 import Colonize from 'src/colonize.js';
 
 import SpriteRenderer from 'src/render/spriteRenderer.js';
+import InputContext from 'src/input/context.js';
 
 
 class DebugView {
@@ -31,6 +32,15 @@ class DebugView {
 				let memoryLimit = 'n/a';
 				let memoryPercentage = 'n/a';
 				let spriteCount = SpriteRenderer.instance.display.total;
+				let context = InputContext.instance.context;
+				if(context === InputContext.MAP)
+					context = 'Map';
+				if(context === InputContext.UNIT)
+					context = 'Unit';
+				if(context === InputContext.COLONY)
+					context = 'Colony';
+				if(context === InputContext.MODAL)
+					context = 'modal';
 				if(typeof window.performance.memory !== 'undefined'){
 					memoryUsage = window.performance.memory.usedJSHeapSize / (1000*1000);
 					memoryLimit = window.performance.memory.jsHeapSizeLimit / (1000*1000);
@@ -43,6 +53,7 @@ class DebugView {
 				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
 				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + ' sprites in cache on ' + SpriteRenderer.instance.tileCache.renderTextures.length + ' textures');
+				game.debug.line('Input context is ' + context);
 				if(memoryUsage !=='n/a')
 					game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
 				game.debug.stop();
