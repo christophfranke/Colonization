@@ -11,8 +11,9 @@ class ColonyView {
 	constructor(props){
 
         this.layer = game.add.group();
-        this.background = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'undiscovered');
+        this.background = game.add.tileSprite(0, 0, game.width, game.height, 'undiscovered');
         this.background.inputEnabled = true;
+        this.background.fixedToCamera = true;
         this.background.events.onInputDown.add(this.hide, this);
         this.layer.add(this.background);
         this.colonyScreen = game.add.image(0.5*game.width, 0.5*game.height, 'colonyScreen');
