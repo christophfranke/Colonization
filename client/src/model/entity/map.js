@@ -82,10 +82,10 @@ class Map{
 	createCoastLine(){
 		//look for coasts and create coast lines
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
-			this.tiles[index].createCoastTerrain();
+			this.tiles[index].decideCoastTerrain();
 		}		
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
-			this.tiles[index].createCoastalSea();
+			this.tiles[index].decideCoastalSea();
 		}		
 	}
 }

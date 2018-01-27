@@ -63,7 +63,7 @@ class MapTile {
 		this.units = [];
 	}
 
-	getYield(colonist, type){
+	yield(colonist, type){
 		let result = this.applyModifier(0, 'base', type);
 
 		if(this.coast)
@@ -116,7 +116,7 @@ class MapTile {
 		let production = [];
 
 		for(let resource of Resources.types){
-			let amount = this.getYield(colonist, resource);
+			let amount = this.yield(colonist, resource);
 			if(amount > 0)
 				production.push({resource, amount});
 		}
@@ -165,7 +165,7 @@ class MapTile {
 		this.units.splice(index, 1);
 	}
 
-	createCoastTerrain(){
+	decideCoastTerrain(){
 		if(this.props && this.props.domain === 'sea'){
 			let left = this.left();
 			let right = this.right();
@@ -209,7 +209,7 @@ class MapTile {
 			this.coast = true;
 	}
 
-	createCoastalSea(){
+	decideCoastalSea(){
 		this.isCoastalSea = false;
 		if(typeof this.props !== 'undefined' && this.props.domain === 'sea' && this.coastTerrain === null){
 			let left = this.left();

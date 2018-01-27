@@ -52,7 +52,7 @@ class ColonistsView {
 		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
 		let oldTile = colonist.production ? colonist.production.tile : null;
 		if(colonist.workOn(tile)){
-			if(tile === oldTile || tile.getYield(colonist, colonist.production.resource) === 0){			
+			if(tile === oldTile || tile.yield(colonist, colonist.production.resource) === 0){			
 				let choices = tile.ressourceProduction(colonist);
 				for(let choice of choices)
 					choice.type = 'resource';
@@ -67,7 +67,7 @@ class ColonistsView {
 			if(tile !== oldTile){
 				//take current production
 				if(colonist.production.resource){
-					let amount = tile.getYield(colonist, colonist.production.resource);
+					let amount = tile.yield(colonist, colonist.production.resource);
 					colonist.selectProduction({
 						amount: amount,
 						resource: colonist.production.resource
@@ -75,7 +75,7 @@ class ColonistsView {
 				}
 				//fallback to food of none
 				else{
-					let amount = tile.getYield(colonist, 'food');
+					let amount = tile.yield(colonist, 'food');
 					colonist.selectProduction({
 						amount: amount,
 						resource: 'food'

@@ -50,7 +50,7 @@ class Colony{
 		for(let colonist of this.colonists){
 			if(colonist.production){
 				let resource = colonist.production.resource;
-				this.storage[resource] += colonist.production.tile.getYield(colonist, resource);
+				this.storage[resource] += colonist.production.tile.yield(colonist, resource);
 			}
 		}
 		this.colonyView.storageView.update();

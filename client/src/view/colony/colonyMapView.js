@@ -43,21 +43,21 @@ class ColonyMapView{
 		let colonyPosition = this.colony.position.getTile();
 		for(let x = -1; x <= 1; x++){
 			for(let y = -1; y <= 1; y++){
-				let tile = new Position({
+				let mapPosition = new Position({
 					x: colonyPosition.x + x,
 					y: colonyPosition.y + y,
 					type: Position.TILE
 				});
+				let tile = this.colony.map.getTileInfo(mapPosition);
 				let newTileView = MapView.instance.assembleTile(tile);
-				let tileInfo = this.colony.map.getTileInfo(tile);
-				let currentPosition = new Position({
+				let screenPosition = new Position({
 					x: this.scale*(x+1)*Settings.tileSize.x + offset.x,
 					y: this.scale*(y+1)*Settings.tileSize.y + offset.y - y, // something strange is happening here, the "-y" term should not have to be there...
 					type: Position.WORLD
 				});
-				this.createMapSprite(newTileView, currentPosition, tileInfo);
+				this.createMapSprite(newTileView, screenPosition, tile);
 				if(x === 0 && y === 0){
-					this.createColonySprite(currentPosition);
+					this.createColonySprite(screenPosition);
 				}
 			}
 		}
