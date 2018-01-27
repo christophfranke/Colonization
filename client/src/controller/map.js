@@ -1,6 +1,5 @@
 import Position from 'src/utils/position.js';
 import Map from 'src/model/entity/map.js';
-import MapView from 'src/view/map/mapView.js';
 
 import Phaser from 'phaser';
 
@@ -15,27 +14,6 @@ class MapController{
 		this.map = new Map({
 			data: game.cache.getJSON('mapData')
 		});
-
-		this.mapView = new MapView({
-			map: this.map
-		});
-	}
-
-	discover(tile){
-		let info = this.map.getTileInfo(tile);
-		if(!info.discovered){
-			info.discovered = true;
-
-			this.mapView.updateTile(tile);
-			this.mapView.updateTile(tile.up());
-			this.mapView.updateTile(tile.left());
-			this.mapView.updateTile(tile.down());
-			this.mapView.updateTile(tile.right());
-			this.mapView.updateTile(tile.up().left());
-			this.mapView.updateTile(tile.up().right());
-			this.mapView.updateTile(tile.down().left());
-			this.mapView.updateTile(tile.down().right());
-		}
 	}
 
     centerAt(clickPosition){

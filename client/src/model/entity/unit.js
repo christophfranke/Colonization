@@ -194,7 +194,7 @@ class Unit{
 			for(let y = -1; y <= 1; y++){
 				tile.x = this.position.x + x;
 				tile.y = this.position.y + y;
-				MapController.instance.discover(tile);
+				this.map.discover(tile);
 			}
 		}
 	}

@@ -48,7 +48,7 @@ class ColonyMapView{
 					y: colonyPosition.y + y,
 					type: Position.TILE
 				});
-				let newTileView = MapView.instance.renderTile(tile);
+				let newTileView = MapView.instance.assembleTile(tile);
 				let tileInfo = this.colony.map.getTileInfo(tile);
 				let currentPosition = new Position({
 					x: this.scale*(x+1)*Settings.tileSize.x + offset.x,

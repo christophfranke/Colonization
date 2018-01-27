@@ -25,6 +25,22 @@ class MapTileView {
 	}
 }
 
+MapTileView.equals = (a, b) => {
+	if(!a || !b)
+		return false;
+	
+	if(a.indices.length !== b.indices.length)
+		return false;
+
+	for(let i=0; i < a.indices.length; i++){
+		if(a.indices[i] !== b.indices[i]){
+			return false;
+		}
+	}
+
+	return true;
+};
+
 MapTileView.numTiles = 0;
 
 export default MapTileView;

@@ -22,34 +22,6 @@ class Position{
 			console.error('unknown position type', this.type);
 	}
 
-	up(){
-		let result = this.getTile();
-		result.y--;
-
-		return result;
-	}
-
-	down(){
-		let result = this.getTile();
-		result.y++;
-
-		return result;
-	}
-
-	left(){
-		let result = this.getTile();
-		result.x--;
-
-		return result;
-	}
-
-	right(){
-		let result = this.getTile();
-		result.x++;
-
-		return result;
-	}
-
 	getTile(){
 		if(this.type === Position.TILE){
 			return new Position({

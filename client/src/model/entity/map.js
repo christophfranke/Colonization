@@ -1,5 +1,6 @@
 import Tile from 'src/model/entity/tile.js';
 import Position from 'src/utils/position.js';
+import MapView from 'src/view/map/mapView.js';
 
 
 class Map{
@@ -23,6 +24,12 @@ class Map{
 
 		this.createAllTiles();
 		this.createCoastLine();
+
+
+		this.view = new MapView({
+			map: this
+		});
+
 	}
 
 	getLayer(name){
@@ -40,6 +47,15 @@ class Map{
 			return null;
 
 		return this.tiles[index];
+	}
+
+	discover(position){
+		let tile = this.getTileInfo(position);
+		if(!tile.discovered){
+			tile.discovered = true;
+
+			this.view.updateTile(tile);
+		}
 	}
 
 	createAllTiles(){

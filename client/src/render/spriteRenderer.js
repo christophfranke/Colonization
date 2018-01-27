@@ -3,7 +3,6 @@ import Phaser from 'phaser';
 import Settings from 'data/settings.json';
 
 import Position from 'src/utils/position.js';
-import Map from 'src/model/entity/map.js';
 
 import TileCache from './tileCache.js';
 
@@ -13,7 +12,7 @@ import TileCache from './tileCache.js';
 class SpriteRenderer {
 	constructor(props){
 		SpriteRenderer.instance = this;
-		this.map = props.map || Map.instance;
+		this.numTiles = props.numTiles;
 
 		this.stencilCaching = true;
 
@@ -25,12 +24,12 @@ class SpriteRenderer {
 		this.display.addChild(this.background);
 
 		//fill array with empty spriteBatches
-		this.sprites = Array(this.map.numTiles.total);
+		this.sprites = Array(this.numTiles.total);
 		for(let i=0; i<this.sprites.length; i++){
-			let tile = this.tileAt(i);
+			let position = this.tilePosition(i);
 			this.sprites[i] = new Phaser.SpriteBatch(game, this.display);
-			this.sprites[i].x = tile.x*Settings.tileSize.x;
-			this.sprites[i].y = tile.y*Settings.tileSize.y;
+			this.sprites[i].x = position.x*Settings.tileSize.x;
+			this.sprites[i].y = position.y*Settings.tileSize.y;
 			this.sprites[i].interactiveChildren = false;
 		}
 		this.visible = true;
@@ -60,7 +59,8 @@ class SpriteRenderer {
 		};
 	}
 
-	initTile(tile, view){
+	initTile(tile){
+		let view = tile.view;
 		this.clearSprite(tile);
 		for(let indices of view.layers){
 			this.updateSprites(tile, indices);
@@ -121,8 +121,8 @@ class SpriteRenderer {
 		}
 	}
 
-	showSprite(tile){
-		let where = this.tileIndex(tile);
+	showSprite(position){
+		let where = this.positionIndex(position);
 		if(this.sprites[where].children.length > 0){		
 			if(this.sprites[where].parent !== this.display){
 				this.display.addChild(this.sprites[where]);
@@ -133,32 +133,38 @@ class SpriteRenderer {
 	}
 
 	tileIndex(tile){
-		return tile.x + tile.y*this.map.numTiles.x;
+		return this.positionIndex(tile.position);
 	}
 
-	tileAt(index){
+	positionIndex(pos){
+		let position = pos.getTile();
+		return position.x + position.y*this.numTiles.x;
+	}
+
+	tilePosition(index){
 		return new Position({
-			x: index % this.map.numTiles.x,
-			y: Math.floor(index / this.map.numTiles.x),
+			x: index % this.numTiles.x,
+			y: Math.floor(index / this.numTiles.x),
 			type: Position.TILE
 		});
 	}
 
-	updateTile(tile, view){
+	updateTile(tile){
 		if(
 			tile.x < 0 ||
-			tile.x >= this.map.numTiles.x ||
+			tile.x >= this.numTiles.x ||
 			tile.y < 0 ||
-			tile.y >= this.map.numTiles.y
+			tile.y >= this.numTiles.y
 		){
 			return;
 		}
 
+		let view = tile.view;
 		this.clearSprite(tile);
 		for(let indices of view.layers){
 			this.updateSprites(tile, indices);
 		}
-		this.showSprite(tile);
+		this.showSprite(tile.position);
 	}
 
 	updateScreen(){
@@ -187,11 +193,11 @@ class SpriteRenderer {
 
 				if(
 					position.x >= 0 &&
-					position.x < this.map.numTiles.x &&
+					position.x < this.numTiles.x &&
 					position.y >= 0 &&
-					position.y < this.map.numTiles.y
+					position.y < this.numTiles.y
 				){
-					let at = this.tileIndex(position);
+					let at = this.positionIndex(position);
 					if(this.sprites[at].children.length > 0){
 						this.display.addChild(this.sprites[at]);
 						this.tileCount++;

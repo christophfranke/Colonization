@@ -11,7 +11,7 @@ class MapView{
 
 	constructor(props){
 		MapView.instance = this;
-		this.map = props.map;
+		this.map = props.map || Map.instance;
 
 		let worldDimensions = {
 			x: this.map.numTiles.x*Settings.tileSize.x,
@@ -21,21 +21,21 @@ class MapView{
 
 
 		this.renderer = new SpriteRenderer({
-			map: this.map
+			numTiles: this.map.numTiles
 		});
 
 		for(let y=0; y < this.map.numTiles.y; y++){
 			for(let x=0; x < this.map.numTiles.x; x++){
 
 				//the map is ordered column first
-				let tile = new Position({
+				let tile = this.map.getTileInfo(new Position({
 					x: x,
 					y: y,
 					type: Position.TILE
-				});
+				}));
 
-				let layers = this.renderTile(tile);
-				this.renderer.initTile(tile, layers);
+				this.assembleTile(tile);
+				this.renderer.initTile(tile);
 			}
 		}
 
@@ -50,21 +50,43 @@ class MapView{
 		this.renderer.show();
 	}
 
-	renderTile(tile){
-		let tileView = new MapTileView();
+	assembleTile(tile){
+		tile.view = new MapTileView();
 
-		tileView.addTiles(this.renderBaseBlock(tile));
-		tileView.addTiles(this.renderTopTiles(tile));
-		tileView.addTiles(this.renderCoast(tile));
-		tileView.addTiles(this.renderBonusRessources(tile));
-		tileView.addTiles(this.renderUndiscovered(tile));
+		tile.view.addTiles(this.renderBaseBlock(tile));
+		tile.view.addTiles(this.renderTopTiles(tile));
+		tile.view.addTiles(this.renderCoast(tile));
+		tile.view.addTiles(this.renderBonusRessources(tile));
+		tile.view.addTiles(this.renderUndiscovered(tile));
 
-		return tileView;
+		return tile.view;
 	}
 
 	updateTile(tile){
-		let tileView = this.renderTile(tile);
-		this.renderer.updateTile(tile, tileView);
+		if(tile){		
+			let newTiles = [];
+			newTiles.push(tile);
+			newTiles.push(tile.up());
+			newTiles.push(tile.left());
+			newTiles.push(tile.down());
+			newTiles.push(tile.right());
+			newTiles.push(tile.up().left());
+			newTiles.push(tile.up().right());
+			newTiles.push(tile.down().left());
+			newTiles.push(tile.down().right());
+
+			for(let t of newTiles){
+				let oldView = t.view;
+				let newView = this.assembleTile(t);
+				if(t.x === 139 && t.y === 132)
+					console.log('potential change', oldView, newView);
+				if(!MapTileView.equals(oldView, newView)){
+					if(t.x === 139 && t.y === 132)
+						console.log('updated', oldView, newView);
+					this.renderer.updateTile(t, newView);
+				}
+			}
+		}
 	}
 
 	decideBlending(center, other, offset){
@@ -119,23 +141,22 @@ class MapView{
 		return 0;
 	}
 
-	renderBaseBlock(tile){
+	renderBaseBlock(center){
 		let indices = [];
 
-		let center = this.map.getTileInfo(tile);
 		if(center === null || !center.discovered || typeof center.props === 'undefined')
 			return indices;
 
-		let left = center.getLeft();
-		let right = center.getRight();
-		let up = center.getUp();
-		let down = center.getDown();
+		let left = center.left();
+		let right = center.right();
+		let up = center.up();
+		let down = center.down();
 
 		if(up !== null && right !== null && down !== null && left !== null){		
-			let leftUp = left.getUp();
-			let leftDown = left.getDown();
-			let rightUp = right.getUp();
-			let rightDown = right.getDown();
+			let leftUp = left.up();
+			let leftDown = left.down();
+			let rightUp = right.up();
+			let rightDown = right.down();
 			if(leftUp !== null && leftDown !== null && rightUp !== null && rightDown !== null){
 
 				if(typeof rightDown.props !== 'undefined')
@@ -212,17 +233,16 @@ class MapView{
 		return this.decideLandSeaTile(center, tileInfo) + this.centerTileMod(x, y);
 	}
 
-	renderUndiscovered(tile){
+	renderUndiscovered(center){
 		let undiscovered = [];
 
-		let center = this.map.getTileInfo(tile);
 		if(center === null || !center.discovered)
 			return undiscovered;
 
-		let left = center.getLeft();
-		let right = center.getRight();
-		let up = center.getUp();
-		let down = center.getDown();
+		let left = center.left();
+		let right = center.right();
+		let up = center.up();
+		let down = center.down();
 
 
 		if(up !== null && right !== null && down !== null && left !== null){		
@@ -230,10 +250,10 @@ class MapView{
 			if(name !== null)
 				undiscovered.push(Terrain.undiscovered[name]);
 
-			let leftUp = left.getUp();
-			let leftDown = left.getDown();
-			let rightUp = right.getUp();
-			let rightDown = right.getDown();
+			let leftUp = left.up();
+			let leftDown = left.down();
+			let rightUp = right.up();
+			let rightDown = right.down();
 
 			if(leftUp !== null && leftDown !== null && rightUp !== null && rightDown !== null){
 				let cornerNames = this.getCornerNames(
@@ -259,9 +279,8 @@ class MapView{
 	}
 
 
-	renderBaseTiles(tile){
+	renderBaseTiles(center){
 		let baseTiles = [];
-		let center = this.map.getTileInfo(tile);
 
 		if(center !== null && center.discovered){
 			if(center.coastTerrain !== null){
@@ -276,12 +295,11 @@ class MapView{
 	}
 
 
-	renderTerrainBlending(tile){
-		let center = this.map.getTileInfo(tile);
-		let left = center.getLeft();
-		let right = center.getRight();
-		let up = center.getUp();
-		let down = center.getDown();
+	renderTerrainBlending(center){
+		let left = center.left();
+		let right = center.right();
+		let up = center.up();
+		let down = center.down();
 
 		let blendTiles = [];
 
@@ -302,15 +320,14 @@ class MapView{
 		return blendTiles;
 	}
 
-	renderTerrainOverdraw(tile){
+	renderTerrainOverdraw(center){
 		let tiles = [];
 
-		let center = this.map.getTileInfo(tile);
-		let up = center.getUp();
-		let left = center.getLeft();
+		let up = center.up();
+		let left = center.left();
 
 		if(center !== null && left !== null && up !== null){
-			let upLeft = up.getLeft();
+			let upLeft = up.left();
 			if(upLeft !== null){
 				if(
 					typeof center.props !== 'undefined' &&
@@ -374,17 +391,16 @@ class MapView{
 		return indices;
 	}
 
-	renderCoastalSea(tile){
+	renderCoastalSea(center){
 		let indices = [];
 
-		let center = this.map.getTileInfo(tile);
 		if(!center)
 			return indices;
 
-		let left = center.getLeft();
-		let right = center.getRight();
-		let up = center.getUp();
-		let down = center.getDown();
+		let left = center.left();
+		let right = center.right();
+		let up = center.up();
+		let down = center.down();
 
 		if(
 			center !== null &&
@@ -401,10 +417,10 @@ class MapView{
 			center.props.domain === 'sea' &&
 			center.coastTerrain !== null
 		){
-			let leftUp = left.getUp();
-			let leftDown = left.getDown();
-			let rightUp = right.getUp();
-			let rightDown = right.getDown();
+			let leftUp = left.up();
+			let leftDown = left.down();
+			let rightUp = right.up();
+			let rightDown = right.down();
 
 			if(
 				leftUp !== null && typeof leftUp.props !== 'undefined' &&
@@ -426,17 +442,16 @@ class MapView{
 		return indices;
 	}
 
-	renderCoastLine(tile){
+	renderCoastLine(center){
 		let coastTiles = [];
 
-		let center = this.map.getTileInfo(tile);
 		if(!center)
 			return coastTiles;
 
-		let left = center.getLeft();
-		let right = center.getRight();
-		let up = center.getUp();
-		let down = center.getDown();
+		let left = center.left();
+		let right = center.right();
+		let up = center.up();
+		let down = center.down();
 
 		if(
 			center !== null &&
@@ -466,25 +481,24 @@ class MapView{
 		return coastTiles;
 	}
 
-	renderCoastCorners(tile){
+	renderCoastCorners(center){
 		let corners = [];
 
-		let center = this.map.getTileInfo(tile);
-		if(center !== null){
+		if(center){
 			//no corners on land tiles
 			if(typeof center.props === 'undefined' || center.props.domain === 'land' || !center.discovered)
 				return corners;
 
-			let left = center.getLeft();
-			let right = center.getRight();
-			let up = center.getUp();
-			let down = center.getDown();
+			let left = center.left();
+			let right = center.right();
+			let up = center.up();
+			let down = center.down();
 			if(left !== null && right !== null && up !== null && down !== null){
 
-				let leftUp = left.getUp();
-				let leftDown = left.getDown();
-				let rightUp = right.getUp();
-				let rightDown = right.getDown();
+				let leftUp = left.up();
+				let leftDown = left.down();
+				let rightUp = right.up();
+				let rightDown = right.down();
 
 				if(
 					leftUp !== null && typeof leftUp.props !== 'undefined' &&
@@ -628,47 +642,45 @@ class MapView{
 
 	}
 
-	getBonusRessourceName(tileInfo){
-		if(tileInfo.hills)
+	getBonusRessourceName(tile){
+		if(tile.hills)
 			return 'ore';
-		if(tileInfo.mountains)
+		if(tile.mountains)
 			return 'silver';
 
-		if(tileInfo.name === 'plains' && !tileInfo.forest)
+		if(tile.name === 'plains' && !tile.forest)
 			return 'wheat';
-		if(tileInfo.name === 'grassland' && !tileInfo.forest)
+		if(tile.name === 'grassland' && !tile.forest)
 			return 'tobacco';
-		if(tileInfo.name === 'prairie' && !tileInfo.forest)
+		if(tile.name === 'prairie' && !tile.forest)
 			return 'cotton';
-		if(tileInfo.name === 'savannah' && !tileInfo.forest)
+		if(tile.name === 'savannah' && !tile.forest)
 			return 'sugar';
 
-		if(tileInfo.name === 'tundra' && tileInfo.forest)
+		if(tile.name === 'tundra' && tile.forest)
 			return 'game';
-		if(tileInfo.name === 'prairie' && tileInfo.forest)
+		if(tile.name === 'prairie' && tile.forest)
 			return 'game';
-		if(tileInfo.name === 'plains' && tileInfo.forest)
+		if(tile.name === 'plains' && tile.forest)
 			return 'fur';
 
-		if(tileInfo.name  === 'grassland' && tileInfo.forest)
+		if(tile.name  === 'grassland' && tile.forest)
 			return 'wood';
-		if(tileInfo.name  === 'savannah' && tileInfo.forest)
+		if(tile.name  === 'savannah' && tile.forest)
 			return 'wood';
 
-		if(tileInfo.name === 'desert')
+		if(tile.name === 'desert')
 			return 'oasis';
 
-		if(tileInfo.name === 'ocean')
+		if(tile.name === 'ocean')
 			return 'fish';
-		if(tileInfo.name === 'coastal sea')
+		if(tile.name === 'coastal sea')
 			return 'fish';
 
 		return 'minerals';
 	}
 
-	renderBonusRessources(tile){
-		let center = this.map.getTileInfo(tile);
-
+	renderBonusRessources(center){
 		let bonus = [];
 		if(center && center.discovered && center.bonus){
 			let ressourceName = this.getBonusRessourceName(center);
@@ -678,15 +690,13 @@ class MapView{
 		return bonus;
 	}
 
-	renderTopTiles(position){
-		let center = this.map.getTileInfo(position);
-
+	renderTopTiles(center){
 		let topTiles = [];
-		if(center !== null && center.discovered){
-			let left = center.getLeft();
-			let right = center.getRight();
-			let up = center.getUp();
-			let down = center.getDown();
+		if(center && center.discovered){
+			let left = center.left();
+			let right = center.right();
+			let up = center.up();
+			let down = center.down();
 
 			if(left && right && up && down){			
 				if(center.hills){

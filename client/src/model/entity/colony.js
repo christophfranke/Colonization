@@ -2,7 +2,6 @@ import Places from 'data/places.json';
 import Resources from 'data/resources.json';
 
 import ColonyView from 'src/view/colony/colonyView.js';
-import MapController from 'src/controller/map.js';
 
 import Colonist from './colonist.js';
 import Map from './map.js';
@@ -42,7 +41,7 @@ class Colony{
 			for(let y = -1; y <= 1; y++){
 				tile.x = this.position.x + x;
 				tile.y = this.position.y + y;
-				MapController.instance.discover(tile);
+				this.map.discover(tile);
 			}
 		}
 	}
@@ -57,9 +56,6 @@ class Colony{
 		this.colonyView.storageView.update();
 	}
 
-	openCityScreen(){
-		this.colonyView.show();
-	}
 }
 
 Colony.all = [];
