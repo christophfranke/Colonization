@@ -11,7 +11,7 @@ class InputContext{
 	switch(newContext){
 		if(newContext !== this.context){
 			this.lastContext = this.context;
-			this.context = newContext
+			this.context = newContext;
 		}
 	}
 
@@ -24,7 +24,7 @@ class InputContext{
 
 
 InputContext.MAP = 1;
-InputContext.UNIT = 2
+InputContext.UNIT = 2;
 InputContext.COLONY = 3;
 InputContext.MODAL = 4;
 
