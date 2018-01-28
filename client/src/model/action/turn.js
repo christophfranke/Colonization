@@ -1,3 +1,4 @@
+import UnitController from 'src/controller/unit.js';
 
 import Unit from '../entity/unit.js';
 import Colony from '../entity/colony.js';
@@ -19,7 +20,7 @@ class Turn{
 		}
 
 		if(Unit.all.length > 0){
-			Unit.all[0].select();
+			UnitController.instance.selectNext();
 		}
 
 		this.round++;

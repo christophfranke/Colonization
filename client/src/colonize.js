@@ -12,6 +12,7 @@ import Loader from './utils/loader.js';
 import Turn from './model/action/turn.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 import InputContext from 'src/input/context.js';
+import UnitController from 'src/controller/unit.js';
 
 
 
@@ -39,6 +40,7 @@ class Colonize{
         Phaser.Canvas.setSmoothingEnabled(game, false);
 
         new MapController();
+        new UnitController();
         new DebugView();
         new Loader();
         new Turn();
@@ -73,7 +75,6 @@ class Colonize{
     			type: Position.TILE
     		})
     	});
-        caravel.select();
 
         new Unit({
             name: 'pioneer',
@@ -101,6 +102,8 @@ class Colonize{
                 type: Position.TILE
             })
         }).orderFoundColony();
+
+        UnitController.instance.select(caravel);
     }
 
     update() {

@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
 
-import Unit from 'src/model/entity/unit.js';
+import UnitController from 'src/controller/unit.js';
 import MapController from 'src/controller/map.js';
 import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
+import Unit from 'src/model/entity/unit.js';
 
 import InputContext from './context.js';
 
@@ -32,24 +33,24 @@ class KeyboardInput {
 	keyUp(e){
 		if(InputContext.instance.context === InputContext.UNIT){
 			if(e.key === 'c'){
-				if(Unit.selectedUnit !== null)
-					MapController.instance.centerAt(Unit.selectedUnit.position);
+				if(UnitController.instance.selectedUnit !== null)
+					MapController.instance.centerAt(UnitController.instance.selectedUnit.position);
 			}
 			if(e.key === 'b'){
-				if(Unit.selectedUnit !== null)
-					Unit.selectedUnit.orderFoundColony();
+				if(UnitController.instance.selectedUnit !== null)
+					UnitController.instance.selectedUnit.orderFoundColony();
 			}
 
 			if(e.key === 'w'){
-				if(Unit.selectedUnit !== null){
-					Unit.selectedUnit.selectNext();
+				if(UnitController.instance.selectedUnit !== null){
+					UnitController.instance.selectedUnit.selectNext();
 				}
 			}
 
 			if(e.keyCode === 32){
-				if(Unit.selectedUnit !== null){
-					Unit.selectedUnit.waiting = true;
-					Unit.selectedUnit.selectNext();
+				if(UnitController.instance.selectedUnit !== null){
+					UnitController.instance.selectedUnit.waiting = true;
+					UnitController.instance.selectNext();
 				}
 			}
 		}
@@ -64,7 +65,7 @@ class KeyboardInput {
 				if(allUnitsMoved)
 					Turn.instance.endTurn();
 				else
-					Unit.all[0].selectNext();
+					UnitController.instance.selectNext();
 			}
 		}
 
@@ -154,11 +155,11 @@ class KeyboardInput {
 	}
 
 	emitKeypress(x, y){
-		if(Unit.selectedUnit !== null){
-			let newPosition = Unit.selectedUnit.position.getTile();
+		if(UnitController.instance.selectedUnit !== null){
+			let newPosition = UnitController.instance.selectedUnit.position.getTile();
 			newPosition.x += x;
 			newPosition.y += y;
-			Unit.selectedUnit.orderMoveTo(newPosition);
+			UnitController.instance.selectedUnit.orderMoveTo(newPosition);
 		}
 
 		this.updateKeys = false;

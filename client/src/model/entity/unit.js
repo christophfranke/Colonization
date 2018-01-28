@@ -2,9 +2,8 @@ import UnitProps from 'data/units.json';
 
 import Position from 'src/utils/position.js';
 import TileSprite from 'src/view/map/unitView.js';
-import MapController from 'src/controller/map.js';
 import Map from 'src/model/entity/map.js';
-import InputContext from 'src/input/context.js';
+import UnitController from 'src/controller/unit.js';
 
 import Colony from './colony.js';
 
@@ -28,7 +27,9 @@ class Unit{
 		});
 
 		this.tileSprite.sprite.inputEnabled = true;
-		this.tileSprite.sprite.events.onInputDown.add(this.select, this);
+		this.tileSprite.sprite.events.onInputDown.add(() => {
+			UnitController.click(this);
+		}, UnitController.instance);
 
 		this.movesLeft = this.props.moves;
 		this.isUnit = true;
@@ -61,16 +62,16 @@ class Unit{
 
 				this.makeMove(tile);
 				if(this.movesLeft === 0)
-					this.selectNext();
+					UnitController.instance.selectNext();
 				else
-					this.followUnit();
+					UnitController.instance.followUnit(this);
 			}
 		}
 
 		if(this.props.domain === 'sea' && target.props.domain === 'land'){
 			let cargoUnit = this.getCargoUnit();
 			if(cargoUnit !== null && cargoUnit.movesLeft > 0){
-				cargoUnit.select();
+				UnitController.instance.select(cargoUnit);
 			}
 		}
 
@@ -100,7 +101,7 @@ class Unit{
 
 		unit.addCargo(this);
 
-		this.selectNext();
+		UnitController.instance.selectNext();
 	}
 
 	stopBeingCargo(){
@@ -134,7 +135,7 @@ class Unit{
 				founder: this
 			});
 			this.movesLeft = 0;
-			this.selectNext();
+			UnitController.instance.selectNext();
 			this.disband();
 		}
 
@@ -169,12 +170,14 @@ class Unit{
 
 	disband(){
 		this.tileSprite.destroy();
-		if(Unit.selectedUnit === this){
-			Unit.selectedUnit = null;
+		if(UnitController.instance.selectedUnit === this){
+			UnitController.instance.selectedUnit = null;
 		}
 
 		this.index = Unit.all.indexOf(this);
 		Unit.all.splice(this.index, 1);
+
+		UnitController.instance.selectNext();
 	}
 
 	canLoad(){
@@ -199,69 +202,10 @@ class Unit{
 		}
 	}
 
-	followUnit(){
-		let screenPos = this.position.getScreen();
-		let margin = 0.15;
-		if (!(
-			screenPos.x > margin*game.width && 
-			screenPos.x < (1-margin)*game.width &&
-			screenPos.y > margin*game.height &&
-			screenPos.y < (1-margin)*game.height
-		)){
-			MapController.instance.centerAt(this.position);
-		}
-	}
-
-	selectNext(){
-		for(let u of Unit.all){
-			if(u.movesLeft > 0 && !u.waiting && !u.isCargo){
-				u.select();
-				return;
-			}
-		}
-
-		//no unit found: switch back to last Context
-		if(Unit.selectedUnit)
-			Unit.selectedUnit.unselect();
-		InputContext.instance.switchBack();
-	}
-
-	select(){
-		if(Unit.selectedUnit !== null)
-			Unit.selectedUnit.unselect();
-
-		if(this.isCargo){
-			this.teleport(this.carryingUnit.position);
-			this.tileSprite.show();
-		}
-
-		Unit.selectedUnit = this;
-		this.selected = true;
-		this.tileSprite.startBlinking();
-
-		this.followUnit();
-
-		if(this.movesLeft === 0)
-			this.unselect();
-
-		InputContext.instance.switch(InputContext.UNIT);
-	}
-
-	unselect(){
-		this.selected = false;
-		this.tileSprite.stopBlinking();
-		if(this.isCargo)
-			this.tileSprite.hide();
-
-		if(Unit.selectedUnit === this)
-			Unit.selectedUnit = null;
-	}
-
 
 
 }
 
-Unit.selectedUnit = null;
 Unit.all = [];
 
 export default Unit;
