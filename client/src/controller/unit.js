@@ -101,6 +101,8 @@ class UnitController{
 
 			if(unit.movesLeft === 0)
 				this.selectNext();
+			else
+				this.followUnit(unit);
 
 			return;
 		}
