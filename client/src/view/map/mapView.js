@@ -92,9 +92,7 @@ class MapView{
 	decideBlending(center, other, offset){
 
 		//do not crash if map has errors or we are at the border
-		if(center === null || other === null || typeof center === 'undefined' || typeof other === 'undefined')
-			return 0;
-		if(typeof center.props === 'undefined' || typeof other.props === 'undefined')
+		if(!center || !other)
 			return 0;
 
 		//blending for sea
@@ -134,7 +132,7 @@ class MapView{
 			}
 
 			//blend between coast
-			if(other.props.domain === 'sea' && other.coastTerrain !== null)
+			if(other.props.domain === 'sea' && other.coastTerrain)
 				return other.coastTerrain.centerTile + offset;
 		}
 
@@ -144,7 +142,7 @@ class MapView{
 	renderBaseBlock(center){
 		let indices = [];
 
-		if(center === null || !center.discovered || typeof center.props === 'undefined')
+		if(!center || !center.discovered)
 			return indices;
 
 		let left = center.left();
@@ -152,33 +150,24 @@ class MapView{
 		let up = center.up();
 		let down = center.down();
 
-		if(up !== null && right !== null && down !== null && left !== null){		
+		if(up && right && down && left){		
 			let leftUp = left.up();
 			let leftDown = left.down();
 			let rightUp = right.up();
 			let rightDown = right.down();
-			if(leftUp !== null && leftDown !== null && rightUp !== null && rightDown !== null){
+			if(leftUp && leftDown && rightUp && rightDown){
 
-				if(typeof rightDown.props !== 'undefined')
-					indices.push(this.getTileIndex(rightDown, -1, -1, center));
-				if(typeof down.props !== 'undefined')
-					indices.push(this.getTileIndex(down, 0, -1, center));
-				if(typeof leftDown.props !== 'undefined')
-					indices.push(this.getTileIndex(leftDown, 1, -1, center));
+				indices.push(this.getTileIndex(rightDown, -1, -1, center));
+				indices.push(this.getTileIndex(down, 0, -1, center));
+				indices.push(this.getTileIndex(leftDown, 1, -1, center));
 
-				if(typeof right.props !== 'undefined')
-					indices.push(this.getTileIndex(right, -1, 0, center));
-				if(typeof center.props !== 'undefined')
-					indices.push(this.getTileIndex(center, 0, 0, center));
-				if(typeof left.props !== 'undefined')
-					indices.push(this.getTileIndex(left, 1, 0, center));
+				indices.push(this.getTileIndex(right, -1, 0, center));
+				indices.push(this.getTileIndex(center, 0, 0, center));
+				indices.push(this.getTileIndex(left, 1, 0, center));
 
-				if(typeof rightUp.props !== 'undefined')
-					indices.push(this.getTileIndex(rightUp, -1, 1, center));
-				if(typeof up.props !== 'undefined')
-					indices.push(this.getTileIndex(up, 0, 1, center));
-				if(typeof leftUp.props !== 'undefined')
-					indices.push(this.getTileIndex(leftUp, 1, 1, center));
+				indices.push(this.getTileIndex(rightUp, -1, 1, center));
+				indices.push(this.getTileIndex(up, 0, 1, center));
+				indices.push(this.getTileIndex(leftUp, 1, 1, center));
 			}
 		}
 
@@ -196,30 +185,30 @@ class MapView{
 			if(tileInfo.props.domain === 'land')
 				return tileInfo.props.centerTile;
 			//or from coast
-			if(tileInfo.props.domain === 'sea' && tileInfo.coastTerrain !== null)
+			if(tileInfo.props.domain === 'sea' && tileInfo.coastTerrain)
 				return tileInfo.coastTerrain.centerTile;
 			//or from self
 			return center.props.centerTile;
 		}
 
 		// coast wants land from everybody
-		if(center.props.domain === 'sea' && center.coastTerrain !== null){
+		if(center.props.domain === 'sea' && center.coastTerrain){
 			//take land from land tile
 			if(tileInfo.props.domain === 'land')
 				return tileInfo.props.centerTile;
 			//or from coast terrain
-			if(tileInfo.coastTerrain !== null)
+			if(tileInfo.coastTerrain)
 				return tileInfo.coastTerrain.centerTile;
 			//or from self
 			return center.props.centerTile;
 		}
 
 		// sea always wants sea
-		if(center.props.domain === 'sea' && center.coastTerrain === null){
+		if(center.props.domain === 'sea' && !center.coastTerrain){
 			//take sea tile
 			if(tileInfo.props.domain === 'sea'){
 				//either coastal
-				if(tileInfo.isCoastalSea || tileInfo.coastTerrain !== null)
+				if(tileInfo.isCoastalSea || tileInfo.coastTerrain)
 					return Terrain['coastal sea'].centerTile;
 				//or deep sea
 				return tileInfo.props.centerTile;
@@ -236,7 +225,7 @@ class MapView{
 	renderUndiscovered(center){
 		let undiscovered = [];
 
-		if(center === null || !center.discovered)
+		if(!center || !center.discovered)
 			return undiscovered;
 
 		let left = center.left();
@@ -245,7 +234,7 @@ class MapView{
 		let down = center.down();
 
 
-		if(up !== null && right !== null && down !== null && left !== null){		
+		if(up && right && down && left){		
 			let name = this.neighborToName(!up.discovered, !right.discovered, !down.discovered, !left.discovered);
 			if(name !== null)
 				undiscovered.push(Terrain.undiscovered[name]);
@@ -255,7 +244,7 @@ class MapView{
 			let rightUp = right.up();
 			let rightDown = right.down();
 
-			if(leftUp !== null && leftDown !== null && rightUp !== null && rightDown !== null){
+			if(leftUp && leftDown && rightUp && rightDown){
 				let cornerNames = this.getCornerNames(
 					!up.discovered,
 					!rightUp.discovered,
@@ -276,110 +265,6 @@ class MapView{
 		}
 
 		return undiscovered;
-	}
-
-
-	renderBaseTiles(center){
-		let baseTiles = [];
-
-		if(center !== null && center.discovered){
-			if(center.coastTerrain !== null){
-				baseTiles.push(center.coastTerrain.centerTile);
-			}
-			else{
-				baseTiles.push(center.props.centerTile);
-			}
-		}
-
-		return baseTiles;
-	}
-
-
-	renderTerrainBlending(center){
-		let left = center.left();
-		let right = center.right();
-		let up = center.up();
-		let down = center.down();
-
-		let blendTiles = [];
-
-		let leftBlend = this.decideBlending(center, left, 1);
-		let rightBlend = this.decideBlending(center, right, -1);
-		let upBlend = this.decideBlending(center, up, Settings.tiles.x);
-		let downBlend = this.decideBlending(center, down, -Settings.tiles.x);
-
-		if(leftBlend !== 0)
-			blendTiles.push(leftBlend);
-		if(rightBlend !== 0)
-			blendTiles.push(rightBlend);
-		if(upBlend !== 0)
-			blendTiles.push(upBlend);
-		if(downBlend !== 0)
-			blendTiles.push(downBlend);
-
-		return blendTiles;
-	}
-
-	renderTerrainOverdraw(center){
-		let tiles = [];
-
-		let up = center.up();
-		let left = center.left();
-
-		if(center !== null && left !== null && up !== null){
-			let upLeft = up.left();
-			if(upLeft !== null){
-				if(
-					typeof center.props !== 'undefined' &&
-					typeof up.props !== 'undefined' &&
-					typeof left.props !== 'undefined' &&
-					typeof upLeft.props !== 'undefined'
-				){
-					if(
-						(up.props.domain === 'land' || center.props.domain === 'sea') &&
-						(up.discovered && center.discovered)
-					){
-						tiles.push(up.props.centerTile + Settings.tiles.x);
-					}
-					if(
-						(left.props.domain === 'land' || center.props.domain === 'sea') &&
-						(left.discovered && center.discovered)
-					){
-						tiles.push(left.props.centerTile + 1);
-					}
-					if(
-						(upLeft.props.domain === 'land' || center.props.domain === 'sea') &&
-						(upLeft.discovered && center.discovered)
-					){
-						tiles.push(upLeft.props.centerTile + Settings.tiles.x + 1);
-					}
-
-					if(
-						(up.props.domain === 'sea' && center.props.domain === 'land') &&
-						(up.discovered && center.discovered) &&
-						(up.coastTerrain !== null)
-					){
-						tiles.push(up.coastTerrain.centerTile + Settings.tiles.x);
-					}
-					if(
-						(left.props.domain === 'sea' && center.props.domain === 'land') &&
-						(left.discovered && center.discovered) &&
-						(left.coastTerrain !== null)
-					){
-						tiles.push(left.coastTerrain.centerTile + 1);
-					}
-					if(
-						(upLeft.props.domain === 'sea' && center.props.domain === 'land') &&
-						(upLeft.discovered && center.discovered) &&
-						(upLeft.coastTerrain !== null)
-					){
-						tiles.push(upLeft.coastTerrain.centerTile + Settings.tiles.x + 1);
-					}
-				}
-			}
-		}
-
-		return tiles;
 	}
 
 	renderCoast(tile){
@@ -403,31 +288,21 @@ class MapView{
 		let down = center.down();
 
 		if(
-			center !== null &&
+			center &&
 			center.discovered &&
-			left !== null &&
-			right !== null &&
-			up !== null &&
-			down !== null &&
-			typeof center.props !== 'undefined' &&
-			typeof left.props !== 'undefined' &&
-			typeof up.props !== 'undefined' &&
-			typeof down.props !== 'undefined' &&
-			typeof right.props !== 'undefined' &&
+			left &&
+			right &&
+			up &&
+			down &&
 			center.props.domain === 'sea' &&
-			center.coastTerrain !== null
+			center.coastTerrain
 		){
 			let leftUp = left.up();
 			let leftDown = left.down();
 			let rightUp = right.up();
 			let rightDown = right.down();
 
-			if(
-				leftUp !== null && typeof leftUp.props !== 'undefined' &&
-				rightUp !== null && typeof rightUp.props !== 'undefined' &&
-				leftDown !== null && typeof leftDown.props !== 'undefined' &&
-				rightDown !== null && typeof rightDown.props !== 'undefined'
-			){
+			if(leftUp && rightUp && leftDown && rightDown){
 				if(leftUp.props.domain === 'sea' && left.props.domain === 'sea' && up.props.domain === 'sea')
 					indices.push(Terrain['coastal sea'].northWestCorner);
 				if(leftDown.props.domain === 'sea' && left.props.domain === 'sea' && down.props.domain === 'sea')
@@ -454,17 +329,11 @@ class MapView{
 		let down = center.down();
 
 		if(
-			center !== null &&
 			center.discovered &&
-			left !== null &&
-			right !== null &&
-			up !== null &&
-			down !== null &&
-			typeof center.props !== 'undefined' &&
-			typeof left.props !== 'undefined' &&
-			typeof up.props !== 'undefined' &&
-			typeof down.props !== 'undefined' &&
-			typeof right.props !== 'undefined' &&
+			left &&
+			right &&
+			up &&
+			down &&
 			center.props.domain === 'sea'
 		){
 			let name = this.neighborToName(
@@ -474,7 +343,7 @@ class MapView{
 				left.props.domain === 'land'
 			);
 
-			if(name !== null)
+			if(name)
 				coastTiles.push(Terrain.coast[name]);
 		}
 
@@ -486,27 +355,21 @@ class MapView{
 
 		if(center){
 			//no corners on land tiles
-			if(typeof center.props === 'undefined' || center.props.domain === 'land' || !center.discovered)
+			if(center.props.domain === 'land' || !center.discovered)
 				return corners;
 
 			let left = center.left();
 			let right = center.right();
 			let up = center.up();
 			let down = center.down();
-			if(left !== null && right !== null && up !== null && down !== null){
+			if(left && right && up && down){
 
 				let leftUp = left.up();
 				let leftDown = left.down();
 				let rightUp = right.up();
 				let rightDown = right.down();
 
-				if(
-					leftUp !== null && typeof leftUp.props !== 'undefined' &&
-					rightUp !== null && typeof rightUp.props !== 'undefined' &&
-					leftDown !== null && typeof leftDown.props !== 'undefined' &&
-					rightDown !== null && typeof rightDown.props !== 'undefined' &&
-					left.props && right.props && up.props && down.props
-				){
+				if(leftUp && rightUp && leftDown && rightDown){
 					let cornerNames = this.getCornerNames(
 						up.props.domain === 'land',
 						rightUp.props.domain === 'land',
