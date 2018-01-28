@@ -1,7 +1,7 @@
 import UnitProps from 'data/units.json';
 
 import Position from 'src/utils/position.js';
-import TileSprite from 'src/view/map/unitView.js';
+import UnitView from 'src/view/map/unitView.js';
 import Map from 'src/model/entity/map.js';
 import UnitController from 'src/controller/unit.js';
 
@@ -21,13 +21,13 @@ class Unit{
 
 		this.props = UnitProps[this.name];
 
-		this.tileSprite = new TileSprite({
+		this.view = new UnitView({
 			id: this.props.id,
 			position: this.position
 		});
 
-		this.tileSprite.sprite.inputEnabled = true;
-		this.tileSprite.sprite.events.onInputDown.add(() => {
+		this.view.sprite.inputEnabled = true;
+		this.view.sprite.events.onInputDown.add(() => {
 			UnitController.click(this);
 		}, UnitController.instance);
 
@@ -97,7 +97,7 @@ class Unit{
 	becomeCargo(unit){
 		this.isCargo = true;
 		this.carryingUnit = unit;
-		this.tileSprite.hide();
+		this.view.hide();
 
 		unit.addCargo(this);
 
@@ -109,7 +109,7 @@ class Unit{
 			this.isCargo = false;
 			this.carryingUnit.removeCargo(this);
 			this.carryingUnit = null;
-			this.tileSprite.show();
+			this.view.show();
 		}
 	}
 
@@ -144,7 +144,7 @@ class Unit{
 	makeMove(to){
 		this.tileInfo.leave(this);
 		this.position = to.getTile();
-		this.tileSprite.moveTo(this.position);
+		this.view.moveTo(this.position);
 
 		this.tileInfo = this.map.getTileInfo(this.position);
 		this.tileInfo.enter(this);
@@ -160,7 +160,7 @@ class Unit{
 			console.error('teleport is only allowed when being cargo');
 
 		this.position = to.getTile();
-		this.tileSprite.teleport(this.position);
+		this.view.teleport(this.position);
 	}
 
 	nextTurn(){
@@ -169,7 +169,7 @@ class Unit{
 	}
 
 	disband(){
-		this.tileSprite.destroy();
+		this.view.destroy();
 		if(UnitController.instance.selectedUnit === this){
 			UnitController.instance.selectedUnit = null;
 		}

@@ -44,12 +44,12 @@ class UnitController{
 
 			if(unit.isCargo){
 				unit.teleport(unit.carryingUnit.position);
-				unit.tileSprite.show();
+				unit.view.show();
 			}
 
 			this.selectedUnit = unit;
 			unit.selected = true;
-			unit.tileSprite.startBlinking();
+			unit.view.startBlinking();
 
 			this.followUnit(unit);
 			InputContext.instance.switch(InputContext.UNIT);
@@ -59,9 +59,9 @@ class UnitController{
 	unselect(unit){
 		if(unit){		
 			unit.selected = false;
-			unit.tileSprite.stopBlinking();
+			unit.view.stopBlinking();
 			if(unit.isCargo)
-				unit.tileSprite.hide();
+				unit.view.hide();
 
 			if(this.selectedUnit === unit)
 				this.selectedUnit = null;
