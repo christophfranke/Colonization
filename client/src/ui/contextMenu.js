@@ -1,6 +1,8 @@
+import Resources from 'data/resources.json';
 
 import Phaser from 'phaser';
-import Resources from '../../data/resources.json';
+
+import InputContext from 'src/input/context.js';
 
 class ContextMenu {
 	constructor(props){
@@ -45,26 +47,31 @@ class ContextMenu {
 		}
 
 		game.input.onDown.addOnce(this.globalPointerDown, this);
+		InputContext.instance.switch(InputContext.MODAL);
 	}
 
 	globalPointerDown(){
-		setTimeout(() => {
-			this.destroy();
-		}, 0);
+		if(InputContext.instance.context === InputContext.MODAL){		
+			setTimeout(() => {
+				this.destroy();
+			}, 0);
+		}
 	}
 
 	select(choice){
-		this.destroy();
-
-		//tell about choice made
-		this.callback(choice);
+		if(InputContext.instance.context === InputContext.MODAL){
+			//tell about choice made
+			this.callback(choice);
+		}
 	}
 
 	destroy(){
 		for(let sprite of this.layer.children){
 			sprite.destroy();
 		}
-		this.layer.destroy();		
+		this.layer.destroy();
+
+		InputContext.instance.switchBack();
 	}
 
 	scaleCorrection(scale){

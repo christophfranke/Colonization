@@ -1,4 +1,5 @@
 import InputContext from 'src/input/context.js';
+import MoveCommand from 'src/model/command/move.js';
 
 import MapController from './map.js';
 
@@ -22,6 +23,10 @@ class UnitController{
 		)){
 			MapController.instance.centerAt(unit.position);
 		}
+	}
+
+	click(unit){
+		this.select(unit);
 	}
 
 	selectNext(){
@@ -76,6 +81,49 @@ class UnitController{
 	addUnit(unit){
 		this.units.push(unit);
 	}
+
+	orderMove(to){
+		let unit = this.selectedUnit;
+
+		if(!unit)
+			return;
+
+		let tile = unit.map.getTileInfo(to);
+		
+		if(tile.mapBorder)
+			return;
+
+		if(unit.props.domain === tile.props.domain){
+			unit.issueCommand(new MoveCommand({
+				unit: unit,
+				to: tile
+			}));
+
+			if(unit.movesLeft === 0)
+				this.selectNext();
+
+			return;
+		}
+
+		if(unit.props.domain === 'sea' && tile.props.domain === 'land'){
+			let cargoUnit = unit.getCargoUnit();
+			if(cargoUnit !== null && cargoUnit.movesLeft > 0){
+				UnitController.instance.select(cargoUnit);
+			}
+
+			return;
+		}
+
+		if(unit.props.domain === 'land' && tile.props.domain === 'sea'){
+			for(let u of tile.units){
+				if(u.canLoad()){
+					unit.becomeCargo(u);
+					unit.movesLeft--;
+				}
+			}
+		}
+	}
+
 
 }
 

@@ -1,6 +1,6 @@
 import Position from 'src/utils/position.js';
 import ColonyView from 'src/view/colony/colonyView.js';
-import Unit from 'src/model/entity/unit.js';
+import UnitController from 'src/controller/unit.js';
 import MapController from 'src/controller/map.js';
 
 
@@ -35,9 +35,7 @@ class PointerInput{
 			this.downAt = null;
 
 			if(downTime > this.holdTimeThreshold){
-				if(Unit.selectedUnit !== null){
-					Unit.selectedUnit.orderMoveTo(pointerPosition);
-				}
+				UnitController.instance.orderMove(pointerPosition);
 			}
 			else{
 				MapController.instance.centerAt(pointerPosition);

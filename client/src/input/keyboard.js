@@ -154,11 +154,11 @@ class KeyboardInput {
 	}
 
 	emitKeypress(x, y){
-		if(UnitController.instance.selectedUnit !== null){
+		if(UnitController.instance.selectedUnit){
 			let newPosition = UnitController.instance.selectedUnit.position.getTile();
 			newPosition.x += x;
 			newPosition.y += y;
-			UnitController.instance.selectedUnit.orderMoveTo(newPosition);
+			UnitController.instance.orderMove(newPosition);
 		}
 
 		this.updateKeys = false;

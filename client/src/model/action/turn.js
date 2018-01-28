@@ -9,17 +9,23 @@ class Turn{
 	}
 
 	endTurn(){
+		//finalize old turn
+		for(let unit of UnitController.instance.units){
+			unit.executeCommand();
+		}
+
+		//next round
+		this.round++;
+
+		//setup everythig for new turn
+		for(let colony of ColonyController.instance.colonies){
+			colony.produce();
+		}
 		for(let unit of UnitController.instance.units){
 			unit.nextTurn();
 		}
 
-
-		for(let colony of ColonyController.instance.colonies){
-			colony.produce();
-		}
-
-		this.round++;
-
+		//done.
 		UnitController.instance.selectNext();
 	}
 }

@@ -28,8 +28,8 @@ class Unit{
 
 		this.view.sprite.inputEnabled = true;
 		this.view.sprite.events.onInputDown.add(() => {
-			UnitController.click(this);
-		}, UnitController.instance);
+			UnitController.instance.click(this);
+		});
 
 		this.movesLeft = this.props.moves;
 		this.isUnit = true;
@@ -45,45 +45,11 @@ class Unit{
 		this.tileInfo.enter(this);
 		this.uncoverMap();
 
+		this.commands = [];
+
 		UnitController.instance.addUnit(this);
 	}
 
-	orderMoveTo(position){
-		let target = this.map.getTileInfo(position);
-		
-		if(target.mapBorder)
-			return;
-
-		if(this.movesLeft > 0 && this.props.domain === target.props.domain) {
-
-			let tile = position.getTile();
-			if(Math.abs(tile.x - this.position.getTile().x) <= 1 &&
-			   Math.abs(tile.y - this.position.getTile().y) <= 1){
-
-				this.makeMove(tile);
-				if(this.movesLeft === 0)
-					UnitController.instance.selectNext();
-				else
-					UnitController.instance.followUnit(this);
-			}
-		}
-
-		if(this.props.domain === 'sea' && target.props.domain === 'land'){
-			let cargoUnit = this.getCargoUnit();
-			if(cargoUnit !== null && cargoUnit.movesLeft > 0){
-				UnitController.instance.select(cargoUnit);
-			}
-		}
-
-		if(this.movesLeft > 0 && this.props.domain === 'land' && target.props.domain === 'sea'){
-			for(let u of target.units){
-				if(u.canLoad()){
-					this.becomeCargo(u);
-					this.movesLeft--;
-				}
-			}
-		}
-	}
 
 	getCargoUnit(){
 		for(let c of this.cargo){
@@ -138,7 +104,28 @@ class Unit{
 			UnitController.instance.selectNext();
 			this.disband();
 		}
+	}
 
+	issueCommand(command){
+		this.commands.push(command);
+		this.executeCommand();
+	}
+
+	cancelCommand(){
+		this.clearCommands();
+	}
+
+	clearCommands(){
+		this.commands = [];
+	}
+
+	finalizeCommand(){
+		this.commands = this.commands.slice(1); //remove first command
+	}
+
+	executeCommand(){
+		if(this.commands.length > 0)
+			this.commands[0].execute();
 	}
 
 	makeMove(to){

@@ -5,18 +5,25 @@ class InputContext{
 	constructor(props){
 		InputContext.instance = this;
 		this.context = props.context;
-		this.lastContext = props.context;
+		this.pastContexts = [];
 	}
 
 	switch(newContext){
 		if(newContext !== this.context){
-			this.lastContext = this.context;
+			this.pastContexts.push(this.context);
 			this.context = newContext;
 		}
 	}
 
 	switchBack(){
-		this.context = this.lastContext;
+		if(this.pastContexts.length > 0){
+			this.context = this.pastContexts.pop();
+		}
+
+	}
+
+	clearHistory(){
+		this.pastContexts = [];
 	}
 
 
