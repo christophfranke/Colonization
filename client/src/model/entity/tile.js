@@ -11,6 +11,7 @@ class MapTile {
 		this.id = props.id;
 		this.position = props.position.getTile();
 		this.map = props.map;
+		this.index = props.index;
 
 		this.forest = false;
 		this.hills = false;
@@ -60,12 +61,12 @@ class MapTile {
 		this.coast = false;
 
 
-		this.discovered = true;
+		this.discovered = false;
 		this.used = false;
 
 
 		this.coastTerrain = null;
-		this.mapBorder = (
+		this.isBorderTile = (
 			this.position.x === 0 ||
 			this.position.y === 0 ||
 			this.position.x === this.map.numTiles.x-1 ||
@@ -93,7 +94,14 @@ class MapTile {
 		return result;
 	}
 
+	indexString(){
+		return '' + this.index;
+	}
+
 	movementCost(from){
+		if(from === this)
+			return 0;
+
 		if(from.river && this.river && this.isNextTo(from)){
 			return 0.334;
 		}
@@ -110,6 +118,14 @@ class MapTile {
 
 		//next to each other but not diagonal
 		return Math.abs(pos1.x-pos2.x) + Math.abs(pos1.y-pos2.y) <= 1;
+	}
+
+	isNextToOrDiagonal(other){
+		let pos1 = this.position.getTile();
+		let pos2 = other.position.getTile();
+
+		//next to each other but not diagonal
+		return Math.abs(pos1.x-pos2.x) <= 1 && Math.abs(pos1.y-pos2.y) <= 1;
 	}
 
 	applyModifier(base, name, type){

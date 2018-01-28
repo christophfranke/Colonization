@@ -2,6 +2,9 @@
 	"arctic":{
 		"movementCost": 1
 	},
+	"arcticWithForest":{
+		"movementCost": 3
+	},
 	"desert":{
 		"movementCost": 1
 	},

@@ -2,10 +2,12 @@ import Tile from 'src/model/entity/tile.js';
 import Position from 'src/utils/position.js';
 import MapView from 'src/view/map/mapView.js';
 
+import Graph from 'node-dijkstra';
 
 class Map{
 
 	constructor(props){
+		console.log('creating map');
 		this.data = props.data;
 
 		this.baseLayer = this.getLayer('terrain base');
@@ -22,14 +24,19 @@ class Map{
 
 		Map.instance = this;
 
+		console.log('creating tiles');
 		this.createAllTiles();
+		console.log('creating coast line');
 		this.createCoastLine();
+		console.log('creating graph');
+		this.createGraph();
 
-
+		console.log('creating view');
 		this.view = new MapView({
 			map: this
 		});
 
+		console.log('map created.');
 	}
 
 	getLayer(name){
@@ -65,6 +72,7 @@ class Map{
 		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
 			this.tiles[index] = new Tile({
 				id: this.baseLayer.data[index],
+				index: index,
 				top: this.topLayer.data[index],
 				riverSmall: this.riverSmallLayer.data[index],
 				riverLarge: this.riverLargeLayer.data[index],
@@ -81,12 +89,54 @@ class Map{
 
 	createCoastLine(){
 		//look for coasts and create coast lines
-		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
+		for(let index=0; index < this.numTiles.total; index++){
 			this.tiles[index].decideCoastTerrain();
 		}		
-		for(let index=0; index < this.numTiles.x*this.numTiles.y; index++){
+		for(let index=0; index < this.numTiles.total; index++){
 			this.tiles[index].decideCoastalSea();
 		}		
+	}
+
+	shortestPath(from, to){
+		return this.graph.path(from.indexString(), to.indexString());
+	}
+
+	createGraph(){
+		this.graph = new Graph();
+		for(let index=0; index < this.numTiles.total; index++){
+			let center = this.tiles[index];
+			let neighbors = {};
+			if(!center.isBorderTile){			
+				let up = center.up();
+				let rightUp = up.right();
+				let right = center.right();
+				let rightDown = right.down();
+				let down = center.down();
+				let leftDown = down.left();
+				let left = center.left();
+				let leftUp = left.up();
+
+
+				if(up.props.domain === center.props.domain)
+					neighbors[up.indexString()] = up.movementCost(center);
+				if(rightUp.props.domain === center.props.domain)
+					neighbors[rightUp.indexString()] = rightUp.movementCost(center);
+				if(right.props.domain === center.props.domain)
+					neighbors[right.indexString()] = right.movementCost(center);
+				if(rightDown.props.domain === center.props.domain)
+					neighbors[rightDown.indexString()] = rightDown.movementCost(center);
+				if(down.props.domain === center.props.domain)
+					neighbors[down.indexString()] = down.movementCost(center);
+				if(leftDown.props.domain === center.props.domain)
+					neighbors[leftDown.indexString()] = leftDown.movementCost(center);
+				if(left.props.domain === center.props.domain)
+					neighbors[left.indexString()] = left.movementCost(center);
+				if(leftUp.props.domain === center.props.domain)
+					neighbors[leftUp.indexString()] = leftUp.movementCost(center);
+			}
+
+			this.graph.addNode(center.indexString(), neighbors);
+		}
 	}
 }
 

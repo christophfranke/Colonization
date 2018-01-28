@@ -4,6 +4,7 @@ import UnitController from 'src/controller/unit.js';
 import MapController from 'src/controller/map.js';
 import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
+import WaitCommand from 'src/model/command/wait.js';
 
 import InputContext from './context.js';
 
@@ -48,7 +49,7 @@ class KeyboardInput {
 
 			if(e.keyCode === 32){
 				if(UnitController.instance.selectedUnit !== null){
-					UnitController.instance.selectedUnit.waiting = true;
+					UnitController.instance.selectedUnit.issueCommand(new WaitCommand());
 					UnitController.instance.selectNext();
 				}
 			}
@@ -56,15 +57,9 @@ class KeyboardInput {
 
 		if(InputContext.instance.context === InputContext.MAP){			
 			if(e.keyCode === 13){
-				let allUnitsMoved = true;
-				for(let unit of UnitController.instance.units){
-					allUnitsMoved &= (unit.movesLeft === 0 || unit.waiting || unit.isCargo);
-				}
-
-				if(allUnitsMoved)
-					Turn.instance.endTurn();
-				else
-					UnitController.instance.selectNext();
+				UnitController.instance.selectNext();
+				if(!UnitController.instance.selectedUnit)
+					Turn.instance.endTurn();					
 			}
 		}
 

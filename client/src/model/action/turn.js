@@ -11,7 +11,7 @@ class Turn{
 	endTurn(){
 		//finalize old turn
 		for(let unit of UnitController.instance.units){
-			unit.executeCommand();
+			unit.endTurnCommand();
 		}
 
 		//next round

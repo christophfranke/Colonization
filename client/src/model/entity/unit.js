@@ -35,7 +35,6 @@ class Unit{
 		this.isUnit = true;
 		this.isCargo = false;
 		this.carryingUnit = null;
-		this.waiting = false;
 		if(typeof this.props.cargo !== 'undefined' && this.props.cargo > 0)
 			this.cargo = new Array(this.props.cargo).fill(null);
 		else
@@ -107,6 +106,7 @@ class Unit{
 	}
 
 	issueCommand(command){
+		command.unit = this;
 		this.commands.push(command);
 		this.executeCommand();
 	}
@@ -124,8 +124,18 @@ class Unit{
 	}
 
 	executeCommand(){
-		if(this.commands.length > 0)
+		if(this.hasCommands())
 			this.commands[0].execute();
+	}
+
+	hasCommands(){
+		return this.commands.length > 0;
+	}
+
+	endTurnCommand(){
+		if(this.hasCommands()){
+			this.commands[0].endTurn();
+		}
 	}
 
 	makeMove(to){

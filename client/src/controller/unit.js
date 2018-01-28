@@ -32,7 +32,7 @@ class UnitController{
 
 	selectNext(){
 		for(let unit of this.units){
-			if(unit.movesLeft > 0 && !unit.waiting && !unit.isCargo){
+			if(unit.movesLeft > 0 && !unit.hasCommands() && !unit.isCargo){
 				setTimeout(() => {
 					this.select(unit);
 				}, this.autoSelectTimeout);
@@ -52,6 +52,8 @@ class UnitController{
 		if(unit.movesLeft > 0){		
 			if(this.selectedUnit !== null)
 				this.unselect(this.selectedUnit);
+
+			unit.clearCommands();
 
 			if(unit.isCargo){
 				unit.teleport(unit.carryingUnit.position);
@@ -116,6 +118,9 @@ class UnitController{
 		if(unit.props.domain === 'sea' && tile.props.domain === 'land'){
 			let cargoUnit = unit.getCargoUnit();
 			if(cargoUnit !== null && cargoUnit.movesLeft > 0){
+				//this is so dirty...
+				cargoUnit.makeMove(unit.position);
+				cargoUnit.movesLeft = cargoUnit.props.moves;
 				UnitController.instance.select(cargoUnit);
 			}
 
