@@ -1,0 +1,66 @@
+{
+	"arctic":{
+		"movementCost": 1
+	},
+	"desert":{
+		"movementCost": 1
+	},
+	"desertWithForest":{
+		"movementCost": 3
+	},
+	"grassland":{
+		"movementCost": 1
+	},
+	"grasslandWithForest":{
+		"movementCost": 3
+	},
+	"hills":{
+		"movementCost": 3
+	},
+	"marsh":{
+		"movementCost": 1
+	},
+	"marshWithForest":{
+		"movementCost": 3
+	},
+	"mountains":{
+		"movementCost": 4
+	},
+	"ocean":{
+		"movementCost": 1
+	},
+	"plains":{
+		"movementCost": 1
+	},
+	"plainsWithForest":{
+		"movementCost": 3
+	},
+	"prairie":{
+		"movementCost": 1
+	},
+	"prairieWithForest":{
+		"movementCost": 3
+	},
+	"savannah":{
+		"movementCost": 1
+	},
+	
+	"savannahWithForest":{
+		"movementCost": 3
+	},
+	"sea lane":{
+		"movementCost": 1
+	},
+	"swamp":{
+		"movementCost": 1
+	},
+	"swampWithForest":{
+		"movementCost": 3
+	},
+	"tundra":{
+		"movementCost": 1
+	},
+	"tundraWithForest":{
+		"movementCost": 3
+	}	
+}

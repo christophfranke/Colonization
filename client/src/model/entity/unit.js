@@ -133,10 +133,14 @@ class Unit{
 		this.position = to.getTile();
 		this.view.moveTo(this.position);
 
+		let from = this.tileInfo;
 		this.tileInfo = this.map.getTileInfo(this.position);
 		this.tileInfo.enter(this);
 
-		this.movesLeft--;
+		this.movesLeft -= this.tileInfo.movementCost(from);
+		if(this.movesLeft < 0)
+			this.movesLeft = 0;
+
 		this.stopBeingCargo();
 
 		this.uncoverMap();

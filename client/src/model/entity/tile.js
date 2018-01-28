@@ -1,4 +1,5 @@
 import Terrain from 'data/terrain.json';
+import Terrain2 from 'data/terrain2.json';
 import Yield from 'data/yield.json';
 import Resources from 'data/resources.json';
 
@@ -28,7 +29,9 @@ class MapTile {
 		if(!this.props){
 			console.warn('No terrain type found for id', this.id, this.position, 'defaulting to ocean tile');
 			this.props = Terrain.ocean;
+			this.name = 'ocean';
 		}
+
 
 		if(this.props.domain === 'land'){		
 			if(Terrain.forest.id === props.top)
@@ -60,6 +63,7 @@ class MapTile {
 		this.discovered = true;
 		this.used = false;
 
+
 		this.coastTerrain = null;
 		this.mapBorder = (
 			this.position.x === 0 ||
@@ -87,6 +91,25 @@ class MapTile {
 			result = this.applyModifier(result, 'expert', type);
 
 		return result;
+	}
+
+	movementCost(from){
+		if(from.river && this.river && this.isNextTo(from)){
+			return 0.334;
+		}
+
+		if(from.road && this.road && this.isNextTo(from))
+			return 0.334;
+
+		return Terrain2[this.terrainName()].movementCost;
+	}
+
+	isNextTo(other){
+		let pos1 = this.position.getTile();
+		let pos2 = other.position.getTile();
+
+		//next to each other but not diagonal
+		return Math.abs(pos1.x-pos2.x) + Math.abs(pos1.y-pos2.y) <= 1;
 	}
 
 	applyModifier(base, name, type){
