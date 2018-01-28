@@ -14,6 +14,7 @@ import SpriteRenderer from 'src/render/spriteRenderer.js';
 import InputContext from 'src/input/context.js';
 import UnitController from 'src/controller/unit.js';
 import ColonyController from 'src/controller/colony.js';
+import CameraController from 'src/controller/camera.js';
 
 
 
@@ -43,6 +44,7 @@ class Colonize{
         new MapController();
         new UnitController();
         new ColonyController();
+        new CameraController();
         new DebugView();
         new Loader();
         new Turn();

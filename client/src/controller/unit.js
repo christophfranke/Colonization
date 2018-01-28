@@ -7,6 +7,7 @@ import MapController from './map.js';
 class UnitController{
 	constructor(){
 		UnitController.instance = this;
+		this.autoSelectTimeout = 250;
 
 		this.selectedUnit = null;
 		this.units = [];
@@ -32,7 +33,12 @@ class UnitController{
 	selectNext(){
 		for(let unit of this.units){
 			if(unit.movesLeft > 0 && !unit.waiting && !unit.isCargo){
-				this.select(unit);
+				setTimeout(() => {
+					this.select(unit);
+				}, this.autoSelectTimeout);
+				this.followUnit(unit);
+				InputContext.instance.switch(InputContext.NONE);
+
 				return;
 			}
 		}

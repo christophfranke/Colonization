@@ -33,6 +33,8 @@ class DebugView {
 				let memoryPercentage = 'n/a';
 				let spriteCount = SpriteRenderer.instance.display.total;
 				let context = InputContext.instance.context;
+				if(context === InputContext.NONE)
+					context = 'None';
 				if(context === InputContext.MAP)
 					context = 'Map';
 				if(context === InputContext.UNIT)

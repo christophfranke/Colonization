@@ -10,7 +10,12 @@ class InputContext{
 
 	switch(newContext){
 		if(newContext !== this.context){
-			this.pastContexts.push(this.context);
+			if(this.context === InputContext.NONE){
+				this.clearHistory(); //you cannot put context NONE in history.
+			}
+			else{			
+				this.pastContexts.push(this.context);
+			}
 			this.context = newContext;
 		}
 	}
@@ -29,7 +34,7 @@ class InputContext{
 
 }
 
-
+InputContext.NONE = 0;
 InputContext.MAP = 1;
 InputContext.UNIT = 2;
 InputContext.COLONY = 3;
