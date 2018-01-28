@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 
 import Position from 'src/utils/position.js';
 import ContextMenu from 'src/ui/contextMenu.js';
+
 import ProductionView from './productionView';
 
 class ColonistsView {
@@ -52,7 +53,9 @@ class ColonistsView {
 		let tile = this.colony.colonyView.colonyMapView.tileAt(to);
 		let oldTile = colonist.production ? colonist.production.tile : null;
 		if(colonist.workOn(tile)){
-			if(tile === oldTile || tile.yield(colonist, colonist.production.resource) === 0){			
+			if((tile === oldTile) ||
+				tile.yield(colonist, colonist.production.resource) === 0
+			){
 				let choices = tile.ressourceProduction(colonist);
 				for(let choice of choices)
 					choice.type = 'resource';

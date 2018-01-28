@@ -19,20 +19,34 @@ class MapTile {
 		this.river = false;
 		this.bonus = false;
 
-		if(Terrain.forest.id === props.top)
-			this.forest = true;
-
-		if(Terrain.hills.id === props.top)
-			this.hills = true;
-
-		if(Terrain.mountains.id === props.top){
-			this.mountains = true;
+		for(let type in Terrain){
+			if(Terrain[type].id === this.id){
+				this.props = Terrain[type];
+				this.name = type;
+			}
 		}
-		if(Terrain['small river'].id === props.riverSmall){
-			this.riverSmall = true;
+		if(!this.props){
+			console.warn('No terrain type found for id', this.id, this.position, 'defaulting to ocean tile');
+			this.props = Terrain.ocean;
 		}
-		if(Terrain['large river'].id === props.riverLarge)
-			this.riverLarge = true;
+
+		if(this.props.domain === 'land'){		
+			if(Terrain.forest.id === props.top)
+				this.forest = true;
+
+			if(Terrain.hills.id === props.top)
+				this.hills = true;
+
+			if(Terrain.mountains.id === props.top){
+				this.mountains = true;
+			}
+			if(Terrain['small river'].id === props.riverSmall){
+				this.riverSmall = true;
+			}
+			if(Terrain['large river'].id === props.riverLarge)
+				this.riverLarge = true;
+		}
+
 		if(Terrain.bonusRessource.id === props.bonus)
 			this.bonus = true;
 
@@ -45,13 +59,6 @@ class MapTile {
 
 		this.discovered = true;
 		this.used = false;
-
-		for(let type in Terrain){
-			if(Terrain[type].id === this.id){
-				this.props = Terrain[type];
-				this.name = type;
-			}
-		}
 
 		this.coastTerrain = null;
 		this.mapBorder = (

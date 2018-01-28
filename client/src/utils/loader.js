@@ -7,7 +7,7 @@ class Loader{
 		Loader.instance = this;
 		this.assets = {
 			mapData: {
-				url: '/assets/maps/america_large.json',
+				url: '/assets/maps/america-large.json',
 				type: Loader.JSON
 			},
 			mapTiles: {
