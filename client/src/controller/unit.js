@@ -1,5 +1,4 @@
 import InputContext from 'src/input/context.js';
-import Unit from 'src/model/entity/unit.js';
 
 import MapController from './map.js';
 
@@ -9,6 +8,7 @@ class UnitController{
 		UnitController.instance = this;
 
 		this.selectedUnit = null;
+		this.units = [];
 	}
 
 	followUnit(unit){
@@ -25,9 +25,9 @@ class UnitController{
 	}
 
 	selectNext(){
-		for(let u of Unit.all){
-			if(u.movesLeft > 0 && !u.waiting && !u.isCargo){
-				this.select(u);
+		for(let unit of this.units){
+			if(unit.movesLeft > 0 && !unit.waiting && !unit.isCargo){
+				this.select(unit);
 				return;
 			}
 		}
@@ -68,6 +68,14 @@ class UnitController{
 		}
 	}
 
+	removeUnit(unit){
+		let index = this.units.indexOf(unit);
+		this.units.splice(index, 1);
+	}
+
+	addUnit(unit){
+		this.units.push(unit);
+	}
 
 }
 

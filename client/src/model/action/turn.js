@@ -1,7 +1,6 @@
 import UnitController from 'src/controller/unit.js';
 import ColonyController from 'src/controller/colony.js';
 
-import Unit from '../entity/unit.js';
 
 class Turn{
 	constructor(){
@@ -10,8 +9,8 @@ class Turn{
 	}
 
 	endTurn(){
-		for(let u of Unit.all){
-			u.nextTurn();
+		for(let unit of UnitController.instance.units){
+			unit.nextTurn();
 		}
 
 
@@ -19,11 +18,9 @@ class Turn{
 			colony.produce();
 		}
 
-		if(Unit.all.length > 0){
-			UnitController.instance.selectNext();
-		}
-
 		this.round++;
+
+		UnitController.instance.selectNext();
 	}
 }
 

@@ -4,7 +4,6 @@ import UnitController from 'src/controller/unit.js';
 import MapController from 'src/controller/map.js';
 import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
-import Unit from 'src/model/entity/unit.js';
 
 import InputContext from './context.js';
 
@@ -58,8 +57,8 @@ class KeyboardInput {
 		if(InputContext.instance.context === InputContext.MAP){			
 			if(e.keyCode === 13){
 				let allUnitsMoved = true;
-				for(let u of Unit.all){
-					allUnitsMoved &= (u.movesLeft === 0 || u.waiting || u.isCargo);
+				for(let unit of UnitController.instance.units){
+					allUnitsMoved &= (unit.movesLeft === 0 || unit.waiting || unit.isCargo);
 				}
 
 				if(allUnitsMoved)

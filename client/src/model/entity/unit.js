@@ -45,7 +45,7 @@ class Unit{
 		this.tileInfo.enter(this);
 		this.uncoverMap();
 
-		Unit.all.push(this);
+		UnitController.instance.addUnit(this);
 	}
 
 	orderMoveTo(position){
@@ -174,8 +174,7 @@ class Unit{
 			UnitController.instance.selectedUnit = null;
 		}
 
-		this.index = Unit.all.indexOf(this);
-		Unit.all.splice(this.index, 1);
+		UnitController.instance.removeUnit(this);
 
 		UnitController.instance.selectNext();
 	}
@@ -202,10 +201,7 @@ class Unit{
 		}
 	}
 
-
-
 }
 
-Unit.all = [];
 
 export default Unit;
