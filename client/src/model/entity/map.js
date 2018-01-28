@@ -120,19 +120,19 @@ class Map{
 				if(up.props.domain === center.props.domain)
 					neighbors[up.indexString()] = up.movementCost(center);
 				if(rightUp.props.domain === center.props.domain)
-					neighbors[rightUp.indexString()] = rightUp.movementCost(center);
+					neighbors[rightUp.indexString()] = rightUp.movementCost(center) + 0.01;
 				if(right.props.domain === center.props.domain)
 					neighbors[right.indexString()] = right.movementCost(center);
 				if(rightDown.props.domain === center.props.domain)
-					neighbors[rightDown.indexString()] = rightDown.movementCost(center);
+					neighbors[rightDown.indexString()] = rightDown.movementCost(center) + 0.01;
 				if(down.props.domain === center.props.domain)
 					neighbors[down.indexString()] = down.movementCost(center);
 				if(leftDown.props.domain === center.props.domain)
-					neighbors[leftDown.indexString()] = leftDown.movementCost(center);
+					neighbors[leftDown.indexString()] = leftDown.movementCost(center) + 0.01;
 				if(left.props.domain === center.props.domain)
 					neighbors[left.indexString()] = left.movementCost(center);
 				if(leftUp.props.domain === center.props.domain)
-					neighbors[leftUp.indexString()] = leftUp.movementCost(center);
+					neighbors[leftUp.indexString()] = leftUp.movementCost(center) + 0.01;
 			}
 
 			this.graph.addNode(center.indexString(), neighbors);
