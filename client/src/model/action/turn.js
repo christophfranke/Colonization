@@ -1,7 +1,7 @@
 import UnitController from 'src/controller/unit.js';
+import ColonyController from 'src/controller/colony.js';
 
 import Unit from '../entity/unit.js';
-import Colony from '../entity/colony.js';
 
 class Turn{
 	constructor(){
@@ -15,8 +15,8 @@ class Turn{
 		}
 
 
-		for(let c of Colony.all){
-			c.produce();
+		for(let colony of ColonyController.instance.colonies){
+			colony.produce();
 		}
 
 		if(Unit.all.length > 0){

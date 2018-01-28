@@ -2,6 +2,7 @@ import Places from 'data/places.json';
 import Resources from 'data/resources.json';
 
 import ColonyView from 'src/view/colony/colonyView.js';
+import ColonyController from 'src/controller/colony.js';
 
 import Colonist from './colonist.js';
 import Map from './map.js';
@@ -30,7 +31,7 @@ class Colony{
 			colony: this
 		});
 
-		Colony.all.push(this);
+		ColonyController.instance.addColony(this);
 	}
 
 	uncoverMap(){
@@ -57,8 +58,6 @@ class Colony{
 	}
 
 }
-
-Colony.all = [];
 
 
 export default Colony;

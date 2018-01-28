@@ -13,6 +13,7 @@ import Turn from './model/action/turn.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 import InputContext from 'src/input/context.js';
 import UnitController from 'src/controller/unit.js';
+import ColonyController from 'src/controller/colony.js';
 
 
 
@@ -41,6 +42,7 @@ class Colonize{
 
         new MapController();
         new UnitController();
+        new ColonyController();
         new DebugView();
         new Loader();
         new Turn();
