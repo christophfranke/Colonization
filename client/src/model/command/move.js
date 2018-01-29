@@ -13,7 +13,6 @@ class MoveCommand{
 		if(!this.path || this.path.length === 0){
 			//somthing gone wrong
 			this.unit.cancelCommand();
-			
 			return Promise.resolve();
 		}
 

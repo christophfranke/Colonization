@@ -72,6 +72,7 @@ class MapTile {
 			this.position.x === this.map.numTiles.x-1 ||
 			this.position.y === this.map.numTiles.y-1);
 
+		this.colony = null;
 		this.units = [];
 	}
 
@@ -200,6 +201,19 @@ class MapTile {
 			y: this.position.y+1,
 			type: Position.TILE
 		}));
+	}
+
+	neighbors(){
+		return [
+			this.up(),
+			this.right().up(),
+			this.right(),
+			this.right().down(),
+			this.down(),
+			this.left().down(),
+			this.left(),
+			this.left().up()
+		];
 	}
 
 	enter(unit){

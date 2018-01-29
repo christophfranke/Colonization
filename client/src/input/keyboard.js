@@ -6,6 +6,7 @@ import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
 import WaitCommand from 'src/model/command/wait.js';
 import SleepCommand from 'src/model/command/sleep.js';
+import FoundColonyCommand from 'src/model/command/foundColony.js';
 
 import InputContext from './context.js';
 
@@ -38,7 +39,7 @@ class KeyboardInput {
 					MapController.instance.centerAt(UnitController.instance.selectedUnit.position);
 				}
 				if(e.key === 'b'){
-					UnitController.instance.selectedUnit.orderFoundColony();
+					UnitController.instance.selectedUnit.issueCommand(new FoundColonyCommand());
 				}
 
 				if(e.key === 'w'){

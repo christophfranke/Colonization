@@ -50,17 +50,6 @@ class Unit{
 	}
 
 
-	orderFoundColony(){
-		if(this.props.canFound){
-			new Colony({
-				position: this.position,
-				founder: this
-			});
-			this.movesLeft = 0;
-			this.disband();
-		}
-	}
-
 	addCargo(cargo){
 		for(let i=0; i < this.cargo.length; i++){
 			if(this.cargo[i] === null){

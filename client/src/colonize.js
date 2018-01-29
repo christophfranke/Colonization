@@ -15,7 +15,7 @@ import InputContext from 'src/input/context.js';
 import UnitController from 'src/controller/unit.js';
 import ColonyController from 'src/controller/colony.js';
 import CameraController from 'src/controller/camera.js';
-
+import FoundColonyCommand from 'src/model/command/foundColony.js';
 
 
 class Colonize{
@@ -105,7 +105,7 @@ class Colonize{
                 y: 126, 
                 type: Position.TILE
             })
-        }).orderFoundColony();
+        }).issueCommand(new FoundColonyCommand());
 
         UnitController.instance.select(caravel);
     }
