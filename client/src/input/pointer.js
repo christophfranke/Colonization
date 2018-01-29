@@ -22,6 +22,7 @@ class PointerInput{
 	inputDown(){
 		this.isHolding = false;
 		this.isDown = true;
+		this.downContext = InputContext.instance.context;
 		if(this.timeoutId)
 			clearTimeout(this.timeoutId);
 
@@ -50,6 +51,11 @@ class PointerInput{
 				UnitController.instance.orderMove(pointerPosition);
 			}
 			else{
+				if(
+					this.downContext === InputContext.UNIT ||
+					this.downContext === InputContext.UNLOAD ||
+					this.downContext === InputContext.MAP
+				)
 				MapController.instance.centerAt(pointerPosition);
 			}
 		}
