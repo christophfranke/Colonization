@@ -44,6 +44,7 @@ class UnitController{
 	selectNext(){
 		if(this.selectedUnit)
 			this.unselect(this.selectedUnit);
+
 		while(this.unitQueue[this.currentUnit]){
 			let unit = this.unitQueue[this.currentUnit];
 			if(unit.movesLeft > 0 && !unit.isCargo){
@@ -58,6 +59,7 @@ class UnitController{
 									return Promise.resolve();
 								}
 								else{
+									this.currentUnit++;
 									return this.selectNext();	
 								}
 							});
