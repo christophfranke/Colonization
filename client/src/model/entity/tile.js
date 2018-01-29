@@ -44,12 +44,12 @@ class MapTile {
 			if(Terrain.mountains.id === props.top){
 				this.mountains = true;
 			}
-			if(Terrain['small river'].id === props.riverSmall){
-				this.riverSmall = true;
-			}
-			if(Terrain['large river'].id === props.riverLarge)
-				this.riverLarge = true;
 		}
+		if(Terrain['small river'].id === props.riverSmall){
+			this.riverSmall = true;
+		}
+		if(Terrain['large river'].id === props.riverLarge)
+			this.riverLarge = true;
 
 		if(Terrain.bonusRessource.id === props.bonus)
 			this.bonus = true;
