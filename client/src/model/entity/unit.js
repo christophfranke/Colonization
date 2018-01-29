@@ -40,8 +40,8 @@ class Unit{
 		else
 			this.cargo = [];
 
-		this.tileInfo = this.map.getTileInfo(this.position);
-		this.tileInfo.enter(this);
+		this.tile = this.map.getTileInfo(this.position);
+		this.tile.enter(this);
 		this.uncoverMap();
 
 		this.commands = [];
@@ -121,15 +121,15 @@ class Unit{
 	}
 
 	makeMove(to){
-		this.tileInfo.leave(this);
+		this.tile.leave(this);
 		this.position = to.getTile();
 		this.view.moveTo(this.position);
 
-		let from = this.tileInfo;
-		this.tileInfo = this.map.getTileInfo(this.position);
-		this.tileInfo.enter(this);
+		let from = this.tile;
+		this.tile = this.map.getTileInfo(this.position);
+		this.tile.enter(this);
 
-		this.movesLeft -= this.tileInfo.movementCost(from);
+		this.movesLeft -= this.tile.movementCost(from);
 		if(this.movesLeft < 0)
 			this.movesLeft = 0;
 

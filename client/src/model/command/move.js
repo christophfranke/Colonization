@@ -5,7 +5,7 @@ import UnitController from 'src/controller/unit.js';
 class MoveCommand{
 	constructor(props){
 		this.unit = props.unit;
-		this.from = this.unit.tileInfo;
+		this.from = this.unit.tile;
 		this.to = props.to;
 
 		if(this.to.isNextToOrDiagonal(this.from)){
