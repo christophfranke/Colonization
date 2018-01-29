@@ -7,7 +7,7 @@ class UnitView{
 	constructor(props){
 		this.id = props.id;
 		this.position = props.position.getWorld();
-		this.movementTweenTime = 50;
+		this.movementTweenTime = 100;
 		this.tweens = {};
 
 		if(typeof UnitView.layer === 'undefined')
@@ -48,19 +48,21 @@ class UnitView{
 	}
 
 	moveTo(position){
-		this.position = position.getWorld();
+		return new Promise((resolve) => {
+			this.position = position.getWorld();
 
-		this.tweens.walk = game.add.tween(this.sprite).to( {
-				x: this.position.x,
-				y: this.position.y
-			},
-			this.movementTweenTime,
-			Phaser.Easing.Linear.None,
-			true,
-			0,
-			0,
-			false
-		);
+			this.tweens.walk = game.add.tween(this.sprite).to( {
+					x: this.position.x,
+					y: this.position.y
+				},
+				this.movementTweenTime,
+				Phaser.Easing.Linear.None,
+				true,
+				0,
+				0,
+				false
+			).onComplete.add(resolve);
+		});
 	}
 
 	startBlinking(){

@@ -5,6 +5,7 @@ class SleepCommand{
 	}
 
 	execute(){
+		return Promise.rseolve();
 	}
 }
 

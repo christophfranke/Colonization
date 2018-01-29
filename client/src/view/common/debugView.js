@@ -2,6 +2,7 @@ import Colonize from 'src/colonize.js';
 
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 import InputContext from 'src/input/context.js';
+import UnitController from 'src/controller/unit.js';
 
 
 class DebugView {
@@ -32,6 +33,7 @@ class DebugView {
 				let memoryUsage = 'n/a';
 				let memoryLimit = 'n/a';
 				let memoryPercentage = 'n/a';
+				let unit = UnitController.instance.selectedUnit;
 				let context = InputContext.instance.context;
 				if(context === InputContext.NONE)
 					context = 'None';
@@ -57,9 +59,11 @@ class DebugView {
 				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
 				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + ' sprites in cache on ' + SpriteRenderer.instance.tileCache.renderTextures.length + ' textures');
-				game.debug.line('Input context is ' + context);
 				if(memoryUsage !=='n/a')
 					game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
+				game.debug.line('Input context is ' + context);
+				if(unit)
+					game.debug.line(unit.name + ': ' + unit.movesLeft + '/' + unit.props.moves + ' moves');
 				game.debug.stop();
 				
 				this.currentFrame = 0;

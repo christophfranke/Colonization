@@ -79,7 +79,7 @@ class Unit{
 	issueCommand(command){
 		command.unit = this;
 		this.commands.push(command);
-		this.executeCommand();
+		return this.executeCommand();
 	}
 
 	cancelCommand(){
@@ -101,12 +101,10 @@ class Unit{
 
 	executeCommand(){
 		if(this.hasCommands()){
-			do{
-				this.completedCommand = false;
-				this.commands[0].execute();
-			}
-			while(this.completeCommand);
+			this.completedCommand = false;
+			return this.commands[0].execute();
 		}
+		return Promise.resolve();
 	}
 
 	hasCommands(){
@@ -116,14 +114,15 @@ class Unit{
 	endTurnCommand(){
 		if(this.hasCommands()){
 			if(this.commands[0].endTurn)
-				this.commands[0].endTurn();
+				return this.commands[0].endTurn();
 		}
+		return Promise.resolve();
 	}
 
 	makeMove(to){
 		this.tile.leave(this);
 		this.position = to.getTile();
-		this.view.moveTo(this.position);
+		let promise = this.view.moveTo(this.position);
 
 		let from = this.tile;
 		this.tile = this.map.getTileInfo(this.position);
@@ -131,7 +130,9 @@ class Unit{
 
 		for(let cargo of this.cargo){
 			if(cargo && cargo.makeMove){
-				cargo.makeMove(to);
+				promise = promise.then(() => {
+					return cargo.makeMove(to);
+				});
 			}
 		}
 
@@ -142,6 +143,7 @@ class Unit{
 		}
 
 		this.uncoverMap();
+		return promise;
 	}
 
 	teleport(to){

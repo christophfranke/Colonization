@@ -9,6 +9,7 @@ class UnitController{
 	constructor(){
 		UnitController.instance = this;
 		this.autoSelectTimeout = 250;
+		this.unitFollowMargin = 0.15;
 
 		this.selectedUnit = null;
 		this.units = [];
@@ -18,15 +19,17 @@ class UnitController{
 
 	followUnit(unit){
 		let screenPos = unit.position.getScreen();
-		let margin = 0.15;
+		let margin = this.unitFollowMargin;
 		if (!(
 			screenPos.x > margin*game.width && 
 			screenPos.x < (1-margin)*game.width &&
 			screenPos.y > margin*game.height &&
 			screenPos.y < (1-margin)*game.height
 		)){
-			MapController.instance.centerAt(unit.position);
+			return MapController.instance.centerAt(unit.position);
 		}
+
+		return Promise.resolve();
 	}
 
 	click(unit){
@@ -39,29 +42,35 @@ class UnitController{
 	}
 
 	selectNext(){
+		if(this.selectedUnit)
+			this.unselect(this.selectedUnit);
 		while(this.unitQueue[this.currentUnit]){
 			let unit = this.unitQueue[this.currentUnit];
 			if(unit.movesLeft > 0 && !unit.isCargo){
+				//automatic movement
 				if(unit.hasCommands()){
-					this.followUnit(unit);
-					setTimeout(() => {					
-						unit.executeCommand();
-						if(unit.completedCommand && unit.movesLeft > 0){
-							this.select(unit);
-						}
-						else{
-							this.selectNext();	
-						}
-					}, this.autoSelectTimeout);
-					return;
+					return new Promise((resolve) => {						
+						this.followUnit(unit)
+						.then(()=>{
+							return unit.executeCommand().then(()=>{
+								if(unit.completedCommand && unit.movesLeft > 0){
+									this.select(unit);
+									return Promise.resolve();
+								}
+								else{
+									return this.selectNext();	
+								}
+							});
+						}).then(() => {
+							resolve();
+						});
+					});
 				}
 				else{
-					setTimeout(() => {
-						this.select(unit);
-					}, this.autoSelectTimeout);
-					this.followUnit(unit);
 					InputContext.instance.switch(InputContext.NONE);
-					return;
+					return this.followUnit(unit).then(() => {
+						this.select(unit);
+					});
 				}
 			}
 			this.currentUnit++;
@@ -70,6 +79,8 @@ class UnitController{
 		//no unit found
 		this.unselect(this.selectedUnit);
 		InputContext.instance.switch(InputContext.MAP);
+
+		return Promise.resolve();
 	}
 
 	select(unit){
@@ -124,28 +135,26 @@ class UnitController{
 		let unit = this.selectedUnit;
 
 		if(!unit)
-			return;
+			return Promise.reject();
 
 		let tile = unit.map.getTileInfo(to);
 		
 		if(tile.mapBorder)
-			return;
+			return Promise.reject();
 
 		if(unit.props.domain === tile.props.domain){
 			if(unit.isCargo)
 				unit.boarding.unload();
 
-			unit.issueCommand(new MoveCommand({
+			return unit.issueCommand(new MoveCommand({
 				unit: unit,
 				to: tile
-			}));
-
-			if(unit.movesLeft === 0)
-				this.selectNext();
-			else
-				this.followUnit(unit);
-
-			return;
+			})).then(() => {			
+				if(unit.movesLeft === 0)
+					return this.selectNext();
+				else
+					return this.followUnit(unit);
+			});
 		}
 
 		//unboard
@@ -157,7 +166,7 @@ class UnitController{
 				}
 			}
 
-			return;
+			return Promise.resolve();
 		}
 
 		//board ship
@@ -168,7 +177,7 @@ class UnitController{
 						unit: unit,
 						ship: ship
 					});
-					this.selectNext();
+					return this.selectNext();
 				}
 			}
 		}

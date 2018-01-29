@@ -22,7 +22,7 @@ class MapController{
 			type: Position.WORLD
 		});
 
-		CameraController.instance.moveTo(cameraTarget);
+		return CameraController.instance.moveTo(cameraTarget);
     }
 }
 

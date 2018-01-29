@@ -11,22 +11,24 @@ class CameraController{
 	}
 
 	moveTo(newTarget){
-		if(this.currentTarget && this.currentTarget.x === newTarget.x && this.currentTarget.y === newTarget.y)
-			return;
+		return new Promise((resolve) => {
+			if(this.currentTarget && this.currentTarget.x === newTarget.x && this.currentTarget.y === newTarget.y)
+				return;
 
-		this.currentTarget = newTarget.getWorld();
+			this.currentTarget = newTarget.getWorld();
 
-		game.add.tween(game.camera).to( {
-				x: this.currentTarget.x,
-				y: this.currentTarget.y
-			},
-			this.mapCenterTweenTime,
-			Phaser.Easing.Cubic.Out,
-			true,
-			0,
-			0,
-			false
-		);		
+			game.add.tween(game.camera).to({
+					x: this.currentTarget.x,
+					y: this.currentTarget.y
+				},
+				this.mapCenterTweenTime,
+				Phaser.Easing.Cubic.Out,
+				true,
+				0,
+				0,
+				false
+			).onComplete.add(resolve);
+		});
 	}
 }
 

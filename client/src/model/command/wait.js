@@ -7,10 +7,12 @@ class WaitCommand{
 	}
 
 	execute(){
+		return Promise.resolve();
 	}
 
 	endTurn(){
 		this.unit.finalizeCommand();
+		return Promise.resolve();
 	}
 }
 

@@ -72,9 +72,10 @@ class KeyboardInput {
 
 		if(InputContext.instance.context === InputContext.MAP){			
 			if(e.keyCode === 13){
-				UnitController.instance.selectNext();
-				if(!UnitController.instance.selectedUnit)
-					Turn.instance.endTurn();					
+				UnitController.instance.selectNext().then(()=>{
+					if(!UnitController.instance.selectedUnit)
+						Turn.instance.endTurn();
+				});
 			}
 		}
 

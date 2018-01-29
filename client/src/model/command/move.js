@@ -24,22 +24,29 @@ class MoveCommand{
 		if(!this.path || this.path.length === 0){
 			//somthing gone wrong
 			this.unit.cancelCommand();
-			return;
-		}
-		while(this.unit.movesLeft > 0){
-			let position = this.path.pop().position;
-			this.unit.makeMove(position);
-
-			if(this.path.length === 0){
-				this.unit.finalizeCommand();
-				return;
-			}
+			
+			return Promise.reject();
 		}
 
-	}
+		let promise = Promise.resolve();
+		for(let i=0; i < this.path.length; i++){
+			promise = promise.then(() => {
 
-	endTurn(){
-		this.execute();
+				if(this.unit.movesLeft > 0 && this.path.length > 0){					
+					let position = this.path.pop().position;
+					if(this.path.length === 0){
+						this.unit.finalizeCommand();
+					}
+					return this.unit.makeMove(position);
+				}
+				else
+					return Promise.resolve();
+			});
+
+
+		}
+
+		return promise;
 	}
 }
 
