@@ -16,6 +16,7 @@ class BoardShipAction{
 			this.unit.issueCommand(new SleepCommand({
 				unit: this.unit
 			}));
+			this.unit.movesLeft = 0;
 		}
 	}
 
