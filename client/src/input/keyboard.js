@@ -5,6 +5,7 @@ import MapController from 'src/controller/map.js';
 import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
 import WaitCommand from 'src/model/command/wait.js';
+import SleepCommand from 'src/model/command/sleep.js';
 
 import InputContext from './context.js';
 
@@ -32,25 +33,26 @@ class KeyboardInput {
 
 	keyUp(e){
 		if(InputContext.instance.context === InputContext.UNIT){
-			if(e.key === 'c'){
-				if(UnitController.instance.selectedUnit !== null)
+			if(UnitController.instance.selectedUnit){
+				if(e.key === 'c'){
 					MapController.instance.centerAt(UnitController.instance.selectedUnit.position);
-			}
-			if(e.key === 'b'){
-				if(UnitController.instance.selectedUnit !== null)
+				}
+				if(e.key === 'b'){
 					UnitController.instance.selectedUnit.orderFoundColony();
-			}
+				}
 
-			if(e.key === 'w'){
-				if(UnitController.instance.selectedUnit !== null){
+				if(e.key === 'w'){
 					UnitController.instance.unitQueue.push(UnitController.instance.selectedUnit);
 					UnitController.instance.selectNext();
 				}
-			}
 
-			if(e.keyCode === 32){
-				if(UnitController.instance.selectedUnit !== null){
+				if(e.keyCode === 32){
 					UnitController.instance.selectedUnit.issueCommand(new WaitCommand());
+					UnitController.instance.selectNext();
+				}
+
+				if(e.key === 's'){
+					UnitController.instance.selectedUnit.issueCommand(new SleepCommand());
 					UnitController.instance.selectNext();
 				}
 			}
