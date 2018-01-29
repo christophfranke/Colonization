@@ -5,7 +5,7 @@ class SleepCommand{
 	}
 
 	execute(){
-		return Promise.rseolve();
+		return Promise.resolve();
 	}
 }
 

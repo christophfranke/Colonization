@@ -48,13 +48,17 @@ class KeyboardInput {
 				}
 
 				if(e.keyCode === 32){
-					UnitController.instance.selectedUnit.issueCommand(new WaitCommand());
-					UnitController.instance.selectNext();
+					UnitController.instance.selectedUnit.issueCommand(new WaitCommand()).then(()=>{
+						UnitController.instance.currentUnit++;
+						UnitController.instance.selectNext();
+					});
 				}
 
 				if(e.key === 's' || e.key === 'f'){
-					UnitController.instance.selectedUnit.issueCommand(new SleepCommand());
-					UnitController.instance.selectNext();
+					UnitController.instance.selectedUnit.issueCommand(new SleepCommand()).then(()=>{
+						UnitController.instance.currentUnit++;
+						UnitController.instance.selectNext();
+					});
 				}
 			}
 		}
