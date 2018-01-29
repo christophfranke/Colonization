@@ -6,6 +6,9 @@ class WaitCommand{
 			this.unit = props.unit;
 	}
 
+	execute(){
+	}
+
 	endTurn(){
 		this.unit.finalizeCommand();
 	}

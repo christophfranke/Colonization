@@ -95,13 +95,17 @@ class Unit{
 	}
 
 	finalizeCommand(){
+		this.completedCommand = true;
 		this.commands = this.commands.slice(1); //remove first command
 	}
 
 	executeCommand(){
 		if(this.hasCommands()){
-			if(this.commands[0].execute)
+			do{
+				this.completedCommand = false;
 				this.commands[0].execute();
+			}
+			while(this.completeCommand);
 		}
 	}
 

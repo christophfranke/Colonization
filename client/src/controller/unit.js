@@ -44,6 +44,10 @@ class UnitController{
 			if(unit.movesLeft > 0 && !unit.isCargo){
 				if(unit.hasCommands()){
 					unit.executeCommand();
+					if(unit.completedCommand && unit.movesLeft > 0){
+						this.select(unit);
+						return;
+					}
 				}
 				else{				
 					setTimeout(() => {
@@ -63,11 +67,10 @@ class UnitController{
 	}
 
 	select(unit){
-		if(unit.movesLeft > 0){		
-			if(this.selectedUnit !== null)
+		unit.clearCommands();
+		if(unit.movesLeft > 0 && this.selectedUnit !== unit){	
+			if(this.selectedUnit)
 				this.unselect(this.selectedUnit);
-
-			unit.clearCommands();
 
 			if(unit.isCargo){
 				unit.teleport(unit.carryingUnit.position);

@@ -26,6 +26,7 @@ class MoveCommand{
 		if(!this.path || this.path.length === 0){
 			//somthing gone wrong
 			this.unit.cancelCommand();
+			return;
 		}
 		while(this.unit.movesLeft > 0){
 			let position = this.path.pop().position;
@@ -37,6 +38,7 @@ class MoveCommand{
 				return;
 			}
 		}
+
 	}
 
 	endTurn(){
