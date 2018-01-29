@@ -131,8 +131,8 @@ class MapTile {
 
 	applyModifier(base, name, type){
 		let terrainName = this.terrainName();
-		if(Yield[terrainName][type]){		
-			let mod = Yield[terrainName][type][name];
+		if(Yield[terrainName].field[type]){		
+			let mod = Yield[terrainName].field[type][name];
 			if(mod){
 				if(mod[0] === '+')
 					return base + parseFloat(mod.substr(1));

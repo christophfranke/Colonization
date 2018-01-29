@@ -1,7 +1,9 @@
 {
 	"arctic":{
-		"food":{
-			"base": 0
+		"field":{		
+			"food":{
+				"base": 0
+			}
 		},
 		"colony":{
 			"food": 0,
@@ -9,420 +11,460 @@
 		}
 	},
 	"desert":{
-		"food":{
-			"base": 2,
-			"plowed": "+1",
-			"river": "+1",
-			"resource":"+3",
-			"expert": "+3"
-		},
-		"cotton":{
-			"base": 1,
-			"plowed": "+1",
-			"river": "+1",
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 2,
-			"road": "+1",
-			"river": "+1",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"plowed": "+1",
+				"river": "+1",
+				"resource":"+3",
+				"expert": "+3"
+			},
+			"cotton":{
+				"base": 1,
+				"plowed": "+1",
+				"river": "+1",
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 2,
+				"road": "+1",
+				"river": "+1",
+				"expert": "*2"
+			}
 		}
 	},
 	"desertWithForest":{
-		"food":{
-			"base": 2,
-			"river": "+1",	
-			"resource": "+2",
-			"resource2": "+4",
-			"expert": "+3"
-		},
-		"cotton":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 2,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 2,
-			"road": "+2",
-			"river": "+2",		
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 1,
-			"road": "+1",
-			"river": "+1",		
-			"expert": "*2"
+		"field":{		
+			"food":{
+				"base": 2,
+				"river": "+1",	
+				"resource": "+2",
+				"resource2": "+4",
+				"expert": "+3"
+			},
+			"cotton":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 2,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 2,
+				"road": "+2",
+				"river": "+2",		
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 1,
+				"road": "+1",
+				"river": "+1",		
+				"expert": "*2"
+			}
 		}
 	},
 	"grassland":{
-		"food":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",			
-			"expert": "+3"
-		},
-		"tobacco":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",
-			"resource":"*2",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",			
+				"expert": "+3"
+			},
+			"tobacco":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",
+				"resource":"*2",
+				"expert": "*2"
+			}
 		}
 	},
 	"grasslandWithForest":{
-		"food":{
-			"base": 2,
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"tabacco":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 2,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 6,
-			"road": "+2",
-			"river": "+2",
-			"resource": "+4",			
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"tabacco":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 2,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 6,
+				"road": "+2",
+				"river": "+2",
+				"resource": "+4",			
+				"expert": "*2"
+			}
 		}
 	},
 	"hills":{
-		"food":{
-			"base": 2,
-			"river": "+1",			
-			"expert": "+3"
-		},
-		"ore":{
-			"base": 4,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+2",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"river": "+1",			
+				"expert": "+3"
+			},
+			"ore":{
+				"base": 4,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+2",
+				"expert": "*2"
+			}
 		}
 	},
 	"marsh":{
-		"food":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",			
-			"expert": "+3"
-		},
-		"tabacco":{
-			"base": 2,
-			"plowed": "+1",
-			"river": "+1",
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 2,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+3",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",			
+				"expert": "+3"
+			},
+			"tabacco":{
+				"base": 2,
+				"plowed": "+1",
+				"river": "+1",
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 2,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+3",
+				"expert": "*2"
+			}
 		}
 	},
 	"marshWithForest":{
-		"food":{
-			"base": 2,
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"tabacco":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 2,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 4,
-			"road": "+2",
-			"river": "+2",			
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 1,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+3",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"tabacco":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 2,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 4,
+				"road": "+2",
+				"river": "+2",			
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 1,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+3",
+				"expert": "*2"
+			}
 		}
 	},
 	"mountains":{
-		"ore":{
-			"base": 4,
-			"road": "+1",
-			"river": "+1",
-			"expert": "*2"
-		},
-		"silver":{
-			"base": 1,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+2",
-			"expert": "*2"
+		"field":{
+			"ore":{
+				"base": 4,
+				"road": "+1",
+				"river": "+1",
+				"expert": "*2"
+			},
+			"silver":{
+				"base": 1,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+2",
+				"expert": "*2"
+			}
 		}
 	},
 	"ocean":{
-		"food":{
-			"base": 4,
-			"coast": "+1",
-			"river": "+1",
-			"resource": "+3", 
-			"resource2": "+6",		
-			"expert": "+3"
+		"field":{
+			"food":{
+				"base": 4,
+				"coast": "+1",
+				"river": "+1",
+				"resource": "+3", 
+				"resource2": "+6",		
+				"expert": "+3"
+			}
 		}
 	},
 	"plains":{
-		"food":{
-			"base": 5,
-			"plowed": "+1",
-			"river": "+1",	
-			"resource": "+3",
-			"resource2": "+6", 
-			"expert": "+3"
-		},
-		"cotton":{
-			"base": 2,
-			"plowed": "+1",
-			"river": "+1",
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 1,
-			"road": "+1",
-			"river": "+1",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 5,
+				"plowed": "+1",
+				"river": "+1",	
+				"resource": "+3",
+				"resource2": "+6", 
+				"expert": "+3"
+			},
+			"cotton":{
+				"base": 2,
+				"plowed": "+1",
+				"river": "+1",
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 1,
+				"road": "+1",
+				"river": "+1",
+				"expert": "*2"
+			}
 		}
 	},
 	"plainsWithForest":{
-		"food":{
-			"base": 3,
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"cotton":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 3,
-			"road": "+2",
-			"river": "+2",	
-			"resource": "+3",
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 6,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 3,
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"cotton":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 3,
+				"road": "+2",
+				"river": "+2",	
+				"resource": "+3",
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 6,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			}
 		}
 	},
 	"prairie":{
-		"food":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"cotton":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",
-			"resource": "*2",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"cotton":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",
+				"resource": "*2",
+				"expert": "*2"
+			}
 		}
 	},
 	"prairieWithForest":{
-		"food":{
-			"base": 2,
-			"river": "+1",	
-			"resource": "+2",
-			"resource2": "+4",
-			"expert": "+3"
-		},
-		"cotton":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 2,
-			"road": "+2",
-			"river": "+2",	
-			"resource": "+2",
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 4,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"river": "+1",	
+				"resource": "+2",
+				"resource2": "+4",
+				"expert": "+3"
+			},
+			"cotton":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 2,
+				"road": "+2",
+				"river": "+2",	
+				"resource": "+2",
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 4,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			}
 		}
 	},
 	"savannah":{
-		"food":{
-			"base": 4,
-			"plowed": "+1",
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"sugar":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",
-			"resource": "*2",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 4,
+				"plowed": "+1",
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"sugar":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",
+				"resource": "*2",
+				"expert": "*2"
+			}
 		}
 	},
 	
 	"savannahWithForest":{
-		"food":{
-			"base": 3,
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"sugar":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 2,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 4,
-			"road": "+2",
-			"river": "+2",
-			"resource": "+4",			
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 3,
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"sugar":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 2,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 4,
+				"road": "+2",
+				"river": "+2",
+				"resource": "+4",			
+				"expert": "*2"
+			}
 		}
 	},
 	"sea lane":{
-		"food":{
-			"base": 4,
-			"coast": "+1",
-			"river": "+1",	
-			"expert": "+3"
+		"field":{
+			"food":{
+				"base": 4,
+				"coast": "+1",
+				"river": "+1",	
+				"expert": "+3"
+			}
 		}
 	},
 	"swamp":{
-		"food":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"sugar":{
-			"base": 2,
-			"plowed": "+1",
-			"river": "+1",
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 2,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+3",
-			"expert": "*2"
+		"field":{		
+			"food":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"sugar":{
+				"base": 2,
+				"plowed": "+1",
+				"river": "+1",
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 2,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+3",
+				"expert": "*2"
+			}
 		}
 	},
 	"swampWithForest":{
-		"food":{
-			"base": 2,
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"sugar":{
-			"base": 1,
-			"river": "+1",	
-			"expert": "*2"
-		},
-		"furs":{
-			"base": 1,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 4,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 1,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+3",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"sugar":{
+				"base": 1,
+				"river": "+1",	
+				"expert": "*2"
+			},
+			"furs":{
+				"base": 1,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 4,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 1,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+3",
+				"expert": "*2"
+			}
 		}
 	},
 	"tundra":{
-		"food":{
-			"base": 3,
-			"plowed": "+1",
-			"river": "+1",	
-			"expert": "+3"
-		},
-		"ore":{
-			"base": 2,
-			"road": "+1",
-			"river": "+1",
-			"resource": "+3",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1",	
+				"expert": "+3"
+			},
+			"ore":{
+				"base": 2,
+				"road": "+1",
+				"river": "+1",
+				"resource": "+3",
+				"expert": "*2"
+			}
 		}
 	},
 	"tundraWithForest":{
-		"food":{
-			"base": 2,
-			"river": "+1",	
-			"resource": "+2",
-			"resource2": "+4",
-			"expert": "+3"
-		},
-		"furs":{
-			"base": 3,
-			"road": "+2",
-			"river": "+2",	
-			"resource": "+2",
-			"expert": "*2"
-		},
-		"wood":{
-			"base": 4,
-			"road": "+2",
-			"river": "+2",	
-			"expert": "*2"
-		},
-		"ore":{
-			"base": 1,
-			"road": "+1",
-			"river": "+1",
-			"expert": "*2"
+		"field":{
+			"food":{
+				"base": 2,
+				"river": "+1",	
+				"resource": "+2",
+				"resource2": "+4",
+				"expert": "+3"
+			},
+			"furs":{
+				"base": 3,
+				"road": "+2",
+				"river": "+2",	
+				"resource": "+2",
+				"expert": "*2"
+			},
+			"wood":{
+				"base": 4,
+				"road": "+2",
+				"river": "+2",	
+				"expert": "*2"
+			},
+			"ore":{
+				"base": 1,
+				"road": "+1",
+				"river": "+1",
+				"expert": "*2"
+			}
 		}
 	}	
 }
