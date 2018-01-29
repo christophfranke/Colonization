@@ -1,8 +1,7 @@
 import Tile from 'src/model/entity/tile.js';
 import Position from 'src/utils/position.js';
 import MapView from 'src/view/map/mapView.js';
-
-import Graph from 'node-dijkstra';
+import PathFinder from 'src/model/ai/pathFinder.js';
 
 class Map{
 
@@ -29,7 +28,9 @@ class Map{
 		console.log('creating coast line');
 		this.createCoastLine();
 		console.log('creating graph');
-		this.createGraph();
+		this.path = new PathFinder({
+			map: this
+		});
 
 		console.log('creating view');
 		this.view = new MapView({
@@ -97,47 +98,6 @@ class Map{
 		}		
 	}
 
-	shortestPath(from, to){
-		return this.graph.path(from.indexString(), to.indexString());
-	}
-
-	createGraph(){
-		this.graph = new Graph();
-		for(let index=0; index < this.numTiles.total; index++){
-			let center = this.tiles[index];
-			let neighbors = {};
-			if(!center.isBorderTile){			
-				let up = center.up();
-				let rightUp = up.right();
-				let right = center.right();
-				let rightDown = right.down();
-				let down = center.down();
-				let leftDown = down.left();
-				let left = center.left();
-				let leftUp = left.up();
-
-
-				if(up.props.domain === center.props.domain)
-					neighbors[up.indexString()] = up.movementCost(center);
-				if(rightUp.props.domain === center.props.domain)
-					neighbors[rightUp.indexString()] = rightUp.movementCost(center) + 0.01;
-				if(right.props.domain === center.props.domain)
-					neighbors[right.indexString()] = right.movementCost(center);
-				if(rightDown.props.domain === center.props.domain)
-					neighbors[rightDown.indexString()] = rightDown.movementCost(center) + 0.01;
-				if(down.props.domain === center.props.domain)
-					neighbors[down.indexString()] = down.movementCost(center);
-				if(leftDown.props.domain === center.props.domain)
-					neighbors[leftDown.indexString()] = leftDown.movementCost(center) + 0.01;
-				if(left.props.domain === center.props.domain)
-					neighbors[left.indexString()] = left.movementCost(center);
-				if(leftUp.props.domain === center.props.domain)
-					neighbors[leftUp.indexString()] = leftUp.movementCost(center) + 0.01;
-			}
-
-			this.graph.addNode(center.indexString(), neighbors);
-		}
-	}
 }
 
 export default Map;

@@ -102,7 +102,7 @@ class MapTile {
 		if(from === this)
 			return 0;
 
-		if(from.river && this.river && this.isNextTo(from)){
+		if(from.domain === 'land' && from.river && this.river && this.isNextTo(from)){
 			return 0.334;
 		}
 

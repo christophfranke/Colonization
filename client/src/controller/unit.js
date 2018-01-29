@@ -142,21 +142,6 @@ class UnitController{
 		if(tile.mapBorder)
 			return Promise.reject();
 
-		if(unit.props.domain === tile.props.domain){
-			if(unit.isCargo)
-				unit.boarding.unload();
-
-			return unit.issueCommand(new MoveCommand({
-				unit: unit,
-				to: tile
-			})).then(() => {			
-				if(unit.movesLeft === 0)
-					return this.selectNext();
-				else
-					return this.followUnit(unit);
-			});
-		}
-
 		//unboard
 		if(unit.props.domain === 'sea' && tile.props.domain === 'land' && unit.tile.isNextToOrDiagonal(tile)){
 			for(let cargo of unit.cargo){			
@@ -181,6 +166,23 @@ class UnitController{
 				}
 			}
 		}
+
+		
+		//movement 
+		if(unit.isCargo)
+			unit.boarding.unload();
+
+		return unit.issueCommand(new MoveCommand({
+			unit: unit,
+			to: tile
+		})).then(() => {			
+			if(unit.movesLeft === 0)
+				return this.selectNext();
+			else
+				return this.followUnit(unit);
+		});
+
+
 	}
 
 

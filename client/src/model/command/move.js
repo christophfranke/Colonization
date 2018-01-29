@@ -6,18 +6,7 @@ class MoveCommand{
 		this.from = this.unit.tile;
 		this.to = props.to;
 
-		if(this.to.isNextToOrDiagonal(this.from)){
-			this.path = [this.to];
-		}
-		else{
-			this.path = this.unit.map.shortestPath(this.to, this.from);
-			if(this.path){
-				this.path.pop();
-				this.path = this.path.map((index) => {
-						return this.unit.map.tiles[index];
-					});
-			}
-		}
+		this.path = this.unit.map.path.findReverse(this.from, this.to, this.unit.props.domain);
 	}
 
 	execute(){
@@ -25,7 +14,7 @@ class MoveCommand{
 			//somthing gone wrong
 			this.unit.cancelCommand();
 			
-			return Promise.reject();
+			return Promise.resolve();
 		}
 
 		let promise = Promise.resolve();
