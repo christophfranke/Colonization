@@ -16,6 +16,7 @@
     "document": true,
     "console": true,
     "setTimeout": true,
+    "clearTimeout": true,
     "game": true
   }
 }

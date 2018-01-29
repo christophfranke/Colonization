@@ -1,7 +1,8 @@
 import Position from 'src/utils/position.js';
-import ColonyView from 'src/view/colony/colonyView.js';
 import UnitController from 'src/controller/unit.js';
 import MapController from 'src/controller/map.js';
+
+import InputContext from './context.js';
 
 
 class PointerInput{
@@ -19,8 +20,22 @@ class PointerInput{
 	}
 
 	inputDown(){
-		if(ColonyView.open === null)
-			this.downAt = game.time.now;
+		this.isHolding = false;
+		this.isDown = true;
+		if(this.timeoutId)
+			clearTimeout(this.timeoutId);
+
+		if(InputContext.instance.context === InputContext.UNIT){		
+			this.timeoutId = setTimeout(() => {
+				this.inputStartHold();
+			}, this.holdTimeThreshold);
+		}
+	}
+
+	inputStartHold(){
+		this.timeoutId = null;
+		this.isHolding = true;
+		game.canvas.style.cursor = 'crosshair';
 	}
 
 	inputUp(){
@@ -30,17 +45,23 @@ class PointerInput{
 			type: Position.SCREEN
 		});
 
-		if(this.downAt !== null){		
-			const downTime = game.time.now - this.downAt;
-			this.downAt = null;
-
-			if(downTime > this.holdTimeThreshold){
+		if(this.isDown){		
+			if(this.isHolding){
 				UnitController.instance.orderMove(pointerPosition);
 			}
 			else{
 				MapController.instance.centerAt(pointerPosition);
 			}
 		}
+
+		if(this.timeoutId)
+			clearTimeout(this.timeoutId);
+
+		this.isHolding = false;
+		this.isDown = false;
+		this.timeoutId = null;
+		
+		game.canvas.style.cursor = 'default';
 	}
 }
 
