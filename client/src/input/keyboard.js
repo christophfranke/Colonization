@@ -43,6 +43,7 @@ class KeyboardInput {
 
 				if(e.key === 'w'){
 					UnitController.instance.unitQueue.push(UnitController.instance.selectedUnit);
+					UnitController.instance.currentUnit++;
 					UnitController.instance.selectNext();
 				}
 
@@ -53,6 +54,17 @@ class KeyboardInput {
 
 				if(e.key === 's' || e.key === 'f'){
 					UnitController.instance.selectedUnit.issueCommand(new SleepCommand());
+					UnitController.instance.selectNext();
+				}
+			}
+		}
+
+		if(InputContext.instance.context === InputContext.UNLOAD){
+			if(UnitController.instance.selectedUnit){				
+				if(e.key === 'c'){
+					MapController.instance.centerAt(UnitController.instance.selectedUnit.position);
+				}
+				if(e.key === 'w' || e.keyCode === 32 || e.key === 's' || e.key === 'f'){
 					UnitController.instance.selectNext();
 				}
 			}
@@ -73,7 +85,7 @@ class KeyboardInput {
 	}
 
 	update(){
-		if(InputContext.instance.context === InputContext.UNIT){
+		if(InputContext.instance.context === InputContext.UNIT || InputContext.instance.context === InputContext.UNLOAD){
 			if(!this.updateKeys){
 				//wait until all keys are released
 				this.updateKeys = (!this.leftKey.isDown) && (!this.rightKey.isDown) && (!this.upKey.isDown) && (!this.downKey.isDown);
@@ -93,50 +105,50 @@ class KeyboardInput {
 				if(!this.leftKey.isDown && this.wasDown.leftKey){
 					//just released or still pressing upKey
 					if(this.upKey.isDown || this.wasDown.upKey){
-						this.emitKeypress(-1, -1);
+						this.orderMovementWithKeys(-1, -1);
 					}
 					//just released or still pressing downKey
 					else if(this.downKey.isDown || this.wasDown.downKey){
-						this.emitKeypress(-1, 1);
+						this.orderMovementWithKeys(-1, 1);
 					}
 					else{
-						this.emitKeypress(-1, 0);
+						this.orderMovementWithKeys(-1, 0);
 					}
 				}
 
 				else if(!this.rightKey.isDown && this.wasDown.rightKey){
 					if(this.upKey.isDown || this.wasDown.upKey){
-						this.emitKeypress(1, -1);
+						this.orderMovementWithKeys(1, -1);
 					}
 					else if(this.downKey.isDown || this.wasDown.downKey){
-						this.emitKeypress(1, 1);
+						this.orderMovementWithKeys(1, 1);
 					}
 					else{
-						this.emitKeypress(1, 0);
+						this.orderMovementWithKeys(1, 0);
 					}
 				}		
 
 				else if(!this.upKey.isDown && this.wasDown.upKey){
 					if(this.leftKey.isDown || this.wasDown.leftKey){
-						this.emitKeypress(-1, -1);
+						this.orderMovementWithKeys(-1, -1);
 					}
 					else if(this.rightKey.isDown || this.wasDown.rightKey){
-						this.emitKeypress(1, -1);
+						this.orderMovementWithKeys(1, -1);
 					}
 					else{
-						this.emitKeypress(0, -1);
+						this.orderMovementWithKeys(0, -1);
 					}
 				}
 
 				else if(!this.downKey.isDown && this.wasDown.downKey){
 					if(this.leftKey.isDown || this.wasDown.leftKey){
-						this.emitKeypress(-1, 1);
+						this.orderMovementWithKeys(-1, 1);
 					}
 					else if(this.rightKey.isDown ||this.wasDown.rightKey){
-						this.emitKeypress(1, 1);
+						this.orderMovementWithKeys(1, 1);
 					}
 					else{
-						this.emitKeypress(0, 1);
+						this.orderMovementWithKeys(0, 1);
 					}
 				}
 
@@ -151,7 +163,7 @@ class KeyboardInput {
 		}
 	}
 
-	emitKeypress(x, y){
+	orderMovementWithKeys(x, y){
 		if(UnitController.instance.selectedUnit){
 			let newPosition = UnitController.instance.selectedUnit.position.getTile();
 			newPosition.x += x;

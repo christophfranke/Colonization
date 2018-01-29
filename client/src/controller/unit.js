@@ -1,5 +1,6 @@
 import InputContext from 'src/input/context.js';
 import MoveCommand from 'src/model/command/move.js';
+import BoardShipAction from 'src/model/action/boardShip.js';
 
 import MapController from './map.js';
 
@@ -34,11 +35,10 @@ class UnitController{
 
 	newTurn(){
 		this.unitQueue = this.units.slice();
-		this.currentUnit = -1;
+		this.currentUnit = 0;
 	}
 
 	selectNext(){
-		this.currentUnit++;
 		while(this.unitQueue[this.currentUnit]){
 			let unit = this.unitQueue[this.currentUnit];
 			if(unit.movesLeft > 0 && !unit.isCargo){
@@ -49,7 +49,7 @@ class UnitController{
 						return;
 					}
 				}
-				else{				
+				else{
 					setTimeout(() => {
 						this.select(unit);
 					}, this.autoSelectTimeout);
@@ -61,25 +61,26 @@ class UnitController{
 			this.currentUnit++;
 		}
 
-		//no unit found: switch back to last Context
+		//no unit found
 		this.unselect(this.selectedUnit);
 		InputContext.instance.switch(InputContext.MAP);
 	}
 
 	select(unit){
 		unit.clearCommands();
-		if(unit.movesLeft > 0 && this.selectedUnit !== unit){	
-			if(this.selectedUnit)
-				this.unselect(this.selectedUnit);
+		if(unit.movesLeft > 0){	
+			if(this.selectedUnit !== unit){			
+				if(this.selectedUnit)
+					this.unselect(this.selectedUnit);
 
-			if(unit.isCargo){
-				unit.teleport(unit.carryingUnit.position);
-				unit.view.show();
+				if(unit.isCargo){
+					unit.view.show();
+				}
+
+				this.selectedUnit = unit;
+				unit.selected = true;
+				unit.view.startBlinking();
 			}
-
-			this.selectedUnit = unit;
-			unit.selected = true;
-			unit.view.startBlinking();
 
 			this.followUnit(unit);
 			InputContext.instance.switch(InputContext.UNIT);
@@ -90,8 +91,9 @@ class UnitController{
 		if(unit){		
 			unit.selected = false;
 			unit.view.stopBlinking();
-			if(unit.isCargo)
+			if(unit.isCargo){
 				unit.view.hide();
+			}
 
 			if(this.selectedUnit === unit)
 				this.selectedUnit = null;
@@ -124,6 +126,9 @@ class UnitController{
 			return;
 
 		if(unit.props.domain === tile.props.domain){
+			if(unit.isCargo)
+				unit.boarding.unload();
+
 			unit.issueCommand(new MoveCommand({
 				unit: unit,
 				to: tile
@@ -137,26 +142,30 @@ class UnitController{
 			return;
 		}
 
-		// if(unit.props.domain === 'sea' && tile.props.domain === 'land'){
-		// 	let cargoUnit = unit.getCargoUnit();
-		// 	if(cargoUnit !== null && cargoUnit.movesLeft > 0){
-		// 		//this is so dirty...
-		// 		cargoUnit.makeMove(unit.position);
-		// 		cargoUnit.movesLeft = cargoUnit.props.moves;
-		// 		UnitController.instance.select(cargoUnit);
-		// 	}
+		//unboard
+		if(unit.props.domain === 'sea' && tile.props.domain === 'land' && unit.tile.isNextToOrDiagonal(tile)){
+			for(let cargo of unit.cargo){			
+				if(cargo !== null && cargo.movesLeft > 0){
+					UnitController.instance.select(cargo);
+					InputContext.instance.switch(InputContext.UNLOAD);
+				}
+			}
 
-		// 	return;
-		// }
+			return;
+		}
 
-		// if(unit.props.domain === 'land' && tile.props.domain === 'sea'){
-		// 	for(let u of tile.units){
-		// 		if(u.canLoad()){
-		// 			unit.becomeCargo(u);
-		// 			unit.movesLeft--;
-		// 		}
-		// 	}
-		// }
+		//board ship
+		if(unit.props.domain === 'land' && tile.props.domain === 'sea' && unit.tile.isNextToOrDiagonal(tile)){
+			for(let ship of tile.units){
+				if(ship.canLoad()){
+					unit.boarding = new BoardShipAction({
+						unit: unit,
+						ship: ship
+					});
+					this.selectNext();
+				}
+			}
+		}
 	}
 
 

@@ -129,9 +129,17 @@ class Unit{
 		this.tile = this.map.getTileInfo(this.position);
 		this.tile.enter(this);
 
-		this.movesLeft -= this.tile.movementCost(from);
-		if(this.movesLeft < 0)
-			this.movesLeft = 0;
+		for(let cargo of this.cargo){
+			if(cargo && cargo.makeMove){
+				cargo.makeMove(to);
+			}
+		}
+
+		if(!this.isCargo){		
+			this.movesLeft -= this.tile.movementCost(from);
+			if(this.movesLeft < 0)
+				this.movesLeft = 0;
+		}
 
 		this.uncoverMap();
 	}

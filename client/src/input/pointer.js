@@ -25,7 +25,7 @@ class PointerInput{
 		if(this.timeoutId)
 			clearTimeout(this.timeoutId);
 
-		if(InputContext.instance.context === InputContext.UNIT){		
+		if(InputContext.instance.context === InputContext.UNIT || InputContext.instance.context === InputContext.CARGO){		
 			this.timeoutId = setTimeout(() => {
 				this.inputStartHold();
 			}, this.holdTimeThreshold);

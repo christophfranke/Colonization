@@ -39,6 +39,7 @@ InputContext.MAP = 1;
 InputContext.UNIT = 2;
 InputContext.COLONY = 3;
 InputContext.MODAL = 4;
+InputContext.UNLOAD = 5;
 
 
 export default InputContext;
