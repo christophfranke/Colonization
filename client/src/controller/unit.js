@@ -43,11 +43,17 @@ class UnitController{
 			let unit = this.unitQueue[this.currentUnit];
 			if(unit.movesLeft > 0 && !unit.isCargo){
 				if(unit.hasCommands()){
-					unit.executeCommand();
-					if(unit.completedCommand && unit.movesLeft > 0){
-						this.select(unit);
-						return;
-					}
+					this.followUnit(unit);
+					setTimeout(() => {					
+						unit.executeCommand();
+						if(unit.completedCommand && unit.movesLeft > 0){
+							this.select(unit);
+						}
+						else{
+							this.selectNext();	
+						}
+					}, this.autoSelectTimeout);
+					return;
 				}
 				else{
 					setTimeout(() => {

@@ -1,5 +1,3 @@
-import UnitController from 'src/controller/unit.js';
-
 
 
 class MoveCommand{
@@ -30,7 +28,6 @@ class MoveCommand{
 		}
 		while(this.unit.movesLeft > 0){
 			let position = this.path.pop().position;
-			UnitController.instance.followUnit(this.unit);
 			this.unit.makeMove(position);
 
 			if(this.path.length === 0){
