@@ -570,13 +570,13 @@ class MapView{
 					let mod = this.getForestTileModifier(up.mountains, right.mountains, down.mountains, left.mountains);
 					topTiles.push(Terrain.mountains.singleTile + mod);
 				}
-				if(center.riverLarge){
-					let mod = this.getForestTileModifier(up.riverLarge, right.riverLarge, down.riverLarge, left.riverLarge);
-					topTiles.push(Terrain['large river'].singleTile + mod);
-				}
 				if(center.riverSmall){
 					let mod = this.getForestTileModifier(up.riverSmall, right.riverSmall, down.riverSmall, left.riverSmall);
 					topTiles.push(Terrain['small river'].singleTile + mod);
+				}
+				if(center.riverLarge){
+					let mod = this.getForestTileModifier(up.riverLarge, right.riverLarge, down.riverLarge, left.riverLarge);
+					topTiles.push(Terrain['large river'].singleTile + mod);
 				}
 				if(center.forest){
 					let mod = this.getForestTileModifier(up.forest, right.forest, down.forest, left.forest);
