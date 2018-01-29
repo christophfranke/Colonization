@@ -43,6 +43,8 @@ class DebugView {
 					context = 'Colony';
 				if(context === InputContext.MODAL)
 					context = 'modal';
+				if(context === InputContext.UNLOAD)
+					context = 'unload';
 				if(typeof window.performance.memory !== 'undefined'){
 					memoryUsage = window.performance.memory.usedJSHeapSize / (1000*1000);
 					memoryLimit = window.performance.memory.jsHeapSizeLimit / (1000*1000);
