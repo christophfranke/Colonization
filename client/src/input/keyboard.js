@@ -51,7 +51,7 @@ class KeyboardInput {
 					UnitController.instance.selectNext();
 				}
 
-				if(e.key === 's'){
+				if(e.key === 's' || e.key === 'f'){
 					UnitController.instance.selectedUnit.issueCommand(new SleepCommand());
 					UnitController.instance.selectNext();
 				}
