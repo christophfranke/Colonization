@@ -15,7 +15,6 @@ class PathFinder{
 		this.graph.sea = new Graph();
 
 		for(let domain of ['land', 'sea']){
-			console.log(domain);
 
 			for(let index=0; index < this.map.numTiles.total; index++){
 				let center = this.map.tiles[index];

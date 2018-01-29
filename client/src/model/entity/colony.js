@@ -1,5 +1,6 @@
 import Places from 'data/places.json';
 import Resources from 'data/resources.json';
+import Yield from 'data/yield.json';
 
 import ColonyView from 'src/view/colony/colonyView.js';
 import ColonyController from 'src/controller/colony.js';
@@ -47,12 +48,29 @@ class Colony{
 		}
 	}
 
+	centerTileProduction(){
+		let production = [];
+		let tile = this.map.getTileInfo(this.position);
+		for(let key in Yield[tile.terrainName()].colony){
+			production.push({
+				resource: key,
+				amount: Yield[tile.terrainName()].colony[key]
+			});
+		}
+
+		return production;
+	}
+
 	produce(){
 		for(let colonist of this.colonists){
 			if(colonist.production){
 				let resource = colonist.production.resource;
 				this.storage[resource] += colonist.production.tile.yield(colonist, resource);
 			}
+		}
+		let production = this.centerTileProduction();
+		for(let obj of production){
+			this.storage[obj.resource] += obj.amount;
 		}
 		this.colonyView.storageView.update();
 	}
