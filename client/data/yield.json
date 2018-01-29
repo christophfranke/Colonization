@@ -6,8 +6,12 @@
 			}
 		},
 		"colony":{
-			"food": 0,
-			"ore": 0
+			"food":{
+				"base": 0
+			},
+			"cotton":{
+				"base": 0
+			}
 		}
 	},
 	"desert":{
@@ -30,6 +34,17 @@
 				"road": "+1",
 				"river": "+1",
 				"expert": "*2"
+			}
+		},
+		"colony":{
+			"food":{
+				"base": 2,
+				"plowed": "+1",
+				"river": "+1",
+				"resource":"+3"
+			},
+			"cotton":{
+				"base": 1
 			}
 		}
 	},
@@ -65,6 +80,15 @@
 				"river": "+1",		
 				"expert": "*2"
 			}
+		},
+		"colony":{
+			"food":{
+				"base": 2,
+				"river": "+1"
+			},
+			"furs":{
+				"base": 2
+			}
 		}
 	},
 	"grassland":{
@@ -81,6 +105,16 @@
 				"river": "+1",
 				"resource":"*2",
 				"expert": "*2"
+			}
+		},
+		"colony":{
+			"food":{
+				"base": 3,
+				"plowed": "+1",
+				"river": "+1"
+			},
+			"tobacco":{
+				"base": 3
 			}
 		}
 	},
@@ -108,6 +142,15 @@
 				"river": "+2",
 				"resource": "+4",			
 				"expert": "*2"
+			}
+		},
+		"colony":{
+			"food":{
+				"base": 2,
+				"river": "+1"
+			},
+			"furs":{
+				"base": 2
 			}
 		}
 	},
