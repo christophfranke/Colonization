@@ -27,11 +27,11 @@ class DebugView {
 	render(){
 		if(this.debug){		
 			if(this.currentFrame === this.skipFrames){
-				let spritesPerTile = Math.round(100*SpriteRenderer.instance.spriteCount / SpriteRenderer.instance.tileCount) / 100;
+				let spriteCount = SpriteRenderer.instance.display.total;
+				let spritesPerTile = Math.round(100*spriteCount / SpriteRenderer.instance.tileCount) / 100;
 				let memoryUsage = 'n/a';
 				let memoryLimit = 'n/a';
 				let memoryPercentage = 'n/a';
-				let spriteCount = SpriteRenderer.instance.display.total;
 				let context = InputContext.instance.context;
 				if(context === InputContext.NONE)
 					context = 'None';
@@ -50,7 +50,7 @@ class DebugView {
 				}
 				game.debug.start(20, 20, 'white');
 				game.debug.line(game.time.fps + ' fps');
-				game.debug.line(spriteCount + '/' + SpriteRenderer.instance.spriteCount + ' sprites');
+				game.debug.line(spriteCount + ' sprites');
 				game.debug.line(SpriteRenderer.instance.tileCount + ' tiles');
 				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
 				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
