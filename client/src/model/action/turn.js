@@ -26,6 +26,7 @@ class Turn{
 		}
 
 		//done.
+		UnitController.instance.newTurn();
 		UnitController.instance.selectNext();
 	}
 }

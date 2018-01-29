@@ -50,31 +50,14 @@ class Unit{
 	}
 
 
-	getCargoUnit(){
-		for(let c of this.cargo){
-			if(c !== null)
-				return c;
-		}
-
-		return null;
-	}
-
-	becomeCargo(unit){
-		this.isCargo = true;
-		this.carryingUnit = unit;
-		this.view.hide();
-
-		unit.addCargo(this);
-
-		UnitController.instance.selectNext();
-	}
-
-	stopBeingCargo(){
-		if(this.isCargo){
-			this.isCargo = false;
-			this.carryingUnit.removeCargo(this);
-			this.carryingUnit = null;
-			this.view.show();
+	orderFoundColony(){
+		if(this.props.canFound){
+			new Colony({
+				position: this.position,
+				founder: this
+			});
+			this.movesLeft = 0;
+			this.disband();
 		}
 	}
 
@@ -93,18 +76,6 @@ class Unit{
 	}
 
 
-	orderFoundColony(){
-		if(this.props.canFound){
-			new Colony({
-				position: this.position,
-				founder: this
-			});
-			this.movesLeft = 0;
-			UnitController.instance.selectNext();
-			this.disband();
-		}
-	}
-
 	issueCommand(command){
 		command.unit = this;
 		this.commands.push(command);
@@ -116,6 +87,10 @@ class Unit{
 	}
 
 	clearCommands(){
+		for(let command of this.commands){
+			if(command.cancel)
+				command.cancel();
+		}
 		this.commands = [];
 	}
 
@@ -124,8 +99,10 @@ class Unit{
 	}
 
 	executeCommand(){
-		if(this.hasCommands())
-			this.commands[0].execute();
+		if(this.hasCommands()){
+			if(this.commands[0].execute)
+				this.commands[0].execute();
+		}
 	}
 
 	hasCommands(){
@@ -134,7 +111,8 @@ class Unit{
 
 	endTurnCommand(){
 		if(this.hasCommands()){
-			this.commands[0].endTurn();
+			if(this.commands[0].endTurn)
+				this.commands[0].endTurn();
 		}
 	}
 
@@ -150,8 +128,6 @@ class Unit{
 		this.movesLeft -= this.tileInfo.movementCost(from);
 		if(this.movesLeft < 0)
 			this.movesLeft = 0;
-
-		this.stopBeingCargo();
 
 		this.uncoverMap();
 	}

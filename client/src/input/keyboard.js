@@ -43,7 +43,8 @@ class KeyboardInput {
 
 			if(e.key === 'w'){
 				if(UnitController.instance.selectedUnit !== null){
-					UnitController.instance.selectedUnit.selectNext();
+					UnitController.instance.unitQueue.push(UnitController.instance.selectedUnit);
+					UnitController.instance.selectNext();
 				}
 			}
 

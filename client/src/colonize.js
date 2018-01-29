@@ -83,20 +83,20 @@ class Colonize{
         new Unit({
             name: 'pioneer',
             position: new Position({
-                x: 138,
-                y: 131,
+                x: 133,
+                y: 127,
                 type: Position.TILE
             })
-        }).becomeCargo(caravel);
+        });
         
         new Unit({
             name: 'scout',
             position: new Position({
-                x: 138,
-                y: 131,
+                x: 132,
+                y: 127,
                 type: Position.TILE
             })
-        }).becomeCargo(caravel);
+        });
 
         new Unit({
             name: 'settler',

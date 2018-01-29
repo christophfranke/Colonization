@@ -11,6 +11,8 @@ class UnitController{
 
 		this.selectedUnit = null;
 		this.units = [];
+
+		this.newTurn();
 	}
 
 	followUnit(unit){
@@ -30,17 +32,29 @@ class UnitController{
 		this.select(unit);
 	}
 
-	selectNext(){
-		for(let unit of this.units){
-			if(unit.movesLeft > 0 && !unit.hasCommands() && !unit.isCargo){
-				setTimeout(() => {
-					this.select(unit);
-				}, this.autoSelectTimeout);
-				this.followUnit(unit);
-				InputContext.instance.switch(InputContext.NONE);
+	newTurn(){
+		this.unitQueue = this.units.slice();
+		this.currentUnit = -1;
+	}
 
-				return;
+	selectNext(){
+		this.currentUnit++;
+		while(this.unitQueue[this.currentUnit]){
+			let unit = this.unitQueue[this.currentUnit];
+			if(unit.movesLeft > 0 && !unit.isCargo){
+				if(unit.hasCommands()){
+					unit.executeCommand();
+				}
+				else{				
+					setTimeout(() => {
+						this.select(unit);
+					}, this.autoSelectTimeout);
+					this.followUnit(unit);
+					InputContext.instance.switch(InputContext.NONE);
+					return;
+				}
 			}
+			this.currentUnit++;
 		}
 
 		//no unit found: switch back to last Context
@@ -84,10 +98,15 @@ class UnitController{
 	removeUnit(unit){
 		let index = this.units.indexOf(unit);
 		this.units.splice(index, 1);
+		index = this.unitQueue.indexOf(unit);
+		this.unitQueue.splice(index, 1);
+		if(index <= this.currentUnit)
+			this.currentUnit--;
 	}
 
 	addUnit(unit){
 		this.units.push(unit);
+		this.unitQueue.push(unit);
 	}
 
 	orderMove(to){
@@ -115,26 +134,26 @@ class UnitController{
 			return;
 		}
 
-		if(unit.props.domain === 'sea' && tile.props.domain === 'land'){
-			let cargoUnit = unit.getCargoUnit();
-			if(cargoUnit !== null && cargoUnit.movesLeft > 0){
-				//this is so dirty...
-				cargoUnit.makeMove(unit.position);
-				cargoUnit.movesLeft = cargoUnit.props.moves;
-				UnitController.instance.select(cargoUnit);
-			}
+		// if(unit.props.domain === 'sea' && tile.props.domain === 'land'){
+		// 	let cargoUnit = unit.getCargoUnit();
+		// 	if(cargoUnit !== null && cargoUnit.movesLeft > 0){
+		// 		//this is so dirty...
+		// 		cargoUnit.makeMove(unit.position);
+		// 		cargoUnit.movesLeft = cargoUnit.props.moves;
+		// 		UnitController.instance.select(cargoUnit);
+		// 	}
 
-			return;
-		}
+		// 	return;
+		// }
 
-		if(unit.props.domain === 'land' && tile.props.domain === 'sea'){
-			for(let u of tile.units){
-				if(u.canLoad()){
-					unit.becomeCargo(u);
-					unit.movesLeft--;
-				}
-			}
-		}
+		// if(unit.props.domain === 'land' && tile.props.domain === 'sea'){
+		// 	for(let u of tile.units){
+		// 		if(u.canLoad()){
+		// 			unit.becomeCargo(u);
+		// 			unit.movesLeft--;
+		// 		}
+		// 	}
+		// }
 	}
 
 
