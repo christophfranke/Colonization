@@ -70,12 +70,13 @@
 		"id": 317,
 		"singleTile": 317
 	},
+	"mountains":{
+		"id": 313
+	},
 	"mountainsPeak":{
-		"id": 313,
 		"singleTile": 313
 	},
 	"mountainsBase":{
-		"id": 313,
 		"singleTile": 441,
 		"blending": "overlay"
 	},

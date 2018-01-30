@@ -1,3 +1,4 @@
+import PIXI from 'pixi';
 import Phaser from 'phaser';
 
 import Settings from 'src/utils/settings.js';
@@ -110,13 +111,14 @@ class SpriteRenderer {
 
 	createSprites(indices, parent){
 		for(let index of indices){
+			let blendMode = index > 0 ? PIXI.blendModes.NORMAL : PIXI.blendModes.OVERLAY;
 			game.add.sprite(
 				0,
 				0,
 				'mapSheet',
-				index - 1,
+				Math.abs(index) - 1,
 				parent
-			);
+			).blendMode = blendMode;
 		}
 	}
 

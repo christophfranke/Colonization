@@ -1,3 +1,4 @@
+
 import Terrain from 'data/terrain.json';
 
 import Settings from 'src/utils/settings.js';
@@ -89,56 +90,6 @@ class MapView{
 		}
 	}
 
-	decideBlending(center, other, offset){
-
-		//do not crash if map has errors or we are at the border
-		if(!center || !other)
-			return 0;
-
-		//blending for sea
-		if(center.props.domain === 'sea'){
-
-			if(!center.discovered && other.discovered){
-				return center.props.centerTile + offset;
-			}
-
-			if(center.discovered && other.discovered && other.props.domain === 'land'){
-				return other.props.centerTile + offset;
-			}
-
-			return 0;
-		}
-
-		//undiscovered but next to discovered terrain
-		if(!center.discovered && other.discovered){
-
-			//next to sea tiles blend own terrain type into center
-			if(other.props.domain === 'sea'){
-				return center.props.centerTile + offset;
-			}
-
-			//next to land blend other terrain into center
-			if(other.props.domain === 'land'){
-				return other.props.centerTile + offset;
-			}
-		}
-
-		//both discovered
-		if(center.discovered && other.discovered){
-			//blend between land
-			if(other.props.domain === 'land'){
-				if(other.props.id !== center.props.id)
-					return other.props.centerTile + offset;
-			}
-
-			//blend between coast
-			if(other.props.domain === 'sea' && other.coastTerrain)
-				return other.coastTerrain.centerTile + offset;
-		}
-
-		return 0;
-	}
-
 	renderBaseBlock(center){
 		let indices = [];
 
@@ -174,19 +125,16 @@ class MapView{
 		return indices;
 	}
 
-	centerTileMod(x, y){
-		return Settings.tiles.x*y+x;
-	}
 
-	decideLandSeaTile(center, tileInfo){
+	decideLandSeaTile(center, other){
 		// on land always take land
 		if(center.props.domain === 'land'){
 			//either from land
-			if(tileInfo.props.domain === 'land')
-				return tileInfo.props.centerTile;
+			if(other.props.domain === 'land')
+				return other.props.centerTile;
 			//or from coast
-			if(tileInfo.props.domain === 'sea' && tileInfo.coastTerrain)
-				return tileInfo.coastTerrain.centerTile;
+			if(other.props.domain === 'sea' && other.coastTerrain)
+				return other.coastTerrain.centerTile;
 			//or from self
 			return center.props.centerTile;
 		}
@@ -194,11 +142,11 @@ class MapView{
 		// coast wants land from everybody
 		if(center.props.domain === 'sea' && center.coastTerrain){
 			//take land from land tile
-			if(tileInfo.props.domain === 'land')
-				return tileInfo.props.centerTile;
+			if(other.props.domain === 'land')
+				return other.props.centerTile;
 			//or from coast terrain
-			if(tileInfo.coastTerrain)
-				return tileInfo.coastTerrain.centerTile;
+			if(other.coastTerrain)
+				return other.coastTerrain.centerTile;
 			//or from self
 			return center.props.centerTile;
 		}
@@ -206,20 +154,20 @@ class MapView{
 		// sea always wants sea
 		if(center.props.domain === 'sea' && !center.coastTerrain){
 			//take sea tile
-			if(tileInfo.props.domain === 'sea'){
+			if(other.props.domain === 'sea'){
 				//either coastal
-				if(tileInfo.isCoastalSea || tileInfo.coastTerrain)
+				if(other.isCoastalSea || other.coastTerrain)
 					return Terrain['coastal sea'].centerTile;
 				//or deep sea
-				return tileInfo.props.centerTile;
+				return other.props.centerTile;
 			}
 			//from land tiles take coastal sea
 			return Terrain['coastal sea'].centerTile;			
 		}
 	}
 
-	getTileIndex(tileInfo, x, y, center){
-		return this.decideLandSeaTile(center, tileInfo) + this.centerTileMod(x, y);
+	getTileIndex(other, x, y, center){
+		return this.decideLandSeaTile(center, other) + Settings.tiles.x*y+x;
 	}
 
 	renderUndiscovered(center){
@@ -568,7 +516,8 @@ class MapView{
 				}
 				if(center.mountains){
 					let mod = this.getForestTileModifier(up.mountains, right.mountains, down.mountains, left.mountains);
-					topTiles.push(Terrain.mountains.singleTile + mod);
+					topTiles.push(-(Terrain.mountainsBase.singleTile + mod));
+					topTiles.push(Terrain.mountainsPeak.singleTile + mod);
 				}
 				if(center.riverSmall){
 					let mod = this.getForestTileModifier(up.riverSmall, right.riverSmall, down.riverSmall, left.riverSmall);
