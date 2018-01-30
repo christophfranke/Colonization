@@ -1,4 +1,5 @@
 import Settings from 'data/settings.json';
+import Times from 'data/times.json';
 
 import Phaser from 'phaser';
 
@@ -6,8 +7,9 @@ import Phaser from 'phaser';
 class UnitView{
 	constructor(props){
 		this.id = props.id;
-		this.position = props.position.getWorld();
-		this.movementTweenTime = 100;
+		this.unit = props.unit;
+
+		this.position = props.unit.position.getWorld();
 		this.tweens = {};
 
 		if(typeof UnitView.layer === 'undefined')
@@ -47,7 +49,16 @@ class UnitView{
 		this.sprite.visible = true;
 	}
 
-	moveTo(position){
+	moveTo(position, cost){
+		if(!cost)
+			cost = 1;
+
+		let factor = Math.min(cost / this.unit.props.moves, 1);
+		let tweenTime = factor * Times.moveUnit.base;
+		if(tweenTime < Times.moveUnit.min)
+			tweenTime = Times.moveUnit.min;
+		if(tweenTime > Times.moveUnit.max)
+			tweenTime = Times.moveUnit.max;
 		return new Promise((resolve) => {
 			this.position = position.getWorld();
 
@@ -55,7 +66,7 @@ class UnitView{
 					x: this.position.x,
 					y: this.position.y
 				},
-				this.movementTweenTime,
+				tweenTime,
 				Phaser.Easing.Linear.None,
 				true,
 				0,

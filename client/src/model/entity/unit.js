@@ -21,7 +21,7 @@ class Unit{
 
 		this.view = new UnitView({
 			id: this.props.id,
-			position: this.position
+			unit: this
 		});
 
 		this.view.sprite.inputEnabled = true;
@@ -108,12 +108,14 @@ class Unit{
 
 	makeMove(to){
 		this.tile.leave(this);
-		this.position = to.getTile();
-		let promise = this.view.moveTo(this.position);
-
 		let from = this.tile;
+
+		this.position = to.getTile();
 		this.tile = this.map.getTileInfo(this.position);
 		this.tile.enter(this);
+
+		let cost = this.tile.movementCost(from);
+		let promise = this.view.moveTo(this.position, cost);
 
 		for(let cargo of this.cargo){
 			if(cargo && cargo.makeMove){
@@ -124,7 +126,7 @@ class Unit{
 		}
 
 		if(!this.isCargo){		
-			this.movesLeft -= this.tile.movementCost(from);
+			this.movesLeft -= cost;
 			if(this.movesLeft < 0)
 				this.movesLeft = 0;
 		}

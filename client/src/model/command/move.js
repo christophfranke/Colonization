@@ -1,4 +1,5 @@
 
+import UnitController from 'src/controller/unit.js';
 
 class MoveCommand{
 	constructor(props){
@@ -19,13 +20,18 @@ class MoveCommand{
 		let promise = Promise.resolve();
 		for(let i=0; i < this.path.length; i++){
 			promise = promise.then(() => {
-
 				if(this.unit.movesLeft > 0 && this.path.length > 0){					
 					let position = this.path.pop().position;
 					if(this.path.length === 0){
 						this.unit.finalizeCommand();
 					}
-					return this.unit.makeMove(position);
+					return new Promise((resolve) => {
+						UnitController.instance.followUnit(this.unit).then(() => {
+							this.unit.makeMove(position).then(()=>{
+								resolve();
+							});
+						});
+					});
 				}
 				else
 					return Promise.resolve();

@@ -61,7 +61,7 @@ class MapTile {
 		this.coast = false;
 
 
-		this.discovered = false;
+		this.discovered = true;
 		this.used = false;
 
 
@@ -107,7 +107,7 @@ class MapTile {
 		if(from === this)
 			return 0;
 
-		if(from.domain === 'land' && from.river && this.river && this.isNextTo(from)){
+		if(from.props.domain === 'land' && from.river && this.river && this.isNextTo(from)){
 			return 0.334;
 		}
 
@@ -122,7 +122,7 @@ class MapTile {
 		let pos2 = other.position.getTile();
 
 		//next to each other but not diagonal
-		return Math.abs(pos1.x-pos2.x) + Math.abs(pos1.y-pos2.y) <= 1;
+		return Math.abs(pos1.x-pos2.x) + Math.abs(pos1.y-pos2.y) <= 1.1;
 	}
 
 	isNextToOrDiagonal(other){
@@ -130,7 +130,7 @@ class MapTile {
 		let pos2 = other.position.getTile();
 
 		//next to each other but not diagonal
-		return Math.abs(pos1.x-pos2.x) <= 1 && Math.abs(pos1.y-pos2.y) <= 1;
+		return Math.abs(pos1.x-pos2.x) <= 1.1 && Math.abs(pos1.y-pos2.y) <= 1.1;
 	}
 
 	applyModifier(base, name, type, where){

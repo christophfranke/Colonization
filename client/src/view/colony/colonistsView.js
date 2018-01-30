@@ -56,7 +56,7 @@ class ColonistsView {
 			if((tile === oldTile) ||
 				tile.yield(colonist, colonist.production.resource) === 0
 			){
-				let choices = tile.ressourceProduction(colonist);
+				let choices = tile.resourceProduction(colonist);
 				for(let choice of choices)
 					choice.type = 'resource';
 

@@ -30,7 +30,7 @@ class ColonyView {
         this.position = props.colony.position;
         this.tileSprite = new TileSprite({
             id: props.id,
-            position: this.position
+            unit: this
         });
 
         this.tileSprite.sprite.inputEnabled = true;

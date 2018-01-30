@@ -50,21 +50,18 @@ class UnitController{
 			if(unit.movesLeft > 0 && !unit.isCargo){
 				//automatic movement
 				if(unit.hasCommands()){
-					return new Promise((resolve) => {						
-						this.followUnit(unit)
-						.then(()=>{
-							return unit.executeCommand().then(()=>{
-								if(unit.completedCommand && unit.movesLeft > 0){
-									this.select(unit);
-									return Promise.resolve();
-								}
-								else{
-									this.currentUnit++;
-									return this.selectNext();	
-								}
-							});
-						}).then(() => {
-							resolve();
+					return new Promise((resolve) => {
+						return unit.executeCommand().then(()=>{
+							if(unit.completedCommand && unit.movesLeft > 0){
+								this.select(unit);
+								resolve();
+							}
+							else{
+								this.currentUnit++;
+								return this.selectNext().then(() =>{
+									resolve();
+								});
+							}
 						});
 					});
 				}

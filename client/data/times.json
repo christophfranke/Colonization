@@ -1,0 +1,13 @@
+{
+	"mapCenterTweenTime": {
+		"0.5": 300,
+		"2": 650,
+		"5": 1100,
+		"default": 2000
+	},
+	"moveUnit": {
+		"min": 75,
+		"max": 250,
+		"base": 500
+	}
+}
