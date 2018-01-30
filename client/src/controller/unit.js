@@ -1,6 +1,12 @@
+import Options from 'data/options.json';
+
 import InputContext from 'src/input/context.js';
 import MoveCommand from 'src/model/command/move.js';
 import BoardShipAction from 'src/model/action/boardShip.js';
+import Unit from "src/model/entity/unit.js";
+import FoundColonyCommand from "src/model/command/foundColony.js";
+
+import Position from 'src/utils/position.js';
 
 import MapController from './map.js';
 
@@ -15,6 +21,30 @@ class UnitController{
 		this.units = [];
 
 		this.newTurn();
+	}
+
+	create(){
+        for(let unit of Options.units){
+            new Unit({
+            	name: unit.name,
+            	position: new Position({
+            		x: unit.position.x,
+            		y: unit.position.y,
+            		type: Position.TILE
+            	})
+            });
+        }
+
+        for(let colony of Options.colonies){
+            new Unit({
+            	name: 'settler',
+            	position: new Position({
+            		x: colony.position.x,
+            		y: colony.position.y,
+            		type: Position.TILE
+            	})
+            }).issueCommand(new FoundColonyCommand());
+        }	
 	}
 
 	followUnit(unit){

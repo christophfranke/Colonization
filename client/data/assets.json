@@ -1,0 +1,46 @@
+{
+	"americaLarge": {
+		"url": "/assets/maps/america-large.json",
+		"type": "JSON"
+	},
+	"americaSmall": {
+		"url": "/assets/maps/test-05.json",
+		"type": "JSON"
+	},
+	"mapTiles": {
+		"url": "/assets/tilesets/map.png",
+		"type": "Image"
+	},
+	"colonyTiles": {
+		"url": "/assets/tilesets/colony.png",
+		"type": "Image"
+	},
+	"colonyData": {
+		"url": "/assets/screens/colony-01.json",
+		"type": "JSON"
+	},
+	"colonyScreen": {
+		"url": "/assets/screens/colony.png",
+		"type": "Image"
+	},
+	"undiscovered": {
+		"url": "/assets/screens/undiscovered.jpg",
+		"type": "Image"
+	},
+	"mapSheet": {
+		"url": "/assets/tilesets/map.png",
+		"type": "SpriteSheet",
+		"tileSize": {
+			"x": 64,
+			"y": 64
+		}
+	},
+	"uiSheet": {
+		"url": "/assets/tilesets/ui.png",
+		"type": "SpriteSheet",
+		"tileSize": {
+			"x": 128,
+			"y": 128
+		}
+	}
+}

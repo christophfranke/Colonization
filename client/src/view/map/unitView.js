@@ -1,7 +1,8 @@
-import Settings from 'data/settings.json';
 import Times from 'data/times.json';
 
 import Phaser from 'phaser';
+
+import Settings from 'src/utils/settings.js';
 
 
 class UnitView{
@@ -20,7 +21,7 @@ class UnitView{
 	}
 
 	cropRect(){
-		let x = ((this.id - Settings.firstgid) % Settings.tiles.x) * Settings.tileSize.x;
+		let x = ((this.id - 1) % Settings.tiles.x) * Settings.tileSize.x;
 		let y = Math.floor(this.id / Settings.tiles.x) * Settings.tileSize.y;
 		let width = Settings.tileSize.x;
 		let height = Settings.tileSize.y;

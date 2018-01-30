@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
-import Settings from 'data/settings.json';
-
+import Settings from 'src/utils/settings.js';
 import Position from 'src/utils/position.js';
 
 import TileCache from './tileCache.js';

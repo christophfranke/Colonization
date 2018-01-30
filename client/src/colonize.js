@@ -2,9 +2,7 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
 
-import Unit from './model/entity/unit.js';
 import MapController from './controller/map.js';
-import Position from './utils/position.js';
 import KeyboardInput from './input/keyboard.js';
 import PointerInput from './input/pointer.js';
 import DebugView from './view/common/debugView.js';
@@ -15,7 +13,6 @@ import InputContext from 'src/input/context.js';
 import UnitController from 'src/controller/unit.js';
 import ColonyController from 'src/controller/colony.js';
 import CameraController from 'src/controller/camera.js';
-import FoundColonyCommand from 'src/model/command/foundColony.js';
 
 
 class Colonize{
@@ -57,7 +54,9 @@ class Colonize{
     create() {
         // TODO: this should work
         // Colonize.game.camera.scale.x = 0.8;
-        // Colonize.game.camera.scale.y = 0.8;      
+        // Colonize.game.camera.scale.y = 0.8;
+
+        Loader.instance.create();
 
 
         //create and register
@@ -68,46 +67,9 @@ class Colonize{
         });
 
         MapController.instance.create();
+        UnitController.instance.create();
+
         DebugView.instance.create();
-
-
-        let caravel = new Unit({
-    		name: 'caravel',
-    		position: new Position({
-    			x: 138,
-    			y: 131,
-    			type: Position.TILE
-    		})
-    	});
-
-        new Unit({
-            name: 'pioneer',
-            position: new Position({
-                x: 133,
-                y: 127,
-                type: Position.TILE
-            })
-        });
-        
-        new Unit({
-            name: 'scout',
-            position: new Position({
-                x: 132,
-                y: 127,
-                type: Position.TILE
-            })
-        });
-
-        new Unit({
-            name: 'settler',
-            position: new Position({
-                x: 133,
-                y: 126, 
-                type: Position.TILE
-            })
-        }).issueCommand(new FoundColonyCommand());
-
-        UnitController.instance.select(caravel);
     }
 
     update() {

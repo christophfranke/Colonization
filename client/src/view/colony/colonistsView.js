@@ -19,6 +19,7 @@ class ColonistsView {
 			y: 141,
 			type: Position.WORLD
 		});
+		
 		for(let colonist of this.colonists){
 			let newSprite = new Phaser.Sprite(
 				game,

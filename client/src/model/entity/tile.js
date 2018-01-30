@@ -2,6 +2,7 @@ import Terrain from 'data/terrain.json';
 import Terrain2 from 'data/terrain2.json';
 import Yield from 'data/yield.json';
 import Resources from 'data/resources.json';
+import Options from 'data/options.json';
 
 import Position from 'src/utils/position.js';
 
@@ -61,7 +62,7 @@ class MapTile {
 		this.coast = false;
 
 
-		this.discovered = true;
+		this.discovered = Options.discovered;
 		this.used = false;
 
 

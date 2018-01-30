@@ -1,9 +1,10 @@
-import Settings from '../../data/settings.json';
-
 import Phaser from 'phaser';
 import PIXI from 'pixi';
 
+import Settings from 'src/utils/settings.js';
+
 import SpriteRenderer from './spriteRenderer.js';
+
 
 class TileCache{
 

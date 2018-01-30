@@ -1,8 +1,8 @@
-import Settings from 'data/settings.json';
 import Places from 'data/places.json';
 
 import Phaser from 'phaser';
 
+import Settings from 'src/utils/settings.js';
 import MapView from 'src/view/map/mapView.js';
 import Position from 'src/utils/position.js';
 import ProductionView from 'src/view/colony/productionView.js';

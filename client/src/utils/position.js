@@ -1,4 +1,4 @@
-import Settings from '../../data/settings.json';
+import Settings from 'src/utils/settings.js';
 
 
 class Position{

@@ -1,6 +1,6 @@
-import Settings from 'data/settings.json';
 import Terrain from 'data/terrain.json';
 
+import Settings from 'src/utils/settings.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 import Position from 'src/utils/position.js';
 import MapTileView from 'src/view/common/mapTileView.js';
