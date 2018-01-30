@@ -512,7 +512,8 @@ class MapView{
 			if(left && right && up && down){			
 				if(center.hills){
 					let mod = this.getForestTileModifier(up.hills, right.hills, down.hills, left.hills);
-					topTiles.push(Terrain.hills.singleTile + mod);
+					topTiles.push(-(Terrain.hillsBase.singleTile + mod));
+					topTiles.push(Terrain.hillsPeak.singleTile + mod);
 				}
 				if(center.mountains){
 					let mod = this.getForestTileModifier(up.mountains, right.mountains, down.mountains, left.mountains);

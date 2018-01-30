@@ -67,8 +67,14 @@
 		"singleTile": 309
 	},
 	"hills":{
-		"id": 317,
+		"id": 317
+	},
+	"hillsPeak":{
 		"singleTile": 317
+	},
+	"hillsBase":{
+		"singleTile": 445,
+		"blending": "overlay"
 	},
 	"mountains":{
 		"id": 313
