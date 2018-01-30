@@ -1,6 +1,5 @@
 import Places from 'data/places.json';
 import Resources from 'data/resources.json';
-import Yield from 'data/yield.json';
 
 import ColonyView from 'src/view/colony/colonyView.js';
 import ColonyController from 'src/controller/colony.js';

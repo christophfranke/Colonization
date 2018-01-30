@@ -74,7 +74,7 @@ class PathFinder{
 		else{
 			let path = this.find(to, from, domain); //find revers
 			if(path){
-				let last = path.pop(); //remove last element (this is the current position
+				path.pop(); //remove last element (this is the current position)
 				path = path.map((index) => {
 						return this.map.tiles[index];
 					});

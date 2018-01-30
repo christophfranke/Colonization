@@ -5,8 +5,6 @@ import UnitView from 'src/view/map/unitView.js';
 import Map from 'src/model/entity/map.js';
 import UnitController from 'src/controller/unit.js';
 
-import Colony from './colony.js';
-
 
 class Unit{
 
