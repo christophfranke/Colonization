@@ -13,6 +13,7 @@ class Colony{
 		this.position = props.position.getTile();
 		this.props = Places.colony;
 		this.map = props.map || Map.instance;
+		this.tile = this.map.getTileInfo(this.position);
 
 		this.colonists = [new Colonist({
 			colony: this,
@@ -47,11 +48,6 @@ class Colony{
 		}
 	}
 
-	centerTileProduction(){
-		let tile = this.map.getTileInfo(this.position);
-		return tile.resourceProduction();
-	}
-
 	produce(){
 		for(let colonist of this.colonists){
 			if(colonist.production){
@@ -59,7 +55,7 @@ class Colony{
 				this.storage[resource] += colonist.production.tile.yield(resource, colonist);
 			}
 		}
-		let production = this.centerTileProduction();
+		let production = this.tile.resourceProduction();
 		for(let obj of production){
 			this.storage[obj.resource] += obj.amount;
 		}

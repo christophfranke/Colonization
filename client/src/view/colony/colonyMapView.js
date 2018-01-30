@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 
 import MapView from 'src/view/map/mapView.js';
 import Position from 'src/utils/position.js';
+import ProductionView from 'src/view/colony/productionView.js';
 
 
 
@@ -100,18 +101,30 @@ class ColonyMapView{
 
 	createColonySprite(position){
 		let pos = position.getWorld();
-		let newSprite = new Phaser.Sprite(
+		let colonySprite = new Phaser.Sprite(
 			game,
 			pos.x,
 			pos.y,
 			'mapSheet',
 			Places.colony.id-1
 		);
-		newSprite.scale = new Phaser.Point(this.scale, this.scale);
+		colonySprite.scale = new Phaser.Point(this.scale, this.scale);
 
-		this.layer.addChild(newSprite);
-		this.sprites.push(newSprite);
-	}
+		this.layer.addChild(colonySprite);
+		this.sprites.push(colonySprite);
+
+		this.productionViews = [];
+		let i = 0;
+		for(let production of this.colony.tile.resourceProduction()){
+			this.productionViews.push(new ProductionView({
+				parentScreen: this.layer,
+				resource: production.resource,
+				amount: production.amount,
+				x: pos.x + 64,
+				y: pos.y + 32 + 32*i
+			}));
+			i++;
+		}	}
 }
 
 export default ColonyMapView;
