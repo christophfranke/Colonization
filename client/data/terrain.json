@@ -82,7 +82,7 @@
 		"id": 369,
 		"singleTile": 369
 	},
-	"bonusRessource":{
+	"bonusResource":{
 		"id": 97,
 		"minerals": 98,
 		"wheat": 99,

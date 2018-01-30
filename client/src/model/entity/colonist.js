@@ -44,7 +44,7 @@ class Colonist{
 			this.production.resource = choice.resource;
 		}
 		if(this.productionView)
-			this.productionView.setProduction(this.production.tile.yield(this, this.production.resource), this.production.resource);
+			this.productionView.setProduction(this.production.tile.yield(this.production.resource, this), this.production.resource);
 	}
 }
 

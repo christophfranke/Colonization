@@ -56,7 +56,7 @@ class MapView{
 		tile.view.addTiles(this.renderBaseBlock(tile));
 		tile.view.addTiles(this.renderTopTiles(tile));
 		tile.view.addTiles(this.renderCoast(tile));
-		tile.view.addTiles(this.renderBonusRessources(tile));
+		tile.view.addTiles(this.renderBonusResources(tile));
 		tile.view.addTiles(this.renderUndiscovered(tile));
 
 		return tile.view;
@@ -505,7 +505,7 @@ class MapView{
 
 	}
 
-	getBonusRessourceName(tile){
+	getBonusResourceName(tile){
 		if(tile.hills)
 			return 'ore';
 		if(tile.mountains)
@@ -543,11 +543,11 @@ class MapView{
 		return 'minerals';
 	}
 
-	renderBonusRessources(center){
+	renderBonusResources(center){
 		let bonus = [];
 		if(center && center.discovered && center.bonus){
-			let ressourceName = this.getBonusRessourceName(center);
-			bonus.push(Terrain.bonusRessource[ressourceName]);
+			let resourceName = this.getBonusResourceName(center);
+			bonus.push(Terrain.bonusResource[resourceName]);
 		}
 
 		return bonus;

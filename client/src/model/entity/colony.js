@@ -49,23 +49,15 @@ class Colony{
 	}
 
 	centerTileProduction(){
-		let production = [];
 		let tile = this.map.getTileInfo(this.position);
-		for(let key in Yield[tile.terrainName()].colony){
-			production.push({
-				resource: key,
-				amount: Yield[tile.terrainName()].colony[key]
-			});
-		}
-
-		return production;
+		return tile.resourceProduction();
 	}
 
 	produce(){
 		for(let colonist of this.colonists){
 			if(colonist.production){
 				let resource = colonist.production.resource;
-				this.storage[resource] += colonist.production.tile.yield(colonist, resource);
+				this.storage[resource] += colonist.production.tile.yield(resource, colonist);
 			}
 		}
 		let production = this.centerTileProduction();

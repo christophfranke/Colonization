@@ -51,7 +51,7 @@ class MapTile {
 		if(Terrain['large river'].id === props.riverLarge)
 			this.riverLarge = true;
 
-		if(Terrain.bonusRessource.id === props.bonus)
+		if(Terrain.bonusResource.id === props.bonus)
 			this.bonus = true;
 
 		this.river = this.riverSmall || this.riverLarge;
@@ -76,21 +76,25 @@ class MapTile {
 		this.units = [];
 	}
 
-	yield(colonist, type){
-		let result = this.applyModifier(0, 'base', type);
+	yield(type, colonist){
+		let where = 'colony';
+		if(colonist)
+			where = 'field';
+
+		let result = this.applyModifier(0, 'base', type, where);
 
 		if(this.coast)
-			result = this.applyModifier(result, 'coast', type);
+			result = this.applyModifier(result, 'coast', type, where);
 		if(this.plowed)
-			result = this.applyModifier(result, 'plowed', type);
+			result = this.applyModifier(result, 'plowed', type, where);
 		if(this.river)
-			result = this.applyModifier(result, 'river', type);
+			result = this.applyModifier(result, 'river', type, where);
 		if(this.road)
-			result = this.applyModifier(result, 'road', type);
+			result = this.applyModifier(result, 'road', type, where);
 		if(this.bonus)
-			result = this.applyModifier(result, 'resource', type);
-		if(colonist.expert === type)
-			result = this.applyModifier(result, 'expert', type);
+			result = this.applyModifier(result, 'resource', type, where);
+		if(colonist && colonist.expert === type)
+			result = this.applyModifier(result, 'expert', type, where);
 
 		return result;
 	}
@@ -129,10 +133,10 @@ class MapTile {
 		return Math.abs(pos1.x-pos2.x) <= 1 && Math.abs(pos1.y-pos2.y) <= 1;
 	}
 
-	applyModifier(base, name, type){
+	applyModifier(base, name, type, where){
 		let terrainName = this.terrainName();
-		if(Yield[terrainName].field[type]){		
-			let mod = Yield[terrainName].field[type][name];
+		if(Yield[terrainName][where][type]){		
+			let mod = Yield[terrainName][where][type][name];
 			if(mod){
 				if(mod[0] === '+')
 					return base + parseFloat(mod.substr(1));
@@ -159,11 +163,11 @@ class MapTile {
 		return terrainName;
 	}
 
-	ressourceProduction(colonist){
+	resourceProduction(colonist){
 		let production = [];
 
 		for(let resource of Resources.types){
-			let amount = this.yield(colonist, resource);
+			let amount = this.yield(resource, colonist);
 			if(amount > 0)
 				production.push({resource, amount});
 		}
