@@ -1,5 +1,6 @@
 import Places from 'data/places.json';
 
+import PIXI from 'pixi';
 import Phaser from 'phaser';
 
 import Settings from 'src/utils/settings.js';
@@ -83,14 +84,16 @@ class ColonyMapView{
 		let indices = tileView.indices;
 		let pos = position.getWorld();
 		for(let index of indices){
+			let blendMode = index > 0 ? PIXI.blendModes.NORMAL : PIXI.blendModes.OVERLAY;
 			let newSprite = new Phaser.Sprite(
 				game,
 				pos.x,
 				pos.y,
 				'mapSheet',
-				index-1
+				Math.abs(index)-1
 			);
 			newSprite.scale = new Phaser.Point(this.scale, this.scale);
+			newSprite.blendMode = blendMode;
 			newSprite.smoothed = false;
 			newSprite.data.tileInfo = tileInfo;
 
