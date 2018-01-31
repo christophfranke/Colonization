@@ -77,7 +77,23 @@ class PathFinder{
 
 
 	find(from, to, unit){
-		const frontier = new FibonacciHeap();
+		const frontier = new FibonacciHeap((a, b) => {
+			//comparison by used cost
+			if(a.key !== b.key)
+				return a.key - b.key;
+
+			//comparison by actual cost
+			if(a.value.cost !== b.value.cost)
+				return a.value.cost - b.value.cost;
+
+			if(a.value.prev.value.tile.isNextTo(a.value.tile))
+				return -1;
+
+			if(b.value.prev.value.tile.isNextTo(b.value.tile))
+				return 1;
+
+			return 0;
+		});
 
 		let node = this.graph.node(from.index);
 		let explored = {};
@@ -102,10 +118,12 @@ class PathFinder{
 			}
 
 			explored[node.value.index] = true;
+			//TODO: calculate how many moves are actually left instead of assuming full moves left always
+			let movesLeft = unit.props.moves;
 			for(let neighbor of node.value.neighbors){
 				if(!explored[neighbor.index]){
 					let neighborNode = this.graph.node(neighbor.index);
-					let newCost = node.value.cost + neighbor.cost;
+					let newCost = node.value.cost + Math.min(neighbor.cost, movesLeft);
 					if(neighborNode.tile.props.domain !== unit.props.domain)
 						newCost += this.cannotMoveCost;
 
@@ -159,7 +177,6 @@ class PathFinder{
 				path.reverse();
 				path.pop(); //remove last element (this is the current position)
 
-				console.log(path);
 				return path;
 			}
 
