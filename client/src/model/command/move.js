@@ -7,7 +7,7 @@ class MoveCommand{
 		this.from = this.unit.tile;
 		this.to = props.to;
 
-		this.path = this.unit.map.path.findReverse(this.from, this.to, this.unit.props.domain);
+		this.path = this.unit.map.path.findReverse(this.from, this.to, this.unit);
 	}
 
 	execute(){
