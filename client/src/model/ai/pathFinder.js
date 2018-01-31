@@ -106,6 +106,9 @@ class PathFinder{
 				if(!explored[neighbor.index]){
 					let neighborNode = this.graph.node(neighbor.index);
 					let newCost = node.value.cost + neighbor.cost;
+					if(neighborNode.tile.props.domain !== unit.props.domain)
+						newCost += this.cannotMoveCost;
+
 					if(!inFrontier[neighbor.index]){
 						neighborNode.prev = node;
 						neighborNode.cost = newCost;
@@ -141,7 +144,7 @@ class PathFinder{
 				return [];
 		}
 		else{
-			let path = this.find(from, to, domain);
+			let path = this.find(from, to, unit);
 			if(path){
 				console.log(path);
 
