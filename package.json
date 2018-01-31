@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tyriar/fibonacci-heap": "^2.0.7",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
@@ -19,7 +20,6 @@
     "express": "^4.16.2",
     "jshint": "^2.9.5",
     "jshint-loader": "^0.8.4",
-    "node-dijkstra": "^2.5.0",
     "phaser-ce": "^2.9.4",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.0"
