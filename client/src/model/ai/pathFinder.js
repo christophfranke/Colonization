@@ -78,7 +78,7 @@ class PathFinder{
 		let target = (node) =>{
 			return node.tile.props.domain !== from.props.domain;
 		};
-		return this.find(from, target, unit);
+		return this.find(from, target, unit, null, true);
 	}
 
 
@@ -86,11 +86,17 @@ class PathFinder{
 		let target = (node) => {
 			return node.index === to.index
 		};
-		return this.find(from, target, unit);
+		return this.find(from, target, unit, to, false);
+	}
+
+	tileDistance(from, to){
+		let pos1 = from.position.getTile();
+		let pos2 = to.position.getTile();
+		return Math.max(Math.abs(pos1.x - pos2.x), Math.abs(pos1.y - pos2.y));
 	}
 
 
-	find(from, isTarget, unit){
+	find(from, isTarget, unit, target, freeDomainCross){
 		const frontier = new FibonacciHeap((a, b) => {
 			//comparison by used cost
 			if(a.key !== b.key)
@@ -100,6 +106,7 @@ class PathFinder{
 			if(a.value.cost !== b.value.cost)
 				return a.value.cost - b.value.cost;
 
+			//prefer horizontal or vertical movement to diabonals
 			if(a.value.prev.value.tile.isNextTo(a.value.tile))
 				return -1;
 
@@ -108,6 +115,13 @@ class PathFinder{
 
 			return 0;
 		});
+
+		let relativeEstimate = (tile) => {
+			if(!target)
+				return 0;
+			else
+				return this.estimate(tile, target) - this.estimate(from, target);
+		}
 
 		let node = this.graph.node(from.index);
 		let explored = {};
@@ -138,22 +152,28 @@ class PathFinder{
 				if(!explored[neighbor.index]){
 					let neighborNode = this.graph.node(neighbor.index);
 					let newCost = node.value.cost + Math.min(neighbor.cost, movesLeft);
-					if(neighborNode.tile.props.domain !== node.value.tile.props.domain)
-						newCost += this.cannotMoveCost;
+					if(neighborNode.tile.props.domain !== node.value.tile.props.domain){
+						if(freeDomainCross)
+							newCost = 0;
+						else
+							newCost += this.cannotMoveCost;
+					}
 
 
 					if(!inFrontier[neighbor.index]){
 						neighborNode.prev = node;
 						neighborNode.cost = newCost;
+						neighborNode.priority =  newCost + relativeEstimate(neighborNode.tile);
 
-						inFrontier[neighbor.index] = frontier.insert(neighborNode.cost, neighborNode);
+						inFrontier[neighbor.index] = frontier.insert(neighborNode.priority, neighborNode);
 					}
 					else{
 						if(newCost < neighborNode.cost){
 							neighborNode.prev = node;
 							neighborNode.cost = newCost;
+							neighborNode.priority = newCost + relativeEstimate(neighborNode.tile);
 
-							frontier.decreaseKey(inFrontier[neighbor.index], newCost);
+							frontier.decreaseKey(inFrontier[neighbor.index], neighborNode.priority);
 						}
 					}
 				}
@@ -166,6 +186,16 @@ class PathFinder{
 		return [from];
 	}
 
+	estimate(from, to){
+		if(from.props.domin === 'land' && to.props.domain === 'land'){
+			return 0.33 * this.tileDIstance(from, to);
+		}
+		if(from.props.domain === 'sea' && to.props.domain === 'sea'){
+			return this.tileDistance(from, to);
+		}
+
+		return 0.33* this.tileDistance(from, to) + this.cannotMoveCost;
+	}
 
 
 	findReverse(from, to, unit){
