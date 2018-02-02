@@ -7,7 +7,6 @@ class PathFinder{
 	constructor(props){
 		this.undiscoveredCost = 5;
 		this.cannotMoveCost = 500;
-		this.diagonalPenalty = 0.1;
 
 		this.map = props.map;
 		this.graph = new Graph();
@@ -75,8 +74,23 @@ class PathFinder{
 		}
 	}
 
+	findDomainChange(from, unit){
+		let target = (node) =>{
+			return node.tile.props.domain !== from.props.domain;
+		};
+		return this.find(from, target, unit);
+	}
 
-	find(from, to, unit){
+
+	findPath(from, to, unit){
+		let target = (node) => {
+			return node.index === to.index
+		};
+		return this.find(from, target, unit);
+	}
+
+
+	find(from, isTarget, unit){
 		const frontier = new FibonacciHeap((a, b) => {
 			//comparison by used cost
 			if(a.key !== b.key)
@@ -107,7 +121,7 @@ class PathFinder{
 
 			node = frontier.extractMinimum();
 			inFrontier[node.value.index] = false;
-			if(node.value.index === to.index){
+			if(isTarget(node.value)){
 				let path = [node.value.tile];
 				while(node.value.prev !== node){
 					node = node.value.prev;
@@ -124,8 +138,9 @@ class PathFinder{
 				if(!explored[neighbor.index]){
 					let neighborNode = this.graph.node(neighbor.index);
 					let newCost = node.value.cost + Math.min(neighbor.cost, movesLeft);
-					if(neighborNode.tile.props.domain !== unit.props.domain)
+					if(neighborNode.tile.props.domain !== node.value.tile.props.domain)
 						newCost += this.cannotMoveCost;
+
 
 					if(!inFrontier[neighbor.index]){
 						neighborNode.prev = node;
@@ -148,7 +163,7 @@ class PathFinder{
 		}
 
 		//no path found :(
-		return [];
+		return [from];
 	}
 
 
@@ -162,18 +177,12 @@ class PathFinder{
 				return [];
 		}
 		else{
-			let path = this.find(from, to, unit);
+			let target = to;
+			if(from.props.domain !== to.props.domain){
+				target = this.findDomainChange(to, unit).pop();
+			}
+			let path = this.findPath(from, target, unit);
 			if(path){
-				console.log(path);
-
-				let i = 0;
-				while(i < path.length){
-					if(!path[i])
-						console.log(path[i]);
-					if(path[i].props.domain !== domain)
-						path.length = i;
-					i++;
-				}
 				path.reverse();
 				path.pop(); //remove last element (this is the current position)
 
