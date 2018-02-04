@@ -21,7 +21,6 @@ class SpriteRenderer {
 		this.tileCache = new TileCache();
 
 		this.background = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'undiscovered');
-		this.display.addChild(this.background);
 
 		//fill array with empty spriteBatches
 		this.sprites = Array(this.numTiles.total);
@@ -39,8 +38,8 @@ class SpriteRenderer {
 
 
 		this.cameraWidth = {
-			x: Math.ceil(game.width / Settings.tileSize.x),
-			y: Math.ceil(game.height / Settings.tileSize.y)
+			x: Math.ceil(game.width / Settings.tileSize.x)+1,
+			y: Math.ceil(game.height / Settings.tileSize.y)+1
 		};
 
 		this.lastCameraPosition = new Position({
@@ -53,10 +52,12 @@ class SpriteRenderer {
 
 		this.margin = {
 			left: 0,
-			right: 1,
+			right: 0,
 			up: 0,
-			down: 1
+			down: 0
 		};
+
+		this.updateScreen();
 	}
 
 	initTile(tile){
@@ -177,14 +178,14 @@ class SpriteRenderer {
 			return;
 
 		let cameraPosition = new Position({
-			x: game.camera.x,
-			y: game.camera.y,
+			x: game.camera.x / game.camera.scale.x,
+			y: game.camera.y / game.camera.scale.y,
 			type: Position.WORLD
 		}).getTile();
 
 		let needBackground = false;
-		for(let x = cameraPosition.x - this.margin.left; x < cameraPosition.x + this.cameraWidth.x + this.margin.right; x++){
-			for(let y = cameraPosition.y - this.margin.up; y < cameraPosition.y + this.cameraWidth.y + this.margin.down; y++){
+		for(let x = cameraPosition.x - this.margin.left; x < cameraPosition.x + Math.ceil(this.cameraWidth.x / game.camera.scale.x) + this.margin.right; x++){
+			for(let y = cameraPosition.y - this.margin.up; y < cameraPosition.y + Math.ceil(this.cameraWidth.y / game.camera.scale.y) + this.margin.down; y++){
 
 				let position = new Position({
 					x : x,

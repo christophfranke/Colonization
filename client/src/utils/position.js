@@ -40,8 +40,8 @@ class Position{
 		}
 		if(this.type === Position.SCREEN){
 			return new Position({
-				x: Math.floor((this.x / game.camera.scale.x + game.camera.position.x) / Settings.tileSize.x),
-				y: Math.floor((this.y / game.camera.scale.y + game.camera.position.y) / Settings.tileSize.y),
+				x: Math.floor((this.x / game.camera.scale.x + game.camera.position.x / game.camera.scale.x) / Settings.tileSize.x),
+				y: Math.floor((this.y / game.camera.scale.y + game.camera.position.y / game.camera.scale.y) / Settings.tileSize.y),
 				type: Position.TILE
 			});
 		}
@@ -64,8 +64,8 @@ class Position{
 		}
 		if(this.type === Position.SCREEN){
 			return new Position({
-				x: this.x / game.camera.scale.x + game.camera.position.x,
-				y: this.y / game.camera.scale.y + game.camera.position.y,
+				x: this.x + game.camera.position.x,
+				y: this.y + game.camera.position.y,
 				type: Position.WORLD
 			});
 		}

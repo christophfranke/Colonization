@@ -7,7 +7,10 @@ class CameraController{
 	constructor(){
 		CameraController.instance = this;
 
+		this.scale = 1;
 		this.currentTarget = null;
+
+		this.ZoomTo(0.5);
 	}
 
 	moveTo(newTarget){
@@ -17,7 +20,7 @@ class CameraController{
 				return;
 
 			let distance = this.distanceSquared(newTarget, game.camera);
-			let screenSize = game.width*game.width + game.height*game.height;
+			let screenSize = (game.width*game.width + game.height*game.height) / (this.scale);
 			let tweenTime;
 			for(let factor of Object.keys(Times.mapCenterTweenTime).sort()){
 				tweenTime = Times.mapCenterTweenTime[factor];
@@ -27,6 +30,7 @@ class CameraController{
 			}
 
 			this.currentTarget = newTarget.getWorld();
+
 
 			game.add.tween(game.camera).to({
 					x: this.currentTarget.x,
@@ -40,6 +44,13 @@ class CameraController{
 				false
 			).onComplete.add(resolve);
 		});
+	}
+
+	ZoomTo(newScale){
+		this.scale = newScale;
+		game.camera.scale.x =this.scale;
+		game.camera.scale.y =this.scale;
+		// this.scale = 1;
 	}
 
 	distanceSquared(p, q){

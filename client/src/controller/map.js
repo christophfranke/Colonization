@@ -19,8 +19,8 @@ class MapController{
 
     centerAt(clickPosition){
 		const cameraTarget = new Position({
-			x: Math.floor(clickPosition.getWorld().x - 0.5*(game.width / game.camera.scale.x)),
-			y: Math.floor(clickPosition.getWorld().y - 0.5*(game.height / game.camera.scale.y)),
+			x: Math.floor(clickPosition.getWorld().x - 0.5*(game.width)),
+			y: Math.floor(clickPosition.getWorld().y - 0.5*(game.height)),
 			type: Position.WORLD
 		});
 

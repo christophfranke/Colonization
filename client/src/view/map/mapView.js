@@ -71,10 +71,14 @@ class MapView{
 			newTiles.push(tile.left());
 			newTiles.push(tile.down());
 			newTiles.push(tile.right());
-			newTiles.push(tile.up().left());
-			newTiles.push(tile.up().right());
-			newTiles.push(tile.down().left());
-			newTiles.push(tile.down().right());
+			if(tile.up()){
+				newTiles.push(tile.up().left());
+				newTiles.push(tile.up().right());
+			}
+			if(tile.down()){			
+				newTiles.push(tile.down().left());
+				newTiles.push(tile.down().right());
+			}
 
 			for(let t of newTiles){
 				let oldView = t.view;

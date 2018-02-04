@@ -41,7 +41,6 @@ class Colonize{
         new MapController();
         new UnitController();
         new ColonyController();
-        new CameraController();
         new DebugView();
         new Loader();
         new Turn();
@@ -52,14 +51,10 @@ class Colonize{
     }
 
     create() {
-        // TODO: this should work
-        // Colonize.game.camera.scale.x = 0.8;
-        // Colonize.game.camera.scale.y = 0.8;
-
         Loader.instance.create();
 
-
         //create and register
+        new CameraController();
         new KeyboardInput();
         new PointerInput();
         new InputContext({
@@ -70,6 +65,8 @@ class Colonize{
         UnitController.instance.create();
 
         DebugView.instance.create();
+
+        UnitController.instance.selectNext();
     }
 
     update() {
