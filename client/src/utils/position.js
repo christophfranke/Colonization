@@ -75,15 +75,15 @@ class Position{
 	getScreen(){
 		if(this.type === Position.TILE){
 			return new Position({
-				x: (this.x * Settings.tileSize.x - game.camera.position.x) * game.camera.scale.x,
-				y: (this.y * Settings.tileSize.y - game.camera.position.y) * game.camera.scale.y,
+				x: this.x * Settings.tileSize.x * game.camera.scale.x - game.camera.position.x,
+				y: this.y * Settings.tileSize.y * game.camera.scale.y - game.camera.position.y,
 				type: Position.SCREEN
 			});
 		}
 		if(this.type === Position.WORLD){
 			return new Position({
-				x: (this.x - game.camera.position.x) * game.camera.scale.x,
-				y: (this.y - game.camera.position.y) * game.camera.scale.y,
+				x: this.x * game.camera.scale.x - game.camera.position.x,
+				y: this.y * game.camera.scale.y - game.camera.position.y,
 				type: Position.SCREEN
 			});
 		}
