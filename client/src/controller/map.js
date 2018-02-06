@@ -17,12 +17,10 @@ class MapController{
 		});
 	}
 
-    centerAt(clickPosition){
-		const cameraTarget = new Position({
-			x: Math.floor(clickPosition.getWorld().x - 0.5*(game.width)),
-			y: Math.floor(clickPosition.getWorld().y - 0.5*(game.height)),
-			type: Position.WORLD
-		});
+    centerAt(position){
+		let cameraTarget = position.getScreen();
+		cameraTarget.x -= 0.5 * game.width;
+		cameraTarget.y -= 0.5 * game.height;
 
 		return CameraController.instance.moveTo(cameraTarget);
     }
