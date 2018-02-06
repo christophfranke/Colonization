@@ -44,6 +44,10 @@ class CameraController{
 
 	zoomTo(newScale){
 		return new Promise((resolve) => {
+			if(newScale < Times.zoom.min || newScale > Times.zoom.max){
+				resolve();
+				return;
+			}
 			let centerPosition = new Position({
 				x: 0.5*game.width,
 				y: 0.5*game.height,
@@ -79,11 +83,11 @@ class CameraController{
 	}
 
 	zoomIn(){
-		return this.zoomTo(this.scale / Times.zoomFactor);
+		return this.zoomTo(this.scale / Times.zoom.stepSize);
 	}
 
 	zoomOut(){
-		return this.zoomTo(this.scale * Times.zoomFactor);
+		return this.zoomTo(this.scale * Times.zoom.stepSize);
 	}
 
 	distanceSquared(p, q){
