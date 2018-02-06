@@ -178,8 +178,8 @@ class SpriteRenderer {
 			return;
 
 		let cameraPosition = new Position({
-			x: game.camera.x / game.camera.scale.x,
-			y: game.camera.y / game.camera.scale.y,
+			x: game.camera.x,
+			y: game.camera.y,
 			type: Position.WORLD
 		}).getTile();
 

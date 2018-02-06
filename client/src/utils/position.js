@@ -24,11 +24,7 @@ class Position{
 
 	getTile(){
 		if(this.type === Position.TILE){
-			return new Position({
-				x: this.x,
-				y: this.y,
-				type: Position.TILE
-			});
+			return new Position(this);
 		}
 
 		if(this.type === Position.WORLD){
@@ -39,11 +35,7 @@ class Position{
 			});
 		}
 		if(this.type === Position.SCREEN){
-			return new Position({
-				x: Math.floor((this.x / game.camera.scale.x + game.camera.position.x / game.camera.scale.x) / Settings.tileSize.x),
-				y: Math.floor((this.y / game.camera.scale.y + game.camera.position.y / game.camera.scale.y) / Settings.tileSize.y),
-				type: Position.TILE
-			});
+			return this.getWorld().getTile();
 		}
 	}
 
@@ -56,16 +48,12 @@ class Position{
 			});
 		}
 		if(this.type === Position.WORLD){
-			return new Position({
-				x: this.x,
-				y: this.y,
-				type: Position.WORLD
-			});
+			return new Position(this);
 		}
 		if(this.type === Position.SCREEN){
 			return new Position({
-				x: this.x + game.camera.position.x,
-				y: this.y + game.camera.position.y,
+				x: this.x / game.camera.scale.x + game.camera.position.x,
+				y: this.y / game.camera.scale.y + game.camera.position.y,
 				type: Position.WORLD
 			});
 		}
@@ -74,25 +62,17 @@ class Position{
 
 	getScreen(){
 		if(this.type === Position.TILE){
-			return new Position({
-				x: this.x * Settings.tileSize.x * game.camera.scale.x - game.camera.position.x,
-				y: this.y * Settings.tileSize.y * game.camera.scale.y - game.camera.position.y,
-				type: Position.SCREEN
-			});
+			return this.getWorld().getScreen();
 		}
 		if(this.type === Position.WORLD){
 			return new Position({
-				x: this.x * game.camera.scale.x - game.camera.position.x,
-				y: this.y * game.camera.scale.y - game.camera.position.y,
+				x: (this.x  - game.camera.position.x) * game.camera.scale.x,
+				y: (this.y  - game.camera.position.y) * game.camera.scale.y,
 				type: Position.SCREEN
 			});
 		}
 		if(this.type === Position.SCREEN){
-			return new Position({
-				x: this.x,
-				y: this.y,
-				type: Position.SCREEN
-			});
+			return new Position(this);
 		}
 
 	}

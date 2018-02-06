@@ -48,9 +48,8 @@ class CameraController{
 
 	ZoomTo(newScale){
 		this.scale = newScale;
-		game.camera.scale.x =this.scale;
-		game.camera.scale.y =this.scale;
-		// this.scale = 1;
+		game.camera.scale.x = this.scale;
+		game.camera.scale.y = this.scale;
 	}
 
 	distanceSquared(p, q){
