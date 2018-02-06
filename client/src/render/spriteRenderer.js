@@ -178,9 +178,9 @@ class SpriteRenderer {
 			return;
 
 		let cameraPosition = new Position({
-			x: game.camera.x,
-			y: game.camera.y,
-			type: Position.WORLD
+			x: 0,
+			y: 0,
+			type: Position.SCREEN
 		}).getTile();
 
 		let needBackground = false;

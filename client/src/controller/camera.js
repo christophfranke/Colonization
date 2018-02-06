@@ -10,17 +10,19 @@ class CameraController{
 		this.scale = 1;
 		this.currentTarget = null;
 
-		this.ZoomTo(0.5);
+		this.zoomTo(0.5);
 	}
 
-	moveTo(newTarget){
+	moveTo(newTarget, force){
 		return new Promise((resolve) => {
 			newTarget = newTarget.getWorld();
-			if(this.currentTarget && this.currentTarget.x === newTarget.x && this.currentTarget.y === newTarget.y)
+			if(!force && (this.currentTarget && this.currentTarget.x === newTarget.x && this.currentTarget.y === newTarget.y)){
+				resolve();
 				return;
+			}
 
 			let distance = this.distanceSquared(newTarget, game.camera);
-			let screenSize = (game.width*game.width + game.height*game.height) / (this.scale);
+			let screenSize = (game.width*game.width + game.height*game.height) / this.scale;
 			let tweenTime;
 			for(let factor of Object.keys(Times.mapCenterTweenTime).sort()){
 				tweenTime = Times.mapCenterTweenTime[factor];
@@ -33,8 +35,8 @@ class CameraController{
 
 
 			game.add.tween(game.camera).to({
-					x: this.currentTarget.x,
-					y: this.currentTarget.y
+					x: this.scale*this.currentTarget.x,
+					y: this.scale*this.currentTarget.y
 				},
 				tweenTime,
 				Phaser.Easing.Cubic.Out,
@@ -46,10 +48,22 @@ class CameraController{
 		});
 	}
 
-	ZoomTo(newScale){
-		this.scale = newScale;
-		game.camera.scale.x = this.scale;
-		game.camera.scale.y = this.scale;
+	zoomTo(newScale){
+		return new Promise((resolve) => {
+			this.scale = newScale;
+		
+			game.add.tween(game.camera.scale).to({
+					x: this.scale,
+					y: this.scale
+				},
+				Times.zoomTime,
+				Phaser.Easing.Cubic.Out,
+				true,
+				0,
+				0,
+				false
+			).onComplete.add(resolve);
+		});
 	}
 
 	distanceSquared(p, q){
