@@ -36,12 +36,6 @@ class SpriteRenderer {
 		this.display.removeChildren();
 
 
-
-		this.cameraWidth = {
-			x: Math.ceil(game.width / Settings.tileSize.x)+1,
-			y: Math.ceil(game.height / Settings.tileSize.y)+1
-		};
-
 		this.lastCameraPosition = new Position({
 			x: game.camera.x,
 			y: game.camera.y,
@@ -184,8 +178,8 @@ class SpriteRenderer {
 		}).getTile();
 
 		let needBackground = false;
-		for(let x = cameraPosition.x - this.margin.left; x < cameraPosition.x + Math.ceil(this.cameraWidth.x / game.camera.scale.x) + this.margin.right; x++){
-			for(let y = cameraPosition.y - this.margin.up; y < cameraPosition.y + Math.ceil(this.cameraWidth.y / game.camera.scale.y) + this.margin.down; y++){
+		for(let x = cameraPosition.x - this.margin.left; x < cameraPosition.x + this.screenWidth() + this.margin.right; x++){
+			for(let y = cameraPosition.y - this.margin.up; y < cameraPosition.y + this.screenHeight() + this.margin.down; y++){
 
 				let position = new Position({
 					x : x,
@@ -232,6 +226,14 @@ class SpriteRenderer {
 			this.updateScreen();
 			this.hasChanged = false;
 		}
+	}
+
+	screenWidth(){
+		return Math.ceil(game.width / (Settings.tileSize.x * game.camera.scale.x)) + 1;
+	}
+
+	screenHeight(){
+		return Math.ceil(game.height / (Settings.tileSize.y * game.camera.scale.y)) + 1;
 	}
 
 	cameraInBounds(){
