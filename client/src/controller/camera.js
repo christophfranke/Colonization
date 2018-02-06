@@ -2,15 +2,19 @@ import Times from 'data/times.json';
 
 import Phaser from 'phaser';
 
+import Position from 'src/utils/position.js';
+
 
 class CameraController{
 	constructor(){
 		CameraController.instance = this;
 
 		this.scale = 1;
-		this.currentTarget = null;
-
-		this.zoomTo(0.5);
+		this.currentTarget = new Position({
+			x: 0,
+			y: 0,
+			type: Position.WORLD
+		});
 	}
 
 	moveTo(newTarget, force){
@@ -21,16 +25,6 @@ class CameraController{
 				return;
 			}
 
-			let distance = this.distanceSquared(newTarget, game.camera);
-			let screenSize = (game.width*game.width + game.height*game.height) / this.scale;
-			let tweenTime;
-			for(let factor of Object.keys(Times.mapCenterTweenTime).sort()){
-				tweenTime = Times.mapCenterTweenTime[factor];
-				if(factor === 'default' || distance/screenSize < factor*factor){
-					break;
-				}
-			}
-
 			this.currentTarget = newTarget.getWorld();
 
 
@@ -38,7 +32,7 @@ class CameraController{
 					x: this.scale*this.currentTarget.x,
 					y: this.scale*this.currentTarget.y
 				},
-				tweenTime,
+				Times.mapCenterTime,
 				Phaser.Easing.Cubic.Out,
 				true,
 				0,
@@ -50,6 +44,8 @@ class CameraController{
 
 	zoomTo(newScale){
 		return new Promise((resolve) => {
+			// this.currentTarget.x = this.currentTarget.x * newScale / this.scale;
+			// this.currentTarget.y = this.currentTarget.y * newScale / this.scale;
 			this.scale = newScale;
 		
 			game.add.tween(game.camera.scale).to({
@@ -63,7 +59,26 @@ class CameraController{
 				0,
 				false
 			).onComplete.add(resolve);
+			game.add.tween(game.camera).to({
+					x: this.scale*this.currentTarget.x,
+					y: this.scale*this.currentTarget.y
+				},
+				Times.zoomTime,
+				Phaser.Easing.Cubic.Out,
+				true,
+				0,
+				0,
+				false
+			);
 		});
+	}
+
+	zoomIn(){
+		return this.zoomTo(this.scale / Times.zoomFactor);
+	}
+
+	zoomOut(){
+		return this.zoomTo(this.scale * Times.zoomFactor);
 	}
 
 	distanceSquared(p, q){

@@ -223,12 +223,12 @@ class SpriteRenderer {
 	render(){
 		this.lastCameraPosition.x = game.camera.x;
 		this.lastCameraPosition.y = game.camera.y;
+		this.lastCameraZoom = game.camera.scale.x;
 	}
 
 	preRender(){
 		//camera is out of bounds, disable caching and render quickly!
 		if(!this.cameraInBounds()){
-			this.display.cacheAsBitmap = false;
 			this.updateScreen();
 			this.hasChanged = false;
 		}
@@ -236,6 +236,7 @@ class SpriteRenderer {
 
 	cameraInBounds(){
 		return (
+			game.camera.scale.x === this.lastCameraZoom &&
 			Math.abs(this.lastDisplayUpdate.x - game.camera.x) < 0.1 &&
 			Math.abs(this.lastDisplayUpdate.y - game.camera.y) < 0.1
 		);

@@ -1,14 +1,10 @@
 {
-	"mapCenterTweenTime": {
-		"0.5": 300,
-		"2": 650,
-		"6": 1100,
-		"default": 10
-	},
 	"moveUnit": {
 		"min": 75,
 		"max": 250,
 		"base": 500
 	},
-	"zoomTime": 250
+	"mapCenterTime": 350,
+	"zoomTime": 250,
+	"zoomFactor": 0.8
 }

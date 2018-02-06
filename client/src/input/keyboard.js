@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import UnitController from 'src/controller/unit.js';
 import MapController from 'src/controller/map.js';
+import CameraController from 'src/controller/camera.js';
 import DebugView from 'src/view/common/debugView.js';
 import Turn from 'src/model/action/turn.js';
 import WaitCommand from 'src/model/command/wait.js';
@@ -83,10 +84,16 @@ class KeyboardInput {
 				});
 			}
 		}
-
 		
 		if(e.keyCode === 192){
 			DebugView.instance.toggleDebugInfo();
+		}
+
+		if(InputContext.instance.context === InputContext.MAP || InputContext.instance.context === InputContext.UNIT){
+			if(e.key === 'y' || e.key === 'z')
+				CameraController.instance.zoomOut();
+			if(e.key === 'x')
+				CameraController.instance.zoomIn();
 		}
 	}
 
