@@ -44,8 +44,13 @@ class CameraController{
 
 	zoomTo(newScale){
 		return new Promise((resolve) => {
-			// this.currentTarget.x = this.currentTarget.x * newScale / this.scale;
-			// this.currentTarget.y = this.currentTarget.y * newScale / this.scale;
+			let centerPosition = new Position({
+				x: 0.5*game.width,
+				y: 0.5*game.height,
+				type: Position.SCREEN
+			}).getWorld();
+			this.currentTarget.x = centerPosition.x - 0.5*game.width / newScale;
+			this.currentTarget.y = centerPosition.y - 0.5*game.height / newScale;
 			this.scale = newScale;
 		
 			game.add.tween(game.camera.scale).to({
