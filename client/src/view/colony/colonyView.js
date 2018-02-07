@@ -6,6 +6,7 @@ import ColonyMapView from './colonyMapView.js';
 import ColonistsView from './colonistsView.js';
 import StorageView from './storageView.js';
 import InputContext from 'src/input/context.js';
+import CameraController from 'src/controller/camera.js';
 
 class ColonyView {
 	constructor(props){
@@ -64,6 +65,7 @@ class ColonyView {
         InputContext.instance.switch(InputContext.COLONY);
 
         this.colonyMapView.show();
+        CameraController.instance.disableZoom();
 
         MapView.instance.hide();
         TileSprite.layer.visible = false;
@@ -76,6 +78,7 @@ class ColonyView {
         InputContext.instance.switchBack();
 
         this.colonyMapView.hide();
+        CameraController.instance.enableZoom();
 
         MapView.instance.show();
         TileSprite.layer.visible = true;

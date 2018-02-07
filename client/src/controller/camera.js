@@ -15,6 +15,8 @@ class CameraController{
 			y: 0,
 			type: Position.WORLD
 		});
+
+		this.zoomTween = null;
 	}
 
 	moveTo(newTarget, force){
@@ -57,7 +59,7 @@ class CameraController{
 			this.currentTarget.y = centerPosition.y - 0.5*game.height / newScale;
 			this.scale = newScale;
 		
-			game.add.tween(game.camera.scale).to({
+			this.zoomTween = game.add.tween(game.camera.scale).to({
 					x: this.scale,
 					y: this.scale
 				},
@@ -67,7 +69,8 @@ class CameraController{
 				0,
 				0,
 				false
-			).onComplete.add(resolve);
+			);
+			this.zoomTween.onComplete.add(resolve);
 			game.add.tween(game.camera).to({
 					x: this.scale*this.currentTarget.x,
 					y: this.scale*this.currentTarget.y
@@ -90,8 +93,20 @@ class CameraController{
 		return this.zoomTo(this.scale * Times.zoom.stepSize);
 	}
 
-	distanceSquared(p, q){
-		return (p.x - q.x)*(p.x - q.x) + (p.y - q.y)*(p.y - q.y);
+	disableZoom(){
+		if(this.zoomTween)
+			this.zoomTween.stop();
+
+		game.camera.scale.x = 1;
+		game.camera.scale.y = 1;
+	}
+
+	enableZoom(){
+		if(this.zoomTween)
+			this.zoomTween.stop();
+
+		game.camera.scale.x = this.scale;
+		game.camera.scale.y = this.scale;
 	}
 }
 

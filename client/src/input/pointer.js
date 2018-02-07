@@ -46,16 +46,19 @@ class PointerInput{
 			type: Position.SCREEN
 		});
 
-		if(this.isDown){		
+		if(
+			this.isDown &&
+			(this.downContext === InputContext.UNIT ||
+			this.downContext === InputContext.UNLOAD ||
+			this.downContext === InputContext.MAP) &&
+			(InputContext.instance.context === InputContext.UNIT ||
+			InputContext.instance.context === InputContext.UNLOAD ||
+			InputContext.instance.context === InputContext.MAP)
+		){
 			if(this.isHolding){
 				UnitController.instance.orderMove(pointerPosition);
 			}
 			else{
-				if(
-					this.downContext === InputContext.UNIT ||
-					this.downContext === InputContext.UNLOAD ||
-					this.downContext === InputContext.MAP
-				)
 				MapController.instance.centerAt(pointerPosition);
 			}
 		}
