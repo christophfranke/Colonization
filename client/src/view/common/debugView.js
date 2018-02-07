@@ -3,6 +3,7 @@ import Colonize from 'src/colonize.js';
 import SpriteRenderer from 'src/render/spriteRenderer.js';
 import InputContext from 'src/input/context.js';
 import UnitController from 'src/controller/unit.js';
+import CameraController from 'src/controller/camera.js';
 
 
 class DebugView {
@@ -57,8 +58,8 @@ class DebugView {
 				game.debug.line(spriteCount + ' sprites');
 				game.debug.line(SpriteRenderer.instance.tileCount + ' tiles');
 				game.debug.line(spritesPerTile + ' sprites per tile (avg)');
-				game.debug.line(SpriteRenderer.instance.spritesUpdated + ' sprites updated');
 				game.debug.line(SpriteRenderer.instance.tileCache.numFrames + ' sprites in cache on ' + SpriteRenderer.instance.tileCache.renderTextures.length + ' textures');
+				game.debug.line('Camera scale ' + CameraController.instance.scale);
 				if(memoryUsage !=='n/a')
 					game.debug.line('Using ' + memoryUsage + 'M of ' + memoryLimit + 'M (' + memoryPercentage + '%)');
 				game.debug.line('Input context is ' + context);
