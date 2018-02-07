@@ -80,15 +80,18 @@ class UnitController{
 			if(unit.movesLeft > 0 && !unit.isCargo){
 				//automatic movement
 				if(unit.hasCommands()){
+					InputContext.instance.switch(InputContext.NONE);
 					return new Promise((resolve) => {
 						return unit.executeCommand().then(()=>{
 							if(unit.completedCommand && unit.movesLeft > 0){
 								this.select(unit);
+								InputContext.instance.switchBack();
 								resolve();
 							}
 							else{
 								this.currentUnit++;
 								return this.selectNext().then(() =>{
+									InputContext.instance.switchBack();
 									resolve();
 								});
 							}
