@@ -84,7 +84,7 @@ class PathFinder{
 
 	findPath(from, to, unit){
 		let target = (node) => {
-			return node.index === to.index
+			return node.index === to.index;
 		};
 		return this.find(from, target, unit, to, false);
 	}
@@ -121,7 +121,7 @@ class PathFinder{
 				return 0;
 			else
 				return this.estimate(tile, target) - this.estimate(from, target);
-		}
+		};
 
 		let node = this.graph.node(from.index);
 		let explored = {};

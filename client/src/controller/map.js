@@ -1,6 +1,5 @@
 import Options from 'data/options.json';
 
-import Position from 'src/utils/position.js';
 import Map from 'src/model/entity/map.js';
 
 import CameraController from './camera.js';
