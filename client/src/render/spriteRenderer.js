@@ -21,6 +21,7 @@ class SpriteRenderer {
 		this.tileCache = new TileCache();
 
 		this.background = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'undiscovered');
+		this.display.addChild(this.background);
 
 		//fill array with empty spriteBatches
 		this.sprites = Array(this.numTiles.total);
