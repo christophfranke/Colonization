@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import TileSprite from 'src/view/map/unitView.js'; //TODO: this is not good! do not use unit view in colony screen
 import MapView from 'src/view/map/mapView.js';
 import ColonyMapView from './colonyMapView.js';
-import ColonistsView from './colonistsView.js';
+import ColonistView from './colonistView.js';
 import StorageView from './storageView.js';
 import InputContext from 'src/input/context.js';
 import CameraController from 'src/controller/camera.js';
@@ -45,10 +45,13 @@ class ColonyView {
             parentScreen: this.colonyScreen
         });
 
-        this.colonistsView = new ColonistsView({
-            colony: this.colony,
-            parentScreen: this.colonyScreen
-        });
+        this.colonistViews = [];
+        for(let colonist of this.colony.colonists) {
+            this.colonistViews.push(new ColonistView({
+                colonist,
+                parentScreen: this.colonyScreen
+            }));
+        }
 
         this.storageView = new StorageView({
             colony: this.colony,
@@ -59,7 +62,13 @@ class ColonyView {
     colonyClick(){
     }
 
+    updateColonists() {
+        
+    }
+
     show(){
+        this.updateColonists();
+
         this.layer.visible = true;
         ColonyView.open = this;
         InputContext.instance.switch(InputContext.COLONY);
